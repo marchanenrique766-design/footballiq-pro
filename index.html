@@ -1,31 +1,45 @@
-    function procesarAnalisis() {
-        const local = document.getElementById('local').value;
-        const visit = document.getElementById('visitante').value;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ PRO</title>
+    <style>
+        body { background-color: #0d0d0d; color: white; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .app-container { width: 100%; max-width: 400px; background: #1a1a1a; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        h1 { color: #38bdf8; font-size: 24px; text-align: center; }
+        .input-group { margin: 20px 0; }
+        input { width: 100%; padding: 12px; margin-top: 8px; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #004d26; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        #results { margin-top: 20px; padding: 15px; background: #000; border: 1px solid #00ff88; border-radius: 8px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1>FootballIQ PRO</h1>
+        <div class="input-group">
+            <input type="text" id="local" placeholder="EQUIPO A (LOCAL)">
+            <input type="text" id="visitante" placeholder="EQUIPO B (VISITANTE)">
+        </div>
+        <button onclick="procesarAnalisis()">INICIAR ANÁLISIS</button>
+        <div id="results"></div>
+    </div>
 
-        if(!local || !visit) { alert("Ingresa los equipos"); return; }
-
-        document.getElementById('loading').style.display = 'block';
-        document.getElementById('results').style.display = 'none';
-
-        setTimeout(() => {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('results').style.display = 'block';
+    <script>
+        function procesarAnalisis() {
+            const local = document.getElementById('local').value;
+            const visit = document.getElementById('visitante').value;
+            if(!local || !visit) { alert("Ingresa los equipos"); return; }
             
-            // Aquí definimos el "Código Fuerte" de la lógica
-            document.getElementById('res-match').innerHTML = `<i class="fas fa-lightbulb" style="color:var(--accent)"></i> Sugerencias para ${local} vs ${visit}`;
-            
-            // Esto simula el cálculo de ventaja (Edge)
-            document.getElementById('res-mercado').innerHTML = `
-                <div style="margin-top:10px;">
-                    <p>Ambos Anotan & Over 2.5: <b>78%</b> <span style="color:var(--accent)">(Edge: +8%)</span></p>
-                    <p>Local (${local}) o Empate: <b>81%</b> <span style="color:var(--accent)">(Edge: +5%)</span></p>
-                    <p>Corneres Over 9.5: <b>72%</b> <span style="color:var(--accent)">(Edge: +10%)</span></p>
-                </div>
+            const res = document.getElementById('results');
+            res.style.display = 'block';
+            res.innerHTML = `
+                <p><b>Sugerencias para ${local} vs ${visit}:</b></p>
+                <p>Ambos Anotan & Over 2.5: <b>78%</b> <span style="color:#00ff88">(Edge: +8%)</span></p>
+                <p>Local (${local}) o Empate: <b>81%</b> <span style="color:#00ff88">(Edge: +5%)</span></p>
+                <p>Corneres Over 9.5: <b>72%</b> <span style="color:#00ff88">(Edge: +10%)</span></p>
             `;
-            document.getElementById('res-perc').innerText = "CALCULADO";
-            document.getElementById('res-conf').innerText = "ALTA";
-        }, 1500);
-    }
-
-
-
+        }
+    </script>
+</body>
+</html>
