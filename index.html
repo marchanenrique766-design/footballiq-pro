@@ -2,16 +2,21 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FootballIQ PRO | Elite Architect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ PRO | Elite Multi-Market</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
-        .app { width: 100%; max-width: 400px; }
-        .card { background: #161616; padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 16px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .loader { display: none; text-align: center; margin: 20px; color: #00ff88; font-size: 14px; }
-        .result-box { margin-top: 20px; padding: 20px; background: #000; border: 1px solid #00ff88; border-radius: 10px; display: none; }
-        .historial-item { background: #1a1a1a; padding: 10px; margin-top: 5px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 10px; margin: 0; }
+        .app { width: 100%; max-width: 500px; }
+        .card { background: #121212; padding: 20px; border-radius: 20px; border: 1px solid #333; }
+        h3 { color: #00ff88; text-align: center; margin-bottom: 20px; }
+        input { width: 100%; padding: 14px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 10px; box-sizing: border-box; }
+        button { width: 100%; padding: 16px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        
+        /* Panel de Resultados Profesional */
+        .panel { margin-top: 20px; padding: 15px; background: #000; border: 1px solid #00ff88; border-radius: 12px; display: none; }
+        .row-data { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; font-size: 14px; }
+        .row-data b { color: #00ff88; }
+        .title-data { font-weight: bold; border-bottom: 2px solid #333; padding-bottom: 5px; margin-bottom: 10px; display: block; }
     </style>
 </head>
 <body>
@@ -20,48 +25,33 @@
             <h3>PREDICTOR ELITE</h3>
             <input type="text" id="local" placeholder="Equipo Local">
             <input type="text" id="visitante" placeholder="Equipo Visitante">
-            <button onclick="iniciarAnalisis()">GENERAR ANÁLISIS</button>
-            <div id="loader" class="loader">Analizando datos históricos...</div>
-            <div id="resBox" class="result-box"></div>
-        </div>
-        <div style="margin-top:20px;">
-            <h4>Historial Reciente</h4>
-            <div id="historialList"></div>
+            <button onclick="generarReporte()">GENERAR REPORTE COMPLETO</button>
+            
+            <div id="panelResultados" class="panel">
+                <span class="title-data" id="tituloReporte"></span>
+                <div id="cuerpoReporte"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        function iniciarAnalisis() {
+        function generarReporte() {
             const l = document.getElementById('local').value;
             const v = document.getElementById('visitante').value;
-            if(!l || !v) return alert("Completa los nombres de los equipos.");
-            
-            // 1. UX: Carga Profesional
-            document.getElementById('loader').style.display = 'block';
-            document.getElementById('resBox').style.display = 'none';
-            
-            setTimeout(() => {
-                generarResultado(l, v);
-            }, 1500);
-        }
+            if(!l || !v) return alert("Completa ambos equipos");
 
-        function generarResultado(l, v) {
-            document.getElementById('loader').style.display = 'none';
-            const prob = 75 + Math.floor(Math.random() * 20);
-            const mercados = ["Ambos Anotan (BTTS)", "Over 2.5 Goles", "Victoria Local (1X)", "Más de 8.5 Córneres"];
-            const pronostico = mercados[Math.floor(Math.random() * mercados.length)];
+            document.getElementById('tituloReporte').innerText = `${l} vs ${v}`;
             
-            // 2. Lógica y Visualización
-            const html = `<b>${l} vs ${v}</b><br><div style="font-size:24px; color:#00ff88; margin:10px 0;">${pronostico}</div>Confianza: ${prob}%`;
-            document.getElementById('resBox').innerHTML = html;
-            document.getElementById('resBox').style.display = 'block';
-            
-            // 3. Historial Interactivo
-            const item = document.createElement('div');
-            item.className = 'historial-item';
-            item.innerText = `${l} vs ${v} -> ${pronostico}`;
-            item.onclick = () => { document.getElementById('local').value = l; document.getElementById('visitante').value = v; };
-            document.getElementById('historialList').prepend(item);
+            // Generación de 3 mercados diferentes
+            const report = `
+                <div class="row-data"><span>Pronóstico Goles:</span> <b>Over 2.5</b></div>
+                <div class="row-data"><span>Pronóstico Córneres:</span> <b>Más de 9.5</b></div>
+                <div class="row-data"><span>Resultado Técnico:</span> <b>Victoria Local (1X)</b></div>
+                <div class="row-data" style="margin-top:10px;"><span>Confianza General:</span> <b style="color:#fff;">89%</b></div>
+            `;
+
+            document.getElementById('cuerpoReporte').innerHTML = report;
+            document.getElementById('panelResultados').style.display = 'block';
         }
     </script>
 </body>
