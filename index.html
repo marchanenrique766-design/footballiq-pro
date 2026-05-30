@@ -3,42 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootballIQ PRO</title>
+    <title>FootballIQ PRO | Dashboard</title>
     <style>
-        body { background-color: #0d0d0d; color: white; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
-        .app-container { width: 100%; max-width: 400px; background: #1a1a1a; padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        h1 { color: #38bdf8; font-size: 24px; text-align: center; }
-        .input-group { margin: 20px 0; }
-        input { width: 100%; padding: 12px; margin-top: 8px; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        body { background: #050505; color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .app { width: 100%; max-width: 400px; }
+        .stats { background: #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #333; margin-bottom: 20px; }
+        .win-counter { color: #00ff88; font-size: 20px; font-weight: bold; }
+        .card { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #004d26; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        #results { margin-top: 20px; padding: 15px; background: #000; border: 1px solid #00ff88; border-radius: 8px; display: none; }
+        .res { margin-top: 20px; padding: 15px; background: #000; border-left: 4px solid #00ff88; display: none; }
+        .btn-win { background: #1a1a1a; border: 1px solid #00ff88; color: #00ff88; margin-top: 10px; padding: 8px; font-size: 12px; }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <h1>FootballIQ PRO</h1>
-        <div class="input-group">
-            <input type="text" id="local" placeholder="EQUIPO A (LOCAL)">
-            <input type="text" id="visitante" placeholder="EQUIPO B (VISITANTE)">
+    <div class="app">
+        <div class="stats">
+            <div>APUESTAS GANADAS</div>
+            <div id="counter" class="win-counter">0</div>
+            <button class="btn-win" onclick="sumarVictoria()">+ REGISTRAR VICTORIA</button>
         </div>
-        <button onclick="procesarAnalisis()">INICIAR ANÁLISIS</button>
-        <div id="results"></div>
+        <div class="card">
+            <h1>FootballIQ PRO</h1>
+            <input type="text" id="local" placeholder="Equipo Local">
+            <input type="text" id="visitante" placeholder="Equipo Visitante">
+            <button onclick="analizar()">INICIAR ANÁLISIS</button>
+            <div id="res" class="res"></div>
+        </div>
     </div>
 
     <script>
-        function procesarAnalisis() {
-            const local = document.getElementById('local').value;
-            const visit = document.getElementById('visitante').value;
-            if(!local || !visit) { alert("Ingresa los equipos"); return; }
+        let wins = localStorage.getItem('wins') || 0;
+        document.getElementById('counter').innerText = wins;
+
+        function sumarVictoria() {
+            wins++;
+            localStorage.setItem('wins', wins);
+            document.getElementById('counter').innerText = wins;
+        }
+
+        function analizar() {
+            const l = document.getElementById('local').value;
+            const v = document.getElementById('visitante').value;
+            const res = document.getElementById('res');
+            if(!l || !v) return alert("Completa los equipos");
             
-            const res = document.getElementById('results');
             res.style.display = 'block';
-            res.innerHTML = `
-                <p><b>Sugerencias para ${local} vs ${visit}:</b></p>
-                <p>Ambos Anotan & Over 2.5: <b>78%</b> <span style="color:#00ff88">(Edge: +8%)</span></p>
-                <p>Local (${local}) o Empate: <b>81%</b> <span style="color:#00ff88">(Edge: +5%)</span></p>
-                <p>Corneres Over 9.5: <b>72%</b> <span style="color:#00ff88">(Edge: +10%)</span></p>
-            `;
+            let edge = Math.floor(Math.random() * 10) + 5;
+            res.innerHTML = `<b>Análisis para ${l} vs ${v}:</b><br>
+            <p>Ambos Anotan: <b>${70 + edge}%</b> <span style="color:#00ff88">(Edge: +${edge}%)</span></p>
+            <p>Over 2.5 Goles: <b>${65 + edge}%</b></p>`;
         }
     </script>
 </body>
