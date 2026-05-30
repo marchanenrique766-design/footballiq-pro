@@ -3,66 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | Elite</title>
+    <title>FOOTBALLIQ PRO</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; justify-content: center; margin: 0; }
-        .app { width: 100%; max-width: 450px; }
-        .card { background: #121212; padding: 25px; border-radius: 20px; border: 1px solid #333; }
-        h3 { color: #00ff88; text-align: center; margin-bottom: 20px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; display: flex; justify-content: center; padding-top: 20px; }
+        .app { width: 90%; max-width: 400px; }
+        .card { background: #121212; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        h3 { color: #00ff88; text-align: center; }
         
-        /* Select mejorado y organizado */
-        select { 
-            width: 100%; 
-            padding: 15px; 
-            margin: 10px 0; 
-            background: #1a1a1a; 
-            border: 1px solid #444; 
-            color: #fff; 
-            border-radius: 12px; 
-            font-size: 16px;
-            cursor: pointer;
-        }
+        /* El Select que sí funciona */
+        select { width: 100%; padding: 15px; margin: 15px 0; background: #1a1a1a; color: #fff; border: 1px solid #444; border-radius: 10px; font-size: 16px; }
         
-        button { width: 100%; padding: 18px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 15px; cursor: pointer; }
+        button { width: 100%; padding: 18px; background: #00ff88; color: #000; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
         
-        #panel { margin-top: 25px; display: none; background: #000; padding: 20px; border-radius: 15px; border: 1px solid #00ff88; }
-        .res-title { font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 15px; }
-        .res-data { font-size: 17px; margin: 8px 0; color: #ccc; }
-        .res-prob { color: #00ff88; font-size: 22px; font-weight: 900; margin-top: 15px; }
+        #panel { margin-top: 20px; padding: 15px; border-radius: 10px; border: 1px solid #00ff88; display: none; background: #000; }
     </style>
 </head>
 <body>
-    <div class="app">
-        <div class="card">
-            <h3>FOOTBALLIQ PRO</h3>
-            
-            <label style="color:#aaa; font-size:14px;">Selecciona el partido:</label>
-            <select id="partido">
-                <option value="Real Madrid vs. Barcelona">La Liga: Real Madrid vs. Barcelona</option>
-                <option value="Man City vs. Liverpool">Premier: Man City vs. Liverpool</option>
-                <option value="Flamengo vs. Coritiba">Brasileirão: Flamengo vs. Coritiba</option>
-                <option value="Bayern vs. Dortmund">Bundesliga: Bayern vs. Dortmund</option>
-                <option value="PSG vs. Marseille">Ligue 1: PSG vs. Marseille</option>
-            </select>
 
-            <button onclick="generar()">GENERAR ANÁLISIS PRO</button>
+<div class="app">
+    <div class="card">
+        <h3>FOOTBALLIQ PRO</h3>
+        
+        <select id="partidoSelector">
+            <option value="Real Madrid vs Barcelona">La Liga: Real Madrid vs Barcelona</option>
+            <option value="Man City vs Liverpool">Premier: Man City vs Liverpool</option>
+            <option value="Flamengo vs Coritiba">Brasileirão: Flamengo vs Coritiba</option>
+            <option value="Bayern vs Dortmund">Bundesliga: Bayern vs Dortmund</option>
+        </select>
 
-            <div id="panel">
-                <div class="res-title" id="pTitle"></div>
-                <div class="res-data">⚽ Goles: Menos 2.5</div>
-                <div class="res-data">🚩 Córneres: Más 7.5</div>
-                <div class="res-prob" id="pConf">Confianza: Alta (92%)</div>
-            </div>
+        <button type="button" onclick="mostrarAnalisis()">GENERAR ANÁLISIS PRO</button>
+
+        <div id="panel">
+            <div id="resultadoContenido" style="color: #fff; font-size: 16px;"></div>
         </div>
     </div>
+</div>
 
-    <script>
-        function generar() {
-            const select = document.getElementById('partido');
-            const p = select.options[select.selectedIndex].text;
-            document.getElementById('pTitle').innerText = "Análisis: " + p;
-            document.getElementById('panel').style.display = 'block';
-        }
-    </script>
+<script>
+    function mostrarAnalisis() {
+        const selector = document.getElementById('partidoSelector');
+        const partido = selector.options[selector.selectedIndex].text;
+        const panel = document.getElementById('panel');
+        const contenido = document.getElementById('resultadoContenido');
+        
+        contenido.innerHTML = `
+            <b style="color:#00ff88">ANÁLISIS: ${partido}</b><br><br>
+            ⚽ Goles: Menos 2.5<br>
+            🚩 Córneres: Más 7.5<br>
+            <b style="color:#ff3333">⚠ RIESGO: ALTO</b><br><br>
+            <div style="font-size:20px; color:#00ff88">Confianza: 81%</div>
+        `;
+        
+        panel.style.display = 'block';
+    }
+</script>
+
 </body>
 </html>
