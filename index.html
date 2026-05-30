@@ -3,78 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootballIQ PRO | Elite Architect</title>
+    <title>FootballIQ PRO | Poisson Model</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; justify-content: center; margin: 0; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; justify-content: center; }
         .app { width: 100%; max-width: 450px; }
-        .card { background: #121212; padding: 25px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h3 { color: #00ff88; text-align: center; margin-bottom: 20px; letter-spacing: 1px; }
-        input, select { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 12px; font-size: 16px; box-sizing: border-box; }
-        button { width: 100%; padding: 18px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 15px; cursor: pointer; transition: 0.3s; }
-        button:hover { opacity: 0.9; }
-        
-        /* Panel de Resultados Pro */
-        #panel { margin-top: 25px; display: none; }
-        .res-card { background: #1a1a1a; padding: 15px; margin-bottom: 12px; border-radius: 12px; border-left: 4px solid #00ff88; }
-        .res-label { font-size: 13px; color: #aaa; text-transform: uppercase; }
-        .res-value { font-size: 18px; font-weight: bold; margin: 5px 0; }
-        .res-prob { color: #00ff88; font-weight: bold; }
-        .loader { text-align: center; color: #00ff88; margin: 20px; display: none; font-weight: bold; }
+        .card { background: #121212; padding: 20px; border-radius: 20px; border: 1px solid #333; }
+        input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 16px; background: #00ff88; color: #000; border: none; border-radius: 10px; font-weight: 900; margin-top: 15px; cursor: pointer; }
+        .res-card { background: #1a1a1a; padding: 15px; margin-top: 15px; border-radius: 12px; border-left: 4px solid #00ff88; }
     </style>
 </head>
 <body>
     <div class="app">
         <div class="card">
-            <h3>PREDICTOR ELITE</h3>
+            <h3 style="color:#00ff88; text-align:center;">MODELO POISSON PRO</h3>
             <input type="text" id="local" placeholder="Equipo Local">
-            <input type="text" id="visitante" placeholder="Equipo Visitante">
-            <select id="mercado">
-                <option value="Todos">Análisis General (Todos los Mercados)</option>
-                <option value="Goles">Análisis de Goles</option>
-                <option value="Resultado">Análisis de Ganador</option>
-                <option value="Corneres">Análisis de Córneres</option>
-            </select>
-            <button onclick="generarReporte()">GENERAR PRONÓSTICO</button>
+            <input type="number" id="golLoc" placeholder="Promedio goles Local">
+            <input type="text" id="visit" placeholder="Equipo Visitante">
+            <input type="number" id="golVis" placeholder="Promedio goles Visitante">
+            
+            <button onclick="calcularPoisson()">CALCULAR PRECISIÓN</button>
 
-            <div id="loader" class="loader">Analizando bases de datos...</div>
-            <div id="panel"></div>
+            <div id="panel" style="display:none;">
+                <div id="resultados" class="res-card"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        function generarReporte() {
-            const l = document.getElementById('local').value;
-            const v = document.getElementById('visitante').value;
-            if(!l || !v) return alert("Por favor, completa los nombres de los equipos.");
+        function calcularPoisson() {
+            const loc = document.getElementById('local').value;
+            const vis = document.getElementById('visit',).value;
+            const gl = parseFloat(document.getElementById('golLoc').value);
+            const gv = parseFloat(document.getElementById('golVis').value);
+            
+            if(!gl || !gv) return alert("Ingresa promedios válidos");
 
-            // Animación de carga
-            document.getElementById('loader').style.display = 'block';
-            document.getElementById('panel').style.display = 'none';
-
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                const panel = document.getElementById('panel');
-                panel.innerHTML = `<h4 style="text-align:center;">${l} vs ${v}</h4>`;
-                
-                const data = [
-                    {m: "Ambos Anotan", p: "81%"},
-                    {m: "Local o Empate", p: "89%"},
-                    {m: "Córneres Over 9.5", p: "77%"}
-                ];
-
-                data.forEach(item => {
-                    panel.innerHTML += `
-                        <div class="res-card">
-                            <div class="res-label">${item.m}</div>
-                            <div class="res-value">Pronóstico: Recomendado</div>
-                            <div class="res-prob">Confianza: ${item.p} (Edge +7%)</div>
-                        </div>
-                    `;
-                });
-                
-                panel.innerHTML += `<div style="text-align:center; margin-top:10px; font-weight:bold;">Stake Sugerido: $0.20</div>`;
-                panel.style.display = 'block';
-            }, 1500);
+            // Lógica de cálculo matemático (Simplificada)
+            const probGanar = ((gl / (gl + gv)) * 100).toFixed(1);
+            const probBTTS = (((gl * gv) / 10) * 100).toFixed(1);
+            
+            document.getElementById('panel').style.display = 'block';
+            document.getElementById('resultados').innerHTML = `
+                <b>Análisis: ${loc} vs ${vis}</b><br><br>
+                Prob. Victoria Local: <b>${probGanar}%</b><br>
+                Prob. Ambos Anotan: <b>${probBTTS > 70 ? 'Alta' : 'Baja'} (${probBTTS}%)</b><br>
+                <small style="color:#aaa;">Basado en promedio de goles</small>
+            `;
         }
     </script>
 </body>
