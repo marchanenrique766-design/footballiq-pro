@@ -2,27 +2,26 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FootballIQ PRO | Value Hunter</title>
+    <title>FootballIQ PRO | Predictor</title>
     <style>
         body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
         .app { width: 100%; max-width: 400px; }
-        .card { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        .card { background: #161616; padding: 20px; border-radius: 15px; border: 1px solid #333; }
         input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 16px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .gold-alert { border: 2px solid #ffd700 !important; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
-        .result-box { margin-top: 20px; padding: 15px; background: #000; border-radius: 10px; display: none; }
+        .result-box { margin-top: 20px; padding: 15px; background: #000; border: 1px solid #00ff88; border-radius: 10px; display: none; }
         .highlight { color: #00ff88; font-weight: bold; }
-        .gold { color: #ffd700; font-weight: bold; }
+        .pronostico { font-size: 18px; color: #fff; margin: 10px 0; padding: 10px; background: #1a1a1a; border-radius: 5px; text-align: center; }
     </style>
 </head>
 <body>
     <div class="app">
         <div class="card">
-            <h3 style="margin-top:0;">VALOR ANALÍTICO</h3>
+            <h3 style="margin-top:0;">PREDICTOR ELITE</h3>
             <input type="text" id="local" placeholder="Equipo Local">
             <input type="text" id="visitante" placeholder="Equipo Visitante">
             <input type="number" id="bankroll" placeholder="Presupuesto ($)">
-            <button onclick="analizarValor()">BUSCAR OPORTUNIDAD</button>
+            <button onclick="generarPronostico()">GENERAR PRONÓSTICO</button>
             
             <div id="resBox" class="result-box">
                 <div id="reporte"></div>
@@ -31,30 +30,23 @@
     </div>
 
     <script>
-        function analizarValor() {
+        function generarPronostico() {
             const l = document.getElementById('local').value;
             const v = document.getElementById('visitante').value;
             const b = parseFloat(document.getElementById('bankroll').value);
             if(!l || !v || !b) return alert("Completa los datos");
 
+            // Lógica de predicción
             const prob = 70 + Math.floor(Math.random() * 25);
-            const cuotaSug = (100 / prob).toFixed(2);
-            const box = document.getElementById('resBox');
-            
-            // Lógica de "Oportunidad de Oro"
-            if(prob > 85) {
-                box.className = 'result-box gold-alert';
-            } else {
-                box.className = 'result-box';
-            }
+            const mercados = ["Ambos Equipos Anotan", "Over 2.5 Goles", "Victoria Local (1X)", "Más de 8.5 Córneres"];
+            const pronostico = mercados[Math.floor(Math.random() * mercados.length)];
 
-            box.style.display = 'block';
+            document.getElementById('resBox').style.display = 'block';
             document.getElementById('reporte').innerHTML = `
                 <p>Análisis: <b>${l} vs ${v}</b></p>
-                <div style="margin:10px 0;">Probabilidad de Éxito: <span class="highlight">${prob}%</span></div>
-                <div style="margin:10px 0;">Cuota Mínima Sugerida: <span class="gold">${cuotaSug}</span></div>
-                <div style="margin:10px 0;">Stake Recomendado: <span class="highlight">$${(b * 0.02).toFixed(2)}</span></div>
-                ${prob > 85 ? '<p class="gold" style="text-align:center;">★ OPORTUNIDAD DE ORO DETECTADA ★</p>' : ''}
+                <div class="pronostico">Pronóstico: <br><b class="highlight">${pronostico}</b></div>
+                <div style="font-size:14px;">Probabilidad de Éxito: <b>${prob}%</b></div>
+                <div style="font-size:14px;">Stake Sugerido: <b>$${(b * 0.02).toFixed(2)}</b></div>
             `;
         }
     </script>
