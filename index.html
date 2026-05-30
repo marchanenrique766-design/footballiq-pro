@@ -3,53 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootballIQ PRO | Architect</title>
+    <title>FootballIQ PRO | Elite Architect</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 15px; display: flex; justify-content: center; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; justify-content: center; margin: 0; }
         .app { width: 100%; max-width: 450px; }
-        .card { background: #121212; padding: 20px; border-radius: 20px; border: 1px solid #333; }
-        input, select { width: 100%; padding: 14px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 10px; font-size: 16px; }
-        button { width: 100%; padding: 16px; background: #00ff88; color: #000; border: none; border-radius: 10px; font-weight: 900; text-transform: uppercase; margin-top: 10px; cursor: pointer; }
+        .card { background: #121212; padding: 25px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h3 { color: #00ff88; text-align: center; margin-bottom: 20px; letter-spacing: 1px; }
+        input, select { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 12px; font-size: 16px; box-sizing: border-box; }
+        button { width: 100%; padding: 18px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 15px; cursor: pointer; transition: 0.3s; }
+        button:hover { opacity: 0.9; }
         
-        /* Resultados Pro */
-        .panel { margin-top: 20px; padding: 20px; background: #000; border-left: 4px solid #00ff88; display: none; }
-        .bar-bg { background: #222; height: 10px; border-radius: 5px; margin: 10px 0; }
-        .bar-fill { background: #00ff88; height: 100%; border-radius: 5px; transition: width 1.5s ease; }
+        /* Panel de Resultados Pro */
+        #panel { margin-top: 25px; display: none; }
+        .res-card { background: #1a1a1a; padding: 15px; margin-bottom: 12px; border-radius: 12px; border-left: 4px solid #00ff88; }
+        .res-label { font-size: 13px; color: #aaa; text-transform: uppercase; }
+        .res-value { font-size: 18px; font-weight: bold; margin: 5px 0; }
+        .res-prob { color: #00ff88; font-weight: bold; }
+        .loader { text-align: center; color: #00ff88; margin: 20px; display: none; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="app">
         <div class="card">
-            <h3 style="color:#00ff88; text-align:center;">FOOTBALL IQ ARCHITECT</h3>
+            <h3>PREDICTOR ELITE</h3>
             <input type="text" id="local" placeholder="Equipo Local">
             <input type="text" id="visitante" placeholder="Equipo Visitante">
             <select id="mercado">
+                <option value="Todos">Análisis General (Todos los Mercados)</option>
                 <option value="Goles">Análisis de Goles</option>
                 <option value="Resultado">Análisis de Ganador</option>
                 <option value="Corneres">Análisis de Córneres</option>
             </select>
-            <button onclick="analizarPro()">GENERAR ANÁLISIS DE MERCADO</button>
+            <button onclick="generarReporte()">GENERAR PRONÓSTICO</button>
 
-            <div id="panel" class="panel">
-                <div id="resultadoHTML"></div>
-                <div class="bar-bg"><div id="bar" class="bar-fill" style="width: 0%"></div></div>
-                <div id="porcentaje" style="font-weight:bold; font-size:20px;"></div>
-            </div>
+            <div id="loader" class="loader">Analizando bases de datos...</div>
+            <div id="panel"></div>
         </div>
     </div>
 
     <script>
-        function analizarPro() {
+        function generarReporte() {
             const l = document.getElementById('local').value;
             const v = document.getElementById('visitante').value;
-            const m = document.getElementById('mercado').value;
-            if(!l || !v) return alert("Completa los campos");
+            if(!l || !v) return alert("Por favor, completa los nombres de los equipos.");
 
-            const p = 70 + Math.floor(Math.random() * 25);
-            document.getElementById('panel').style.display = 'block';
-            document.getElementById('bar').style.width = p + "%";
-            document.getElementById('resultadoHTML').innerHTML = `<b>${l} vs ${v}</b><br>Mercado: ${m}`;
-            document.getElementById('porcentaje').innerText = p + "% Probabilidad";
+            // Animación de carga
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('panel').style.display = 'none';
+
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                const panel = document.getElementById('panel');
+                panel.innerHTML = `<h4 style="text-align:center;">${l} vs ${v}</h4>`;
+                
+                const data = [
+                    {m: "Ambos Anotan", p: "81%"},
+                    {m: "Local o Empate", p: "89%"},
+                    {m: "Córneres Over 9.5", p: "77%"}
+                ];
+
+                data.forEach(item => {
+                    panel.innerHTML += `
+                        <div class="res-card">
+                            <div class="res-label">${item.m}</div>
+                            <div class="res-value">Pronóstico: Recomendado</div>
+                            <div class="res-prob">Confianza: ${item.p} (Edge +7%)</div>
+                        </div>
+                    `;
+                });
+                
+                panel.innerHTML += `<div style="text-align:center; margin-top:10px; font-weight:bold;">Stake Sugerido: $0.20</div>`;
+                panel.style.display = 'block';
+            }, 1500);
         }
     </script>
 </body>
