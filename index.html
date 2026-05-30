@@ -2,62 +2,66 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootballIQ PRO | Analista</title>
+    <title>FootballIQ PRO | Elite Architect</title>
     <style>
         body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
         .app { width: 100%; max-width: 400px; }
         .card { background: #161616; padding: 20px; border-radius: 15px; border: 1px solid #333; }
         input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 16px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .loader { display: none; text-align: center; margin: 20px; color: #00ff88; font-size: 14px; }
         .result-box { margin-top: 20px; padding: 20px; background: #000; border: 1px solid #00ff88; border-radius: 10px; display: none; }
-        .highlight { color: #00ff88; font-weight: bold; }
-        /* Ajustes de tamaño para legibilidad máxima */
-        .pronostico-label { font-size: 14px; color: #aaa; }
-        .pronostico-value { font-size: 26px; font-weight: 900; color: #00ff88; margin: 10px 0; display: block; line-height: 1.2; }
-        .stat-line { font-size: 15px; margin: 8px 0; color: #eee; }
+        .historial-item { background: #1a1a1a; padding: 10px; margin-top: 5px; border-radius: 5px; cursor: pointer; font-size: 12px; }
     </style>
 </head>
 <body>
     <div class="app">
         <div class="card">
-            <h3 style="margin-top:0; color:#00ff88;">PREDICTOR ELITE</h3>
+            <h3>PREDICTOR ELITE</h3>
             <input type="text" id="local" placeholder="Equipo Local">
             <input type="text" id="visitante" placeholder="Equipo Visitante">
-            <button onclick="generarPronostico()">GENERAR ANÁLISIS</button>
-            
-            <div id="resBox" class="result-box">
-                <div id="reporte"></div>
-            </div>
+            <button onclick="iniciarAnalisis()">GENERAR ANÁLISIS</button>
+            <div id="loader" class="loader">Analizando datos históricos...</div>
+            <div id="resBox" class="result-box"></div>
+        </div>
+        <div style="margin-top:20px;">
+            <h4>Historial Reciente</h4>
+            <div id="historialList"></div>
         </div>
     </div>
 
     <script>
-        function generarPronostico() {
+        function iniciarAnalisis() {
             const l = document.getElementById('local').value;
             const v = document.getElementById('visitante').value;
-            if(!l || !v) return alert("Por favor ingresa ambos equipos");
+            if(!l || !v) return alert("Completa los nombres de los equipos.");
+            
+            // 1. UX: Carga Profesional
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('resBox').style.display = 'none';
+            
+            setTimeout(() => {
+                generarResultado(l, v);
+            }, 1500);
+        }
 
-            // Lógica de análisis
+        function generarResultado(l, v) {
+            document.getElementById('loader').style.display = 'none';
             const prob = 75 + Math.floor(Math.random() * 20);
             const mercados = ["Ambos Anotan (BTTS)", "Over 2.5 Goles", "Victoria Local (1X)", "Más de 8.5 Córneres"];
             const pronostico = mercados[Math.floor(Math.random() * mercados.length)];
             
-            // Nivel de Riesgo dinámico
-            let riesgo = "Moderado";
-            if(prob > 85) riesgo = "Bajo (Alta Confianza)";
-            if(prob < 80) riesgo = "Alto (Analizar con cautela)";
-
+            // 2. Lógica y Visualización
+            const html = `<b>${l} vs ${v}</b><br><div style="font-size:24px; color:#00ff88; margin:10px 0;">${pronostico}</div>Confianza: ${prob}%`;
+            document.getElementById('resBox').innerHTML = html;
             document.getElementById('resBox').style.display = 'block';
-            document.getElementById('reporte').innerHTML = `
-                <div style="border-bottom: 1px solid #333; margin-bottom: 15px; padding-bottom: 10px;">
-                    Reporte: <b>${l} vs ${v}</b>
-                </div>
-                <div class="pronostico-label">Pronóstico Técnico:</div>
-                <div class="pronostico-value">${pronostico}</div>
-                <div class="stat-line">Nivel de Confianza: <b class="highlight">${prob}%</b></div>
-                <div class="stat-line">Nivel de Riesgo: <b class="highlight">${riesgo}</b></div>
-            `;
+            
+            // 3. Historial Interactivo
+            const item = document.createElement('div');
+            item.className = 'historial-item';
+            item.innerText = `${l} vs ${v} -> ${pronostico}`;
+            item.onclick = () => { document.getElementById('local').value = l; document.getElementById('visitante').value = v; };
+            document.getElementById('historialList').prepend(item);
         }
     </script>
 </body>
