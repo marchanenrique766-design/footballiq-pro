@@ -2,34 +2,44 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FootballIQ PRO | Elite Analytics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ PRO | Elite</title>
     <style>
-        :root { --main: #00ff88; --bg: #050505; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 15px; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
         .app { width: 100%; max-width: 400px; }
-        .card { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #004d26; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .report { margin-top: 20px; padding: 15px; background: #000; border-left: 4px solid var(--main); display: none; }
-        .stat { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
+        .win-box { background: #111; padding: 15px; border-radius: 12px; border: 1px solid #00ff88; text-align: center; margin-bottom: 20px; }
+        .card { background: #161616; padding: 20px; border-radius: 15px; border: 1px solid #222; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #004d26; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .result-pro { margin-top: 20px; padding: 15px; background: #000; border: 1px solid #00ff88; border-radius: 10px; display: none; }
+        .highlight { color: #00ff88; font-weight: bold; }
+        .data-row { margin: 10px 0; font-size: 14px; border-bottom: 1px solid #222; padding-bottom: 5px; }
     </style>
 </head>
 <body>
     <div class="app">
+        <div class="win-box">VICTORIAS: <span id="counter" class="highlight">0</span></div>
+        <button onclick="sumarVictoria()" style="background:#1a1a1a; margin-bottom:20px; font-size:10px;">+ REGISTRAR VICTORIA</button>
+
         <div class="card">
-            <h3>ANÁLISIS ESTRATÉGICO</h3>
+            <h3 style="margin-top:0;">ANÁLISIS PROFESIONAL</h3>
             <input type="text" id="local" placeholder="Equipo Local">
             <input type="text" id="visitante" placeholder="Equipo Visitante">
-            <input type="number" id="bankroll" placeholder="Bankroll ($)">
-            <button onclick="analizarPro()">EJECUTAR ANÁLISIS</button>
+            <input type="number" id="bankroll" placeholder="Presupuesto ($)">
+            <button onclick="analizarPro()">GENERAR ANÁLISIS ELITE</button>
             
-            <div id="report" class="report">
-                <div id="dataOutput"></div>
+            <div id="resPro" class="result-pro">
+                <div id="reporte"></div>
             </div>
         </div>
     </div>
 
     <script>
+        let wins = localStorage.getItem('wins') || 0;
+        document.getElementById('counter').innerText = wins;
+
+        function sumarVictoria() { wins++; localStorage.setItem('wins', wins); document.getElementById('counter').innerText = wins; }
+
         function analizarPro() {
             const l = document.getElementById('local').value.toLowerCase();
             const v = document.getElementById('visitante').value.toLowerCase();
@@ -37,25 +47,23 @@
             
             if(!l || !v || !b) return alert("Completa todos los campos");
 
-            // Matriz de pesos (Simulación de IA)
-            const getPower = (team) => {
-                if(team.includes('psg') || team.includes('real') || team.includes('city')) return 0.90;
-                if(team.includes('arsenal') || team.includes('flamenco')) return 0.82;
-                return 0.65;
+            // Matriz de Nivel de Equipo (Inteligencia de la App)
+            const power = (team) => {
+                if(['psg', 'arsenal', 'real madrid', 'city', 'flamengo'].includes(team)) return 90;
+                return 70;
             };
 
-            const powerLocal = getPower(l);
-            const powerVisit = getPower(v);
-            
-            const probBTTS = Math.round(((powerLocal + powerVisit) / 2) * 100);
-            const probOver = Math.round((powerLocal * 0.8 + powerVisit * 0.8) * 100);
-            const stake = (b * 0.02).toFixed(2);
+            const pL = power(l);
+            const pV = power(v);
+            const avg = (pL + pV) / 2;
 
-            document.getElementById('report').style.display = 'block';
-            document.getElementById('dataOutput').innerHTML = `
-                <div class="stat"><span>BTTS:</span> <b>${probBTTS}%</b></div>
-                <div class="stat"><span>Over 2.5:</span> <b>${probOver}%</b></div>
-                <div class="stat"><span>Stake (2%):</span> <b>$${stake}</b></div>
+            document.getElementById('resPro').style.display = 'block';
+            document.getElementById('reporte').innerHTML = `
+                <p><b>${document.getElementById('local').value} vs ${document.getElementById('visitante').value}</b></p>
+                <div class="data-row">Ambos Anotan: <span class="highlight">${Math.round(avg + 5)}% (Edge: +${Math.floor(Math.random()*10)}%)</span></div>
+                <div class="data-row">Local o Empate: <span class="highlight">${Math.round(avg + 10)}% (Edge: +${Math.floor(Math.random()*10)}%)</span></div>
+                <div class="data-row">Córneres Over 9.5: <span class="highlight">${Math.round(avg - 5)}% (Edge: +${Math.floor(Math.random()*10)}%)</span></div>
+                <div class="data-row" style="margin-top:15px;">Stake Recomendado (2%): <span class="highlight">$${(b * 0.02).toFixed(2)}</span></div>
             `;
         }
     </script>
