@@ -2,34 +2,36 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootballIQ PRO | Analizador</title>
+    <title>FootballIQ PRO | Elite Edition</title>
     <style>
-        body { background: #050505; color: white; font-family: sans-serif; display: flex; justify-content: center; padding: 15px; }
+        body { background: #050505; color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 15px; }
         .app { width: 100%; max-width: 400px; }
-        .card { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; }
+        .win-box { background: #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #00ff88; margin-bottom: 20px; }
+        .card { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; }
         input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #004d26; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        #loader { display: none; text-align: center; color: #38bdf8; margin: 15px 0; font-size: 14px; }
         #res { display: none; background: #000; padding: 15px; border-left: 4px solid #00ff88; margin-top: 15px; }
-        .history { font-size: 12px; color: #666; margin-top: 20px; }
-        .win-box { background: #1a1a1a; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px solid #00ff88; }
+        .history { font-size: 11px; color: #666; margin-top: 20px; border-top: 1px solid #222; padding-top: 10px; }
+        .btn-clear { background: #330000; color: #ff4d4d; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="win-box">APUESTAS GANADAS: <span id="counter" style="color:#00ff88; font-weight:bold;">0</span></div>
-        <button onclick="sumarVictoria()" style="background:#00331a; font-size:10px; margin-bottom:20px;">+ REGISTRAR VICTORIA</button>
+        <div class="win-box">VICTORIAS: <span id="counter" style="color:#00ff88;">0</span></div>
+        <button onclick="sumarVictoria()" style="background:#00331a; font-size:12px; margin-bottom:10px;">+ REGISTRAR VICTORIA</button>
 
         <div class="card">
             <input type="text" id="local" placeholder="Equipo Local">
             <input type="text" id="visitante" placeholder="Equipo Visitante">
-            <button onclick="analizar()">INICIAR ANÁLISIS</button>
-            <div id="loader">Analizando datos y cuotas...</div>
+            <button onclick="analizar()">INICIAR ANÁLISIS ELITE</button>
             <div id="res"></div>
         </div>
 
-        <div class="history" id="historial">Últimos análisis: Ninguno.</div>
+        <div class="history">
+            <b>Historial:</b>
+            <div id="historial">Ninguno.</div>
+            <button class="btn-clear" onclick="limpiarHistorial()">Limpiar Historial</button>
+        </div>
     </div>
 
     <script>
@@ -37,28 +39,26 @@
         document.getElementById('counter').innerText = wins;
 
         function sumarVictoria() { wins++; localStorage.setItem('wins', wins); document.getElementById('counter').innerText = wins; }
+        function limpiarHistorial() { document.getElementById('historial').innerHTML = "Ninguno."; }
 
         function analizar() {
             const l = document.getElementById('local').value;
             const v = document.getElementById('visitante').value;
-            const loader = document.getElementById('loader');
-            const res = document.getElementById('res');
-            
             if(!l || !v) return alert("Completa los equipos");
 
-            loader.style.display = 'block';
-            res.style.display = 'none';
+            // Lógica inteligente: Si los equipos son famosos, sube la probabilidad
+            let baseProb = 65;
+            if(l.toLowerCase().includes('real') || l.toLowerCase().includes('city') || l.toLowerCase().includes('flamenco')) {
+                baseProb = 80;
+            }
 
-            setTimeout(() => {
-                loader.style.display = 'none';
-                res.style.display = 'block';
-                let edge = Math.floor(Math.random() * 10) + 5;
-                res.innerHTML = `<b>${l} vs ${v}</b><br>
-                <p>Ambos Anotan: <b>${70 + edge}%</b> <span style="color:#00ff88">(Edge: +${edge}%)</span></p>
-                <p>Over 2.5 Goles: <b>${65 + edge}%</b></p>`;
-                
-                document.getElementById('historial').innerHTML += `<br>• ${l} vs ${v}`;
-            }, 2000);
+            const res = document.getElementById('res');
+            res.style.display = 'block';
+            res.innerHTML = `<b>Análisis ${l} vs ${v}</b><br>
+            <p>Ambos Anotan: <b>${baseProb}%</b></p>
+            <p>Over 2.5 Goles: <b>${baseProb - 5}%</b></p>`;
+            
+            document.getElementById('historial').innerHTML += `<br>• ${l} vs ${v}`;
         }
     </script>
 </body>
