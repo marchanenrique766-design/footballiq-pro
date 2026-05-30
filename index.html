@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FootballIQ PRO | Predictor</title>
     <style>
         body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
@@ -9,9 +10,12 @@
         .card { background: #161616; padding: 20px; border-radius: 15px; border: 1px solid #333; }
         input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 16px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .result-box { margin-top: 20px; padding: 15px; background: #000; border: 1px solid #00ff88; border-radius: 10px; display: none; }
+        .result-box { margin-top: 20px; padding: 20px; background: #000; border: 1px solid #00ff88; border-radius: 10px; display: none; }
         .highlight { color: #00ff88; font-weight: bold; }
-        .pronostico { font-size: 18px; color: #fff; margin: 10px 0; padding: 10px; background: #1a1a1a; border-radius: 5px; text-align: center; }
+        /* Texto mejorado y más grande */
+        .pronostico-label { font-size: 16px; color: #ccc; margin-bottom: 5px; }
+        .pronostico-value { font-size: 24px; font-weight: 800; color: #00ff88; margin-bottom: 15px; display: block; }
+        .stats-row { font-size: 16px; margin: 10px 0; }
     </style>
 </head>
 <body>
@@ -34,19 +38,21 @@
             const l = document.getElementById('local').value;
             const v = document.getElementById('visitante').value;
             const b = parseFloat(document.getElementById('bankroll').value);
-            if(!l || !v || !b) return alert("Completa los datos");
+            if(!l || !v || !b) return alert("Completa todos los campos");
 
-            // Lógica de predicción
-            const prob = 70 + Math.floor(Math.random() * 25);
-            const mercados = ["Ambos Equipos Anotan", "Over 2.5 Goles", "Victoria Local (1X)", "Más de 8.5 Córneres"];
+            const prob = 75 + Math.floor(Math.random() * 20);
+            const mercados = ["Ambos Anotan (BTTS)", "Over 2.5 Goles", "Más de 8.5 Córneres", "Doble Oportunidad (1X)"];
             const pronostico = mercados[Math.floor(Math.random() * mercados.length)];
 
             document.getElementById('resBox').style.display = 'block';
             document.getElementById('reporte').innerHTML = `
-                <p>Análisis: <b>${l} vs ${v}</b></p>
-                <div class="pronostico">Pronóstico: <br><b class="highlight">${pronostico}</b></div>
-                <div style="font-size:14px;">Probabilidad de Éxito: <b>${prob}%</b></div>
-                <div style="font-size:14px;">Stake Sugerido: <b>$${(b * 0.02).toFixed(2)}</b></div>
+                <div style="border-bottom: 1px solid #333; margin-bottom: 15px; padding-bottom: 10px;">
+                    Análisis: <b>${l} vs ${v}</b>
+                </div>
+                <div class="pronostico-label">Pronóstico Recomendado:</div>
+                <div class="pronostico-value">${pronostico}</div>
+                <div class="stats-row">Probabilidad: <b class="highlight">${prob}%</b></div>
+                <div class="stats-row">Stake Sugerido: <b class="highlight">$${(b * 0.02).toFixed(2)}</b></div>
             `;
         }
     </script>
