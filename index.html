@@ -3,20 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | BUSCADOR</title>
+    <title>FOOTBALLIQ PRO</title>
     <style>
         body { background: #050505; color: #fff; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
         .app { width: 100%; max-width: 400px; }
         .card { background: #121212; padding: 25px; border-radius: 20px; border: 1px solid #333; }
         h3 { color: #00ff88; text-align: center; margin-bottom: 25px; }
         
-        /* Input con diseño limpio */
-        input { 
-            width: 100%; padding: 16px; margin-bottom: 20px; background: #1a1a1a; 
-            color: #fff; border: 1px solid #444; border-radius: 12px; font-size: 16px; box-sizing: border-box;
+        /* Selector nativo estable para móvil */
+        select { 
+            width: 100%; 
+            padding: 16px; 
+            margin-bottom: 20px; 
+            background: #1a1a1a; 
+            color: #fff; 
+            border: 1px solid #444; 
+            border-radius: 12px; 
+            font-size: 16px; 
         }
+        
         button { width: 100%; padding: 18px; background: #00ff88; color: #000; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; }
+        
         #panel { margin-top: 25px; padding: 20px; border-radius: 15px; border: 1px solid #00ff88; display: none; background: #000; }
+        .res-text { font-size: 16px; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -25,32 +34,31 @@
     <div class="card">
         <h3>FOOTBALLIQ PRO</h3>
         
-        <input list="equipos" id="buscador" placeholder="🔍 Buscar partido o equipo...">
-        <datalist id="equipos">
-            <option value="Real Madrid vs Barcelona">
-            <option value="Man City vs Liverpool">
-            <option value="Flamengo vs Coritiba">
-            <option value="Bayern vs Dortmund">
-            <option value="PSG vs Marseille">
-            <option value="River Plate vs Boca Juniors">
-        </datalist>
+        <select id="partidoSelector">
+            <option value="" disabled selected>Selecciona un partido...</option>
+            <option value="Real Madrid vs Barcelona">La Liga: Real Madrid vs Barcelona</option>
+            <option value="Man City vs Liverpool">Premier: Man City vs Liverpool</option>
+            <option value="Flamengo vs Coritiba">Brasileirão: Flamengo vs Coritiba</option>
+            <option value="River Plate vs Boca Juniors">Superliga: River Plate vs Boca Juniors</option>
+        </select>
 
-        <button type="button" onclick="analizar()">GENERAR PRONÓSTICO</button>
+        <button type="button" onclick="mostrar()">GENERAR PRONÓSTICO</button>
 
         <div id="panel">
-            <div id="res" style="font-size: 16px;"></div>
+            <div id="res" class="res-text"></div>
         </div>
     </div>
 </div>
 
 <script>
-    function analizar() {
-        const input = document.getElementById('buscador').value;
-        if(input === "") return alert("Por favor escribe o selecciona un equipo");
+    function mostrar() {
+        const sel = document.getElementById('partidoSelector');
+        const partido = sel.options[sel.selectedIndex].text;
+        if(sel.value === "") return alert("Por favor selecciona un partido");
         
         document.getElementById('panel').style.display = 'block';
         document.getElementById('res').innerHTML = `
-            <b style="color:#00ff88">ANÁLISIS: ${input.toUpperCase()}</b><br><br>
+            <b style="color:#00ff88">ANÁLISIS: ${partido.toUpperCase()}</b><br><br>
             ⚽ Ambos Anotan: Recomendado (81%)<br>
             🚩 Local o Empate: 89%<br>
             <b style="color:#ff3333">⚠ RIESGO: ALTO</b>
