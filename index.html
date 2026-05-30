@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FootballIQ PRO | Elite Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ PRO | Elite</title>
     <style>
         body { background: #080808; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
         .app { width: 100%; max-width: 400px; }
@@ -10,8 +11,9 @@
         .card { background: #161616; padding: 20px; border-radius: 15px; border: 1px solid #222; }
         input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #004d26; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
-        .result-pro { margin-top: 20px; padding: 15px; background: #000; border: 1px solid #444; border-radius: 10px; display: none; }
+        .result-box { margin-top: 20px; padding: 15px; background: #000; border: 1px solid #444; border-radius: 10px; display: none; }
         .highlight { color: #00ff88; font-weight: bold; }
+        .history { font-size: 11px; color: #666; margin-top: 20px; border-top: 1px solid #222; padding-top: 10px; }
     </style>
 </head>
 <body>
@@ -23,14 +25,18 @@
             <h3 style="margin-top:0;">ANÁLISIS PROFESIONAL</h3>
             <input type="text" id="local" placeholder="Equipo Local">
             <input type="text" id="visitante" placeholder="Equipo Visitante">
-            <input type="number" id="bankroll" placeholder="Presupuesto Total (ej. 100)">
+            <input type="number" id="bankroll" placeholder="Presupuesto (Ej. 10)">
             <button onclick="analizarPro()">GENERAR ANÁLISIS ELITE</button>
             
-            <div id="resPro" class="result-box result-pro">
+            <div id="resPro" class="result-box">
                 <p>Análisis para: <span id="match" class="highlight"></span></p>
                 <p>Probabilidad Sugerida: <span id="prob" class="highlight"></span></p>
                 <p>Stake Recomendado (2%): <span id="stake" class="highlight"></span></p>
             </div>
+        </div>
+        <div class="history">
+            <b>Últimos análisis:</b>
+            <div id="historial">Ninguno.</div>
         </div>
     </div>
 
@@ -54,6 +60,8 @@
             
             document.getElementById('prob').innerText = p + "%";
             document.getElementById('stake').innerText = "$" + s;
+            
+            document.getElementById('historial').innerHTML += `<br>• ${l} vs ${v}`;
         }
     </script>
 </body>
