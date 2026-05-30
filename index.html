@@ -2,35 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FootballIQ PRO | Elite Edition</title>
+    <title>FootballIQ PRO | Elite Pro</title>
     <style>
-        body { background: #050505; color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 15px; }
+        body { background: #080808; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
         .app { width: 100%; max-width: 400px; }
-        .win-box { background: #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #00ff88; margin-bottom: 20px; }
-        .card { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #004d26; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        #res { display: none; background: #000; padding: 15px; border-left: 4px solid #00ff88; margin-top: 15px; }
-        .history { font-size: 11px; color: #666; margin-top: 20px; border-top: 1px solid #222; padding-top: 10px; }
-        .btn-clear { background: #330000; color: #ff4d4d; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 10px; margin-top: 10px; }
+        .win-box { background: #111; padding: 15px; border-radius: 12px; border: 1px solid #00ff88; text-align: center; margin-bottom: 20px; }
+        .card { background: #161616; padding: 20px; border-radius: 15px; border: 1px solid #222; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #004d26; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .result-pro { margin-top: 20px; padding: 15px; background: #000; border: 1px solid #444; border-radius: 10px; display: none; }
+        .highlight { color: #00ff88; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="win-box">VICTORIAS: <span id="counter" style="color:#00ff88;">0</span></div>
-        <button onclick="sumarVictoria()" style="background:#00331a; font-size:12px; margin-bottom:10px;">+ REGISTRAR VICTORIA</button>
+        <div class="win-box">VICTORIAS REGISTRADAS: <span id="counter" class="highlight">0</span></div>
+        <button onclick="sumarVictoria()" style="background:#1a1a1a; margin-bottom:20px; font-size:10px;">+ REGISTRAR VICTORIA</button>
 
         <div class="card">
+            <h3 style="margin-top:0;">ANÁLISIS PROFESIONAL</h3>
             <input type="text" id="local" placeholder="Equipo Local">
             <input type="text" id="visitante" placeholder="Equipo Visitante">
-            <button onclick="analizar()">INICIAR ANÁLISIS ELITE</button>
-            <div id="res"></div>
-        </div>
-
-        <div class="history">
-            <b>Historial:</b>
-            <div id="historial">Ninguno.</div>
-            <button class="btn-clear" onclick="limpiarHistorial()">Limpiar Historial</button>
+            <input type="number" id="bankroll" placeholder="Presupuesto Total (ej. 100)">
+            <button onclick="analizarPro()">GENERAR ANÁLISIS ELITE</button>
+            
+            <div id="resPro" class="result-box result-pro">
+                <p>Análisis para: <span id="match" class="highlight"></span></p>
+                <p>Probabilidad Sugerida: <span id="prob" class="highlight"></span></p>
+                <p>Stake Recomendado (2%): <span id="stake" class="highlight"></span></p>
+            </div>
         </div>
     </div>
 
@@ -39,26 +39,21 @@
         document.getElementById('counter').innerText = wins;
 
         function sumarVictoria() { wins++; localStorage.setItem('wins', wins); document.getElementById('counter').innerText = wins; }
-        function limpiarHistorial() { document.getElementById('historial').innerHTML = "Ninguno."; }
 
-        function analizar() {
+        function analizarPro() {
             const l = document.getElementById('local').value;
             const v = document.getElementById('visitante').value;
-            if(!l || !v) return alert("Completa los equipos");
+            const b = document.getElementById('bankroll').value;
+            if(!l || !v || !b) return alert("Completa todos los campos");
 
-            // Lógica inteligente: Si los equipos son famosos, sube la probabilidad
-            let baseProb = 65;
-            if(l.toLowerCase().includes('real') || l.toLowerCase().includes('city') || l.toLowerCase().includes('flamenco')) {
-                baseProb = 80;
-            }
-
-            const res = document.getElementById('res');
-            res.style.display = 'block';
-            res.innerHTML = `<b>Análisis ${l} vs ${v}</b><br>
-            <p>Ambos Anotan: <b>${baseProb}%</b></p>
-            <p>Over 2.5 Goles: <b>${baseProb - 5}%</b></p>`;
+            document.getElementById('resPro').style.display = 'block';
+            document.getElementById('match').innerText = `${l} vs ${v}`;
             
-            document.getElementById('historial').innerHTML += `<br>• ${l} vs ${v}`;
+            let p = 75 + Math.floor(Math.random() * 15);
+            let s = (b * 0.02).toFixed(2);
+            
+            document.getElementById('prob').innerText = p + "%";
+            document.getElementById('stake').innerText = "$" + s;
         }
     </script>
 </body>
