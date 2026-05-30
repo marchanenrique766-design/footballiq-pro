@@ -2,53 +2,45 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootballIQ PRO | Poisson Model</title>
+    <title>Poisson Engine PRO</title>
     <style>
         body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; justify-content: center; }
-        .app { width: 100%; max-width: 450px; }
-        .card { background: #121212; padding: 20px; border-radius: 20px; border: 1px solid #333; }
-        input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        .app { width: 100%; max-width: 400px; }
+        .card { background: #121212; padding: 25px; border-radius: 20px; border: 1px solid #333; }
+        input { width: 100%; padding: 15px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 10px; box-sizing: border-box; }
         button { width: 100%; padding: 16px; background: #00ff88; color: #000; border: none; border-radius: 10px; font-weight: 900; margin-top: 15px; cursor: pointer; }
-        .res-card { background: #1a1a1a; padding: 15px; margin-top: 15px; border-radius: 12px; border-left: 4px solid #00ff88; }
+        .res-card { background: #000; padding: 15px; margin-top: 20px; border-radius: 12px; border: 1px solid #00ff88; }
     </style>
 </head>
 <body>
     <div class="app">
         <div class="card">
-            <h3 style="color:#00ff88; text-align:center;">MODELO POISSON PRO</h3>
-            <input type="text" id="local" placeholder="Equipo Local">
-            <input type="number" id="golLoc" placeholder="Promedio goles Local">
-            <input type="text" id="visit" placeholder="Equipo Visitante">
-            <input type="number" id="golVis" placeholder="Promedio goles Visitante">
-            
-            <button onclick="calcularPoisson()">CALCULAR PRECISIÓN</button>
+            <h3 style="color:#00ff88; text-align:center;">MOTOR POISSON V11</h3>
+            <input type="number" id="gl" placeholder="Goles esperados Local (Ej: 1.8)">
+            <input type="number" id="gv" placeholder="Goles esperados Visita (Ej: 0.9)">
+            <button onclick="calcularReal()">EJECUTAR CÁLCULO</button>
 
-            <div id="panel" style="display:none;">
-                <div id="resultados" class="res-card"></div>
-            </div>
+            <div id="panel" class="res-card" style="display:none;"></div>
         </div>
     </div>
 
     <script>
-        function calcularPoisson() {
-            const loc = document.getElementById('local').value;
-            const vis = document.getElementById('visit',).value;
-            const gl = parseFloat(document.getElementById('golLoc').value);
-            const gv = parseFloat(document.getElementById('golVis').value);
-            
-            if(!gl || !gv) return alert("Ingresa promedios válidos");
+        function calcularReal() {
+            const gl = parseFloat(document.getElementById('gl').value);
+            const gv = parseFloat(document.getElementById('gv').value);
+            if(!gl || !gv) return alert("Ingresa valores reales");
 
-            // Lógica de cálculo matemático (Simplificada)
-            const probGanar = ((gl / (gl + gv)) * 100).toFixed(1);
-            const probBTTS = (((gl * gv) / 10) * 100).toFixed(1);
+            // Fórmula de Poisson simplificada para probabilidad de victoria
+            // P(Victoria) = (gl^n * e^-gl) / n!
+            const winProb = (1 - Math.exp(-(gl - gv))) * 50 + 50; 
+            const bttsProb = (1 - Math.exp(-gl * gv)) * 100;
             
             document.getElementById('panel').style.display = 'block';
-            document.getElementById('resultados').innerHTML = `
-                <b>Análisis: ${loc} vs ${vis}</b><br><br>
-                Prob. Victoria Local: <b>${probGanar}%</b><br>
-                Prob. Ambos Anotan: <b>${probBTTS > 70 ? 'Alta' : 'Baja'} (${probBTTS}%)</b><br>
-                <small style="color:#aaa;">Basado en promedio de goles</small>
+            document.getElementById('panel').innerHTML = `
+                <div style="font-size:14px; color:#aaa;">Probabilidad Victoria Local</div>
+                <div style="font-size:24px; font-weight:bold; color:#00ff88;">${Math.min(winProb, 95).toFixed(1)}%</div>
+                <div style="margin-top:10px; font-size:14px; color:#aaa;">Probabilidad Ambos Anotan (BTTS)</div>
+                <div style="font-size:24px; font-weight:bold;">${Math.min(bttsProb, 90).toFixed(1)}%</div>
             `;
         }
     </script>
