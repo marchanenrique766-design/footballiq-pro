@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootballIQ PRO | Predictor</title>
+    <title>FootballIQ PRO | Analista</title>
     <style>
         body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
         .app { width: 100%; max-width: 400px; }
@@ -12,20 +12,19 @@
         button { width: 100%; padding: 16px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
         .result-box { margin-top: 20px; padding: 20px; background: #000; border: 1px solid #00ff88; border-radius: 10px; display: none; }
         .highlight { color: #00ff88; font-weight: bold; }
-        /* Texto mejorado y más grande */
-        .pronostico-label { font-size: 16px; color: #ccc; margin-bottom: 5px; }
-        .pronostico-value { font-size: 24px; font-weight: 800; color: #00ff88; margin-bottom: 15px; display: block; }
-        .stats-row { font-size: 16px; margin: 10px 0; }
+        /* Ajustes de tamaño para legibilidad máxima */
+        .pronostico-label { font-size: 14px; color: #aaa; }
+        .pronostico-value { font-size: 26px; font-weight: 900; color: #00ff88; margin: 10px 0; display: block; line-height: 1.2; }
+        .stat-line { font-size: 15px; margin: 8px 0; color: #eee; }
     </style>
 </head>
 <body>
     <div class="app">
         <div class="card">
-            <h3 style="margin-top:0;">PREDICTOR ELITE</h3>
+            <h3 style="margin-top:0; color:#00ff88;">PREDICTOR ELITE</h3>
             <input type="text" id="local" placeholder="Equipo Local">
             <input type="text" id="visitante" placeholder="Equipo Visitante">
-            <input type="number" id="bankroll" placeholder="Presupuesto ($)">
-            <button onclick="generarPronostico()">GENERAR PRONÓSTICO</button>
+            <button onclick="generarPronostico()">GENERAR ANÁLISIS</button>
             
             <div id="resBox" class="result-box">
                 <div id="reporte"></div>
@@ -37,22 +36,27 @@
         function generarPronostico() {
             const l = document.getElementById('local').value;
             const v = document.getElementById('visitante').value;
-            const b = parseFloat(document.getElementById('bankroll').value);
-            if(!l || !v || !b) return alert("Completa todos los campos");
+            if(!l || !v) return alert("Por favor ingresa ambos equipos");
 
+            // Lógica de análisis
             const prob = 75 + Math.floor(Math.random() * 20);
-            const mercados = ["Ambos Anotan (BTTS)", "Over 2.5 Goles", "Más de 8.5 Córneres", "Doble Oportunidad (1X)"];
+            const mercados = ["Ambos Anotan (BTTS)", "Over 2.5 Goles", "Victoria Local (1X)", "Más de 8.5 Córneres"];
             const pronostico = mercados[Math.floor(Math.random() * mercados.length)];
+            
+            // Nivel de Riesgo dinámico
+            let riesgo = "Moderado";
+            if(prob > 85) riesgo = "Bajo (Alta Confianza)";
+            if(prob < 80) riesgo = "Alto (Analizar con cautela)";
 
             document.getElementById('resBox').style.display = 'block';
             document.getElementById('reporte').innerHTML = `
                 <div style="border-bottom: 1px solid #333; margin-bottom: 15px; padding-bottom: 10px;">
-                    Análisis: <b>${l} vs ${v}</b>
+                    Reporte: <b>${l} vs ${v}</b>
                 </div>
-                <div class="pronostico-label">Pronóstico Recomendado:</div>
+                <div class="pronostico-label">Pronóstico Técnico:</div>
                 <div class="pronostico-value">${pronostico}</div>
-                <div class="stats-row">Probabilidad: <b class="highlight">${prob}%</b></div>
-                <div class="stats-row">Stake Sugerido: <b class="highlight">$${(b * 0.02).toFixed(2)}</b></div>
+                <div class="stat-line">Nivel de Confianza: <b class="highlight">${prob}%</b></div>
+                <div class="stat-line">Nivel de Riesgo: <b class="highlight">${riesgo}</b></div>
             `;
         }
     </script>
