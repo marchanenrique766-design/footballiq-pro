@@ -3,70 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | Elite</title>
+    <title>FOOTBALLIQ PRO</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
         .app { width: 100%; max-width: 400px; }
-        .card { background: #121212; padding: 25px; border-radius: 20px; border: 1px solid #00ff88; }
-        h3 { color: #00ff88; text-align: center; margin-bottom: 20px; }
-        select { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: #fff; border-radius: 12px; }
-        button { width: 100%; padding: 18px; background: #00ff88; color: #000; border: none; border-radius: 12px; font-weight: 900; margin-top: 15px; cursor: pointer; }
-        #panel { margin-top: 20px; padding: 15px; background: #000; border-left: 4px solid #00ff88; display: none; }
+        .card { background: #121212; padding: 25px; border-radius: 20px; border: 1px solid #333; }
+        h3 { color: #00ff88; text-align: center; margin-bottom: 25px; }
+        
+        /* El selector limpio que SÍ funciona */
+        select { 
+            width: 100%; 
+            padding: 16px; 
+            margin-bottom: 20px; 
+            background: #1a1a1a; 
+            color: #fff; 
+            border: 1px solid #444; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            -webkit-appearance: none; /* Estilo nativo limpio */
+        }
+        
+        button { width: 100%; padding: 18px; background: #00ff88; color: #000; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; }
+        
+        #panel { margin-top: 25px; padding: 20px; border-radius: 15px; border: 1px solid #00ff88; display: none; background: #000; }
+        .res-text { font-size: 16px; line-height: 1.6; }
     </style>
 </head>
 <body>
-    <div class="app">
-        <div class="card">
-            <h3>FOOTBALLIQ PRO</h3>
-            
-            <select id="liga" onchange="filtrarEquipos()">
-                <option value="">Selecciona una Liga...</option>
-                <option value="liga1">La Liga</option>
-                <option value="liga2">Premier League</option>
-            </select>
 
-            <select id="partido">
-                <option value="">Selecciona el partido...</option>
-            </select>
+<div class="app">
+    <div class="card">
+        <h3>FOOTBALLIQ PRO</h3>
+        
+        <select id="partidoSelector">
+            <option value="" disabled selected>Selecciona un partido...</option>
+            <option value="Real Madrid vs Barcelona">La Liga: Real Madrid vs Barcelona</option>
+            <option value="Man City vs Liverpool">Premier: Man City vs Liverpool</option>
+            <option value="Flamengo vs Coritiba">Brasileirão: Flamengo vs Coritiba</option>
+            <option value="Bayern vs Dortmund">Bundesliga: Bayern vs Dortmund</option>
+            <option value="PSG vs Marseille">Ligue 1: PSG vs Marseille</option>
+        </select>
 
-            <button onclick="generarAnalisis()">GENERAR ANÁLISIS</button>
+        <button type="button" onclick="mostrar()">GENERAR ANÁLISIS PRO</button>
 
-            <div id="panel">
-                <div id="res"></div>
-            </div>
+        <div id="panel">
+            <div id="res" class="res-text"></div>
         </div>
     </div>
+</div>
 
-    <script>
-        const partidos = {
-            "liga1": ["Real Madrid vs Barcelona", "Sevilla vs Betis"],
-            "liga2": ["Man City vs Liverpool", "Arsenal vs Man Utd"]
-        };
+<script>
+    function mostrar() {
+        const sel = document.getElementById('partidoSelector');
+        const partido = sel.options[sel.selectedIndex].text;
+        if(sel.value === "") return alert("Por favor selecciona un partido");
+        
+        document.getElementById('panel').style.display = 'block';
+        document.getElementById('res').innerHTML = `
+            <b style="color:#00ff88">ANÁLISIS: ${partido}</b><br><br>
+            ⚽ Goles: Menos 2.5<br>
+            🚩 Córneres: Más 7.5<br>
+            <b style="color:#ff3333">⚠ RIESGO: ALTO</b><br><br>
+            <div style="font-size:22px; color:#00ff88">Confianza: 81%</div>
+        `;
+    }
+</script>
 
-        function filtrarEquipos() {
-            const liga = document.getElementById('liga').value;
-            const selectPartido = document.getElementById('partido');
-            selectPartido.innerHTML = '<option value="">Selecciona el partido...</option>';
-            
-            if(partidos[liga]) {
-                partidos[liga].forEach(p => {
-                    let opt = document.createElement('option');
-                    opt.value = p; opt.innerHTML = p;
-                    selectPartido.appendChild(opt);
-                });
-            }
-        }
-
-        function generarAnalisis() {
-            const p = document.getElementById('partido').value;
-            if(!p) return alert("Selecciona un partido");
-            document.getElementById('panel').style.display = 'block';
-            document.getElementById('res').innerHTML = `
-                <b style="color:#00ff88">${p.toUpperCase()}</b><br>
-                ⚽ Goles: Menos 2.5<br>
-                🚩 Confianza: 81%
-            `;
-        }
-    </script>
 </body>
 </html>
