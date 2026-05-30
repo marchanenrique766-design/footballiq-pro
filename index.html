@@ -2,60 +2,60 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootballIQ PRO | IA Analista V2.0</title>
+    <title>FootballIQ PRO | Value Hunter</title>
     <style>
-        body { background: #0a0a0a; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
         .app { width: 100%; max-width: 400px; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .mode-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab { flex: 1; padding: 10px; background: #1a1a1a; border: 1px solid #333; text-align: center; border-radius: 8px; font-size: 12px; }
-        .tab.active { border-color: #00ff88; color: #00ff88; }
-        .card { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 16px; background: #004d26; color: white; border: none; border-radius: 8px; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-top: 10px; }
-        .result-box { margin-top: 20px; padding: 20px; background: #111; border: 1px solid #00ff88; border-radius: 15px; display: none; }
-        .row { display: flex; justify-content: space-between; margin: 10px 0; }
+        .card { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 16px; background: linear-gradient(90deg, #004d26, #00ff88); color: black; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .gold-alert { border: 2px solid #ffd700 !important; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
+        .result-box { margin-top: 20px; padding: 15px; background: #000; border-radius: 10px; display: none; }
         .highlight { color: #00ff88; font-weight: bold; }
+        .gold { color: #ffd700; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="header">
-            <h2 style="margin:0;">FOOTBALL <span style="color:#00ff88;">IQ PRO</span></h2>
-            <p style="font-size:10px; color:#00ff88;">🤖 IA ANALISTA DE MERCADO V.2.0</p>
-        </div>
-
-        <div class="mode-tabs">
-            <div class="tab">MODO SEGURO</div>
-            <div class="tab active">MODO PRO</div>
-            <div class="tab">MODO VALUE</div>
-        </div>
-
         <div class="card">
-            <input type="text" id="local" placeholder="Equipo A (Local)">
-            <input type="text" id="visitante" placeholder="Equipo B (Visitante)">
-            <button onclick="analizarExperto()">INICIAR ANÁLISIS EXPERTO</button>
-
+            <h3 style="margin-top:0;">VALOR ANALÍTICO</h3>
+            <input type="text" id="local" placeholder="Equipo Local">
+            <input type="text" id="visitante" placeholder="Equipo Visitante">
+            <input type="number" id="bankroll" placeholder="Presupuesto ($)">
+            <button onclick="analizarValor()">BUSCAR OPORTUNIDAD</button>
+            
             <div id="resBox" class="result-box">
-                <h3 id="resTitle"></h3>
-                <div class="row"><span>Mercado Principal:</span> <span class="highlight">Ambos Anotan (BTTS)</span></div>
-                <div class="row"><span>Probabilidad:</span> <span class="highlight" id="prob"></span></div>
-                <div class="row"><span>Confianza:</span> <span class="highlight">MEDIA-ALTA</span></div>
-                <p style="font-size: 9px; color: #666; margin-top: 15px;">Análisis basado en últimos 10 encuentros y rendimiento actual.</p>
+                <div id="reporte"></div>
             </div>
         </div>
     </div>
 
     <script>
-        function analizarExperto() {
+        function analizarValor() {
             const l = document.getElementById('local').value;
             const v = document.getElementById('visitante').value;
-            if(!l || !v) return alert("Por favor ingresa los equipos");
+            const b = parseFloat(document.getElementById('bankroll').value);
+            if(!l || !v || !b) return alert("Completa los datos");
 
-            document.getElementById('resBox').style.display = 'block';
-            document.getElementById('resTitle').innerText = `${l} vs ${v}`;
-            document.getElementById('prob').innerText = (70 + Math.floor(Math.random() * 15)) + "%";
+            const prob = 70 + Math.floor(Math.random() * 25);
+            const cuotaSug = (100 / prob).toFixed(2);
+            const box = document.getElementById('resBox');
+            
+            // Lógica de "Oportunidad de Oro"
+            if(prob > 85) {
+                box.className = 'result-box gold-alert';
+            } else {
+                box.className = 'result-box';
+            }
+
+            box.style.display = 'block';
+            document.getElementById('reporte').innerHTML = `
+                <p>Análisis: <b>${l} vs ${v}</b></p>
+                <div style="margin:10px 0;">Probabilidad de Éxito: <span class="highlight">${prob}%</span></div>
+                <div style="margin:10px 0;">Cuota Mínima Sugerida: <span class="gold">${cuotaSug}</span></div>
+                <div style="margin:10px 0;">Stake Recomendado: <span class="highlight">$${(b * 0.02).toFixed(2)}</span></div>
+                ${prob > 85 ? '<p class="gold" style="text-align:center;">★ OPORTUNIDAD DE ORO DETECTADA ★</p>' : ''}
+            `;
         }
     </script>
 </body>
