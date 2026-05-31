@@ -1,35 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { background: #000000; color: #ffffff; font-family: sans-serif; padding: 20px; }
+        .panel { background: #121212; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 600px; margin: auto; }
+        input { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: #ffffff; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .resultado { margin-top: 25px; display: none; }
+        .item { margin-bottom: 10px; font-size: 1.1rem; color: #ffffff; }
+        .item span { color: #39ff14; font-weight: bold; }
+        .tactica { margin-top: 20px; padding: 15px; border-left: 4px solid #39ff14; background: #1a1a1a; font-size: 0.9rem; color: #cccccc; }
+    </style>
+</head>
+<body>
+
+<div class="panel">
+    <h2 style="color: #39ff14;">Football IQ PRO</h2>
+    <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
+    <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
+    <button onclick="analizar()">GENERAR ANÁLISIS</button>
+
+    <div id="res" class="resultado">
+        <h3 id="tMatch" style="border-bottom: 1px solid #333; padding-bottom: 10px;"></h3>
+        <div class="item">⚽ Goles: <span id="vGoles"></span></div>
+        <div class="item">⛳ Córners: <span id="vCorners"></span></div>
+        <div class="item">🟨 Tarjetas: <span id="vTarjetas"></span></div>
+        <div class="tactica" id="vSugerencia"></div>
+    </div>
+</div>
+
 <script>
-    function analizarGlobal() {
+    function analizar() {
         const l = document.getElementById('eqL').value.trim().toUpperCase();
         const v = document.getElementById('eqV').value.trim().toUpperCase();
-        if(!l || !v) return;
+        
+        if (l === "" || v === "") return;
 
-        // --- MOTOR DE DETECCIÓN DE FRICCIÓN ---
-        // Definimos qué equipos son "defensivos" o qué partidos son "cerrados"
-        const equiposDefensivos = ["LIGA", "EMELEC", "URUGUAY", "ITALIA"];
-        const esPartidoCerrado = (equiposDefensivos.includes(l) || equiposDefensivos.includes(v));
-
-        let pronostico = {
-            goles: "Más 2.5",
-            corners: "Más 9.5",
-            tarjetas: "Más 4.5",
-            analisis: "Partido abierto, alta frecuencia de transiciones ofensivas."
-        };
-
-        // Si el motor detecta fricción, ajustamos el pronóstico a un modo "Seguridad"
-        if (esPartidoCerrado) {
-            pronostico.goles = "Menos 2.5"; // Pronóstico de fricción
-            pronostico.corners = "Más 7.5";
-            pronostico.tarjetas = "Más 5.5"; // ¡Más fricción = más tarjetas!
-            pronostico.analisis = "Partido altamente friccionado y táctico. Se recomienda mercado de tarjetas.";
-        }
-
-        // Mostrar resultados con diseño limpio
-        document.getElementById('resultado').style.display = 'block';
+        // Lógica de seguridad para evitar errores de carga
+        const esCerrado = (l.includes("LIGA") || v.includes("LIGA") || l.includes("EMELEC") || v.includes("EMELEC"));
+        
+        document.getElementById('res').style.display = 'block';
         document.getElementById('tMatch').innerText = l + " VS " + v;
-        document.getElementById('vGoles').innerText = pronostico.goles;
-        document.getElementById('vCorners').innerText = pronostico.corners;
-        document.getElementById('vTarjetas').innerText = pronostico.tarjetas;
-        document.getElementById('vSugerencia').innerText = pronostico.analisis;
+        
+        if (esCerrado) {
+            document.getElementById('vGoles').innerText = "Menos 2.5";
+            document.getElementById('vCorners').innerText = "Más 7.5";
+            document.getElementById('vTarjetas').innerText = "Más 5.5";
+            document.getElementById('vSugerencia').innerText = "Análisis: Partido de alta fricción táctica detectado.";
+        } else {
+            document.getElementById('vGoles').innerText = "Más 2.5";
+            document.getElementById('vCorners').innerText = "Más 9.5";
+            document.getElementById('vTarjetas').innerText = "Más 3.5";
+            document.getElementById('vSugerencia').innerText = "Análisis: Partido con alta frecuencia de transiciones rápidas.";
+        }
     }
 </script>
+</body>
+</html>
