@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | ELITE ANALYTICS</title>
+    <title>FOOTBALLIQ PRO | ANALYTICS</title>
     <style>
         :root { --neon: #00ff88; --bg: #050505; --panel: #121212; }
         body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
@@ -12,13 +12,8 @@
         input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: var(--neon); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; text-transform: uppercase; }
         
-        .grid-results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .ring-container { position: relative; width: 80px; height: 80px; margin: 10px auto; }
-        .ring { transform: rotate(-90deg); }
-        .ring-progress { stroke: var(--neon); fill: none; stroke-width: 6; stroke-dasharray: 0, 251; transition: 1s; }
-        .val-text { position: absolute; top: 25px; left: 0; width: 100%; text-align: center; font-weight: bold; font-size: 1.1rem; }
-        
         #dashboard { display: none; }
+        .val { color: var(--neon); font-size: 24px; font-weight: bold; }
         .pill { padding: 4px 10px; border-radius: 4px; font-weight: bold; margin-right: 5px; color: #fff; }
     </style>
 </head>
@@ -37,22 +32,13 @@
             <h2 id="titulo" style="margin-top:0;">...</h2>
             <div id="historial" style="display:flex; margin-bottom:15px;"></div>
             
-            <div class="grid-results">
-                <div class="panel" style="background:#1a1a1a; text-align:center;">BTTS
-                    <div class="ring-container"><svg class="ring" width="80" height="80"><circle cx="40" cy="40" r="30" style="stroke:#333; fill:none; stroke-width:6;"/><circle class="ring-progress" id="btts-ring" cx="40" cy="40" r="30"/></svg><div class="val-text" id="btts-val">0%</div></div>
-                </div>
-                <div class="panel" style="background:#1a1a1a; text-align:center;">+2.5 GOLES
-                    <div class="ring-container"><svg class="ring" width="80" height="80"><circle cx="40" cy="40" r="30" style="stroke:#333; fill:none; stroke-width:6;"/><circle class="ring-progress" id="goles-ring" cx="40" cy="40" r="30"/></svg><div class="val-text" id="goles-val">0%</div></div>
-                </div>
+            <div class="panel" style="background:#1a1a1a; margin-bottom:15px;">
+                BTTS: <span class="val" id="res-btts">0%</span><br>
+                +2.5 GOLES: <span class="val" id="res-goles">0%</span>
             </div>
-
-            <div class="panel" style="background:#1a1a1a; margin-top:15px;">
-                <p style="color:var(--neon); margin:0;">CÓRNERS TOTALES</p>
-                <h3 id="corners-val" style="margin:5px 0 0 0;">--</h3>
-            </div>
-
-            <div class="panel" style="background:#000; margin-top:15px; border-left:4px solid var(--neon);">
-                <p style="color:var(--neon); margin:0;">🔍 ADN TÁCTICO:</p>
+            
+            <div class="panel" style="background:#000; border-left:4px solid var(--neon);">
+                <p style="color:var(--neon); margin:0;">🔍 ANÁLISIS TÁCTICO:</p>
                 <p id="adn-texto" style="font-size:0.9rem; margin-top:5px;"></p>
             </div>
         </div>
@@ -61,9 +47,9 @@
 
 <script>
     const db = {
-        "PSG": { adn: "Alta posesión, bloque alto y presión tras pérdida.", hist: ["V","V","E","V","V"], btts: 62, goles: 58, corners: "Más de 9.5" },
-        "ARSENAL": { adn: "Bloque bajo compacto, transiciones directas.", hist: ["D","V","E","D","V"], btts: 55, goles: 52, corners: "Más de 8.5" },
-        "FLAMENGO": { adn: "Dominio técnico, transiciones rápidas.", hist: ["V","E","V","V","D"], btts: 70, goles: 65, corners: "Más de 10.5" }
+        "PSG": { btts: 62, goles: 58, adn: "Alta posesión y presión alta.", hist: ["V","V","E","V","V"] },
+        "ARSENAL": { btts: 55, goles: 52, adn: "Bloque bajo y transiciones directas.", hist: ["D","V","E","D","V"] },
+        "FLAMENGO": { btts: 70, goles: 65, adn: "Dominio técnico y ataque veloz.", hist: ["V","E","V","V","D"] }
     };
 
     function ejecutarAnalisis() {
@@ -74,23 +60,19 @@
             document.getElementById('dashboard').style.display = 'block';
             document.getElementById('titulo').innerText = l + " VS " + v;
             
-            actualizarGrafico('btts-ring', 'btts-val', db[l].btts);
-            actualizarGrafico('goles-ring', 'goles-val', db[l].goles);
-            document.getElementById('corners-val').innerText = db[l].corners;
-            document.getElementById('adn-texto').innerText = db[l].adn;
+            // Lógica Comparativa: Ajustamos los resultados según la sinergia
+            let bttsFinal = Math.round((db[l].btts + db[v].btts) / 2);
+            let golesFinal = Math.round((db[l].goles + db[v].goles) / 2);
+            
+            document.getElementById('res-btts').innerText = bttsFinal + "%";
+            document.getElementById('res-goles').innerText = golesFinal + "%";
+            document.getElementById('adn-texto').innerText = l + " aporta " + db[l].adn + " mientras que " + v + " responde con " + db[v].adn;
             
             const hist = document.getElementById('historial');
             hist.innerHTML = db[l].hist.map(r => `<span class="pill" style="background:${r=='V'?'green':r=='E'?'orange':'red'}">${r}</span>`).join('');
         } else {
-            alert("⚠️ Por favor escribe: PSG, ARSENAL o FLAMENGO");
+            alert("Equipos disponibles: PSG, ARSENAL, FLAMENGO");
         }
-    }
-
-    function actualizarGrafico(ringId, textId, p) {
-        const ring = document.getElementById(ringId);
-        const circ = 2 * Math.PI * 30;
-        ring.style.strokeDasharray = (p / 100 * circ) + " " + circ;
-        document.getElementById(textId).innerText = p + "%";
     }
 </script>
 </body>
