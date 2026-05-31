@@ -1,56 +1,38 @@
 import React, { useState } from 'react';
 
-// Estructura de datos dinámica
-interface AnalysisData {
-  titulo: string;
-  adnTactico: string;
-  btts: number;
-  stake: number;
-}
-
 export const AnalysisReportView: React.FC = () => {
-  const [data, setData] = useState<AnalysisData | null>(null);
+  // 1. Estados para capturar lo que escribes
+  const [local, setLocal] = useState('');
+  const [visitante, setVisitante] = useState('');
+  const [reporte, setReporte] = useState<any>(null);
 
-  // MOTOR DE ANÁLISIS: Esta función reemplaza la anterior
-  const generarAnalisis = (local: string, visitante: string) => {
-    // Aquí puedes añadir lógica compleja. 
-    // Por ahora, simulamos que la IA analiza los nombres
-    const esBarcelona = local.toLowerCase().includes('barcelona');
-    
-    const nuevoAnalisis: AnalysisData = {
-      titulo: `${local.toUpperCase()} VS ${visitante.toUpperCase()}`,
-      adnTactico: esBarcelona ? "Dominio de posesión y presión alta." : "Juego directo y transiciones rápidas.",
-      btts: esBarcelona ? 85 : 60,
-      stake: esBarcelona ? 5 : 2
-    };
-    
-    setData(nuevoAnalisis);
+  // 2. Función que activa el análisis
+  const procesar = () => {
+    // Aquí simulamos que la IA genera el reporte basado en tus inputs
+    setReporte({
+      titulo: `${local.toUpperCase()} vs ${visitante.toUpperCase()}`,
+      tactica: `Análisis táctico para ${local}: alta presión y control.`,
+      btts: Math.floor(Math.random() * (95 - 60) + 60), // Genera un % aleatorio para que veas cambio
+      stake: Math.floor(Math.random() * 5) + 1
+    });
   };
 
-  // Ejemplo de cómo llamar a esta función desde tus inputs (debes conectar esto a tus botones)
-  // generarAnalisis("Barcelona", "Emelec");
-
-  if (!data) return <div className="text-gray-400 p-4">Ingresa los equipos y presiona "Generar" para ver el análisis de FootballIQ...</div>;
-
   return (
-    <div className="bg-[#161719] border border-[#333] p-6 rounded-xl shadow-2xl">
-      <h2 className="text-[#39FF14] text-2xl font-bold mb-4">{data.titulo}</h2>
-      
-      <div className="border-l-4 border-[#00d4ff] pl-4 mb-6">
-        <span className="text-[#00d4ff] text-xs font-bold uppercase">🧬 ADN Táctico</span>
-        <p className="text-white mt-1">{data.adnTactico}</p>
-      </div>
+    <div className="p-6 bg-[#0c0d0e] text-white">
+      {/* Formulario de entrada */}
+      <input className="block w-full p-2 mb-2 bg-black border" placeholder="Local" onChange={(e) => setLocal(e.target.value)} />
+      <input className="block w-full p-2 mb-4 bg-black border" placeholder="Visitante" onChange={(e) => setVisitante(e.target.value)} />
+      <button className="w-full bg-[#39FF14] text-black font-bold p-3" onClick={procesar}>ANALIZAR EQUIPOS</button>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-[#0c0d0e] p-4 rounded-lg">
-          <span className="text-gray-400 text-sm">PROBABILIDAD BTTS</span>
-          <div className="text-[#39FF14] text-2xl font-bold">{data.btts}%</div>
+      {/* Resultados dinámicos */}
+      {reporte && (
+        <div className="mt-6 border-t pt-4">
+          <h2 className="text-[#39FF14] text-xl">{reporte.titulo}</h2>
+          <p>🧬 ADN Táctico: {reporte.tactica}</p>
+          <p>BTTS: {reporte.btts}%</p>
+          <p>STAKE: {reporte.stake} U</p>
         </div>
-        <div className="bg-[#0c0d0e] p-4 rounded-lg">
-          <span className="text-gray-400 text-sm">STAKE SUGERIDO</span>
-          <div className="text-yellow-400 text-2xl font-bold">{data.stake} U</div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
