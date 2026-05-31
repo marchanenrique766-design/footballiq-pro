@@ -1,21 +1,25 @@
-async function analizar() {
-            const l = document.getElementById('local').value;
-            const v = document.getElementById('visit').value;
-            document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Football IQ PRO</title>
+</head>
+<body>
+    <h1>Football IQ PRO</h1>
+    <input id="equipo" placeholder="Nombre del equipo">
+    <button onclick="buscar()">Buscar Datos</button>
+    <div id="res"></div>
+
+    <script>
+        async function buscar() {
+            const equipo = document.getElementById('equipo').value;
+            const API_KEY = "PEGA_AQUÍ_TU_API_KEY"; // <--- PONLA AQUÍ
+            const url = `https://api.sportmonks.com/v3/football/teams/search/${equipo}?api_token=${API_KEY}`;
             
-            try {
-                // Llamamos a nuestro puente
-                const respuesta = await fetch(`/api/get-data?team=${l}`);
-                const datos = await respuesta.json();
-                
-                // DIAGNÓSTICO: Si hay datos, los mostramos en consola para ver qué trae
-                console.log(datos); 
-                
-                document.getElementById('adn').innerText = "CONEXIÓN EXITOSA";
-                document.getElementById('btts').innerText = "99"; // Cambiamos a 99 para ver si esto cambia en pantalla
-            } catch (error) {
-                document.getElementById('adn').innerText = "ERROR DE CONEXIÓN";
-            }
-            
-            document.getElementById('resultado').style.display = 'block';
+            const res = await fetch(url);
+            const data = await res.json();
+            document.getElementById('res').innerText = JSON.stringify(data);
         }
+    </script>
+</body>
+</html>
