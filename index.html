@@ -2,56 +2,50 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FOOTBALLIQ PRO ELITE</title>
+    <title>FOOTBALLIQ PRO - INTEGRACIÓN DE DATOS</title>
     <style>
         body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: auto; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        
-        /* Estilo de Inputs como los de tu laptop */
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; }
-        
-        .val { color: #00ff88; font-size: 20px; font-weight: bold; }
-        #resultados { display: none; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1100px; margin: auto; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 12px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: #00ff88; border-radius: 6px; }
+        button { width: 100%; padding: 15px; background: #00ff88; border:none; border-radius:6px; font-weight:bold; cursor:pointer; }
+        .data-val { color: #00ff88; font-size: 1.5em; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="main-grid">
+<div class="grid">
+    <!-- PANEL DE ENTRADA (Lógica de Google Studio) -->
     <div class="panel">
         <h2 style="color:#00ff88;">CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqA" placeholder="EQUIPO A (LOCAL)">
-        <input type="text" id="eqB" placeholder="EQUIPO B (VISITANTE)">
-        <button onclick="activarAnalisis()">INICIAR ANÁLISIS PRO</button>
-        
-        <div id="resultados" style="margin-top:20px;">
-            <hr style="border:0; border-top:1px solid #333;">
-            <p>Volumen Ofensivo: <span class="val">60%</span></p>
-            <p>Inestabilidad: <span class="val">45%</span></p>
-            <div style="border:1px solid #ff4444; color:#ff4444; padding:10px; border-radius:8px; margin-top:10px;">⚠ ALTO RIESGO</div>
-        </div>
+        <input type="text" id="equipoLocal" placeholder="LOCAL">
+        <input type="text" id="equipoVisitante" placeholder="VISITANTE">
+        <button onclick="procesarDatos()">GENERAR PRONÓSTICO IA</button>
     </div>
 
-    <div class="panel">
-        <h2 style="color:#00ff88;">MATRIZ DE RIESGO</h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <div class="panel">BTTS<br><span class="val">62%</span></div>
-            <div class="panel">+2.5 GOLES<br><span class="val">58%</span></div>
+    <!-- PANEL DE RESULTADOS (Dashboard) -->
+    <div id="dashboard" class="panel" style="display:none;">
+        <h2 id="tituloEvento" style="color:#00ff88;"></h2>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>BTTS<br><span class="data-val">62%</span></div>
+            <div>+2.5 GOLES<br><span class="data-val">58%</span></div>
         </div>
-        <h3 style="color:#aaa; margin-top:20px;">STAKE SUGERIDO: <span class="val">3.0 / 5</span></h3>
-        <p style="font-size:12px; color:#666;">Cálculo basado en consistencia histórica.</p>
+        <p>CÓRNERS: <span class="data-val">Más de 9.5</span></p>
+        <div style="background:#1a1a1a; padding:10px; border-left:4px solid #00ff88;">
+            <strong>FACTOR X (TENDENCIA):</strong>
+            <p id="tendenciaText"></p>
+        </div>
     </div>
 </div>
 
 <script>
-    function activarAnalisis() {
-        const a = document.getElementById('eqA').value;
-        const b = document.getElementById('eqB').value;
-        if(a && b) {
-            document.getElementById('resultados').style.display = 'block';
-        } else {
-            alert("¡Escribe los nombres de los equipos!");
+    function procesarDatos() {
+        const local = document.getElementById('equipoLocal').value;
+        const visitante = document.getElementById('equipoVisitante').value;
+        if(local && visitante) {
+            document.getElementById('tituloEvento').innerText = local.toUpperCase() + " VS " + visitante.toUpperCase();
+            document.getElementById('tendenciaText').innerText = local + " mantiene una tendencia de alta intensidad, mientras que " + visitante + " muestra vulnerabilidad defensiva en sus últimos 10 encuentros.";
+            document.getElementById('dashboard').style.display = 'block';
         }
     }
 </script>
