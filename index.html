@@ -1,63 +1,57 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ShieldAlert, TrendingUp, Target, BarChart3 } from 'lucide-react';
+import { ShieldAlert, BarChart3, Target } from 'lucide-react';
 
 export default function App() {
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
 
-  const handleAnalysis = () => {
-    setLoading(true);
-    // Aquí conectaremos con tu backend en cuanto esté listo
-    setTimeout(() => {
-      setData({
-        match: "ARSENAL VS PSG",
-        tactical: "Bloque alto y transiciones rápidas",
-        risk: "ALTO RIESGO",
-        volume: 60,
-        defense: 45,
-        confidence: 7.8,
-        stake: 3.0
-      });
-      setLoading(false);
-    }, 1500);
+  const analizar = () => {
+    // Aquí pondremos la lógica para conectar con tu IA
+    setData({
+      match: "PSG VS ARSENAL",
+      tactical: "Bloque alto y transiciones rápidas",
+      risk: "ALTO RIESGO",
+      volume: 60,
+      defense: 45
+    });
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-4 md:p-8 font-sans">
-      <div className="max-w-md mx-auto space-y-6">
-        {/* Panel de Configuración */}
-        <div className="bg-[#121212] p-6 rounded-2xl border border-[#333]">
-          <h1 className="text-[#00ff88] font-bold text-center mb-6 uppercase tracking-widest">FootballIQ PRO</h1>
-          <input className="w-full bg-[#1a1a1a] p-4 rounded-lg mb-4 border border-[#444]" placeholder="EQUIPO A (LOCAL)" />
-          <input className="w-full bg-[#1a1a1a] p-4 rounded-lg mb-4 border border-[#444]" placeholder="EQUIPO B (VISITANTE)" />
-          <button onClick={handleAnalysis} className="w-full bg-[#00ff88] text-black font-black py-4 rounded-lg uppercase">
-            {loading ? "Analizando..." : "Iniciar Análisis"}
-          </button>
+    <div className="min-h-screen bg-[#050505] text-white p-4 font-sans">
+      <div className="max-w-md mx-auto">
+        <h1 className="text-[#00ff88] text-center font-bold text-2xl mb-6">FOOTBALLIQ PRO</h1>
+        
+        {/* Panel de Inputs estilo Laptop */}
+        <div className="bg-[#121212] p-6 rounded-2xl border border-[#333] mb-6">
+          <label className="text-[10px] text-gray-400 uppercase tracking-widest">Equipo A (Local)</label>
+          <input className="w-full bg-[#1a1a1a] p-3 rounded-lg mt-1 mb-4 border border-[#444]" placeholder="PSG" />
+          
+          <label className="text-[10px] text-gray-400 uppercase tracking-widest">Equipo B (Visitante)</label>
+          <input className="w-full bg-[#1a1a1a] p-3 rounded-lg mt-1 mb-6 border border-[#444]" placeholder="Arsenal" />
+          
+          <button onClick={analizar} className="w-full bg-[#00ff88] text-black font-black py-4 rounded-lg">INICIAR ANÁLISIS</button>
         </div>
 
-        {/* Dashboard de Resultados */}
+        {/* Panel de Resultados igual al de tu laptop */}
         {data && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-            <div className="p-5 border border-[#00ff88] rounded-xl bg-black">
-              <h2 className="text-[#00ff88] font-bold text-xl">{data.match}</h2>
-              <p className="text-sm text-gray-400 mt-2 flex items-center gap-2"><Target size={16}/> {data.tactical}</p>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-[#121212] p-4 rounded-xl border border-[#333] flex items-center gap-3">
-                <BarChart3 className="text-[#00ff88]" />
-                <div>
-                  <div className="text-xs text-gray-500 uppercase">Volumen</div>
-                  <div className="font-bold">{data.volume}%</div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#121212] p-6 rounded-2xl border border-[#00ff88]">
+            <h2 className="text-[#00ff88] font-bold text-lg mb-4">ANÁLISIS: {data.match}</h2>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-sm">
+                <Target className="text-[#00ff88]" size={20}/> {data.tactical}
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-black p-3 rounded-lg border border-[#333]">
+                  <div className="text-[10px] text-gray-500">Volumen</div>
+                  <div className="font-bold text-[#00ff88]">{data.volume}%</div>
+                </div>
+                <div className="bg-black p-3 rounded-lg border border-[#333]">
+                  <div className="text-[10px] text-gray-500">Defensa</div>
+                  <div className="font-bold">{data.defense}%</div>
                 </div>
               </div>
-              <div className="bg-[#121212] p-4 rounded-xl border border-[#333] flex items-center gap-3">
-                <ShieldAlert className="text-red-500" />
-                <div>
-                  <div className="text-xs text-gray-500 uppercase">Riesgo</div>
-                  <div className="font-bold text-red-500">{data.risk}</div>
-                </div>
+              <div className="text-red-500 font-bold text-center mt-2 border-t border-[#333] pt-4 uppercase">
+                ⚠ {data.risk}
               </div>
             </div>
           </motion.div>
