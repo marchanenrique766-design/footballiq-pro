@@ -2,54 +2,60 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; display: flex; justify-content: center; padding: 15px; }
-        .app { width: 100%; max-width: 400px; }
-        .card { background: #121212; padding: 20px; border-radius: 20px; border: 1px solid #333; }
-        h3 { color: #00ff88; text-align: center; margin-bottom: 20px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; }
+        .card { max-width: 400px; margin: auto; background: #121212; padding: 20px; border-radius: 20px; }
         
-        /* Botones de selección en lugar de selectores que fallan */
-        .opcion { 
-            width: 100%; padding: 15px; margin: 8px 0; background: #1a1a1a; 
-            color: #fff; border: 1px solid #444; border-radius: 12px; 
-            text-align: left; cursor: pointer; font-size: 15px;
+        /* Estilo de los grupos de ligas */
+        .liga-titulo { 
+            background: #222; padding: 15px; margin: 10px 0; border-radius: 12px; 
+            cursor: pointer; border: 1px solid #444; text-align: center; font-weight: bold;
         }
-        .opcion:active { background: #00ff88; color: #000; }
         
-        #panel { margin-top: 25px; padding: 20px; border-radius: 15px; border: 1px solid #00ff88; display: none; background: #000; }
+        /* Botones de partidos dentro de la liga */
+        .btn-partido { 
+            width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; 
+            color: #ccc; border: 1px solid #333; border-radius: 8px; cursor: pointer;
+        }
+        
+        #panel { margin-top: 20px; padding: 15px; border: 1px solid #00ff88; border-radius: 15px; display: none; }
     </style>
 </head>
 <body>
 
-<div class="app">
-    <div class="card">
-        <h3>FOOTBALLIQ PRO</h3>
-        <p style="color:#888; font-size: 14px; text-align: center;">Selecciona el partido:</p>
-        
-        <button class="opcion" onclick="analizar('Real Madrid vs Barcelona')">Real Madrid vs Barcelona</button>
-        <button class="opcion" onclick="analizar('Man City vs Liverpool')">Man City vs Liverpool</button>
-        <button class="opcion" onclick="analizar('Flamengo vs Coritiba')">Flamengo vs Coritiba</button>
-        <button class="opcion" onclick="analizar('River Plate vs Boca')">River Plate vs Boca Juniors</button>
+<div class="card">
+    <h3 style="color:#00ff88; text-align:center;">FOOTBALLIQ PRO</h3>
+    
+    <!-- Ejemplo de organización por Ligas -->
+    <div class="liga-titulo" onclick="toggle('liga1')">▼ La Liga (España)</div>
+    <div id="liga1" style="display:none;">
+        <button class="btn-partido" onclick="analizar('Real Madrid vs Barcelona')">Real Madrid vs Barcelona</button>
+    </div>
 
-        <div id="panel">
-            <div id="res" style="font-size: 16px;"></div>
-        </div>
+    <div class="liga-titulo" onclick="toggle('liga2')">▼ Premier League</div>
+    <div id="liga2" style="display:none;">
+        <button class="btn-partido" onclick="analizar('Man City vs Liverpool')">Man City vs Liverpool</button>
+    </div>
+
+    <div id="panel">
+        <div id="res"></div>
     </div>
 </div>
 
 <script>
-    function analizar(partido) {
+    function toggle(id) {
+        const div = document.getElementById(id);
+        div.style.display = div.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    function analizar(p) {
         document.getElementById('panel').style.display = 'block';
         document.getElementById('res').innerHTML = `
-            <b style="color:#00ff88">ANÁLISIS: ${partido.toUpperCase()}</b><br><br>
-            ⚽ Ambos Anotan: Recomendado (81%)<br>
-            🚩 Local o Empate: 89%<br>
-            <b style="color:#ff3333">⚠ RIESGO: ALTO</b>
+            <b style="color:#00ff88">ANÁLISIS: ${p.toUpperCase()}</b><br>
+            ⚽ Recomendación: Alta (81%)<br>
+            🚩 Riesgo: Bajo
         `;
     }
 </script>
-
 </body>
 </html>
