@@ -5,33 +5,34 @@
     <title>Football IQ PRO</title>
     <style>
         body { background-color: #0c0d0e; color: #ffffff; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
-        .container { background: #161719; border: 1px solid #333; padding: 25px; border-radius: 12px; width: 100%; max-width: 450px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+        .container { background: #161719; border: 1px solid #333; padding: 20px; border-radius: 8px; width: 100%; max-width: 400px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; box-sizing: border-box; background: #222; border: 1px solid #444; color: white; }
+        button { width: 100%; padding: 15px; background: #0070f3; color: white; border: none; cursor: pointer; border-radius: 4px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 style="color: #39ff14;">FOOTBALL IQ PRO - MODO PRUEBA</h2>
-        <input id="local" placeholder="EQUIPO LOCAL">
-        <input id="visit" placeholder="EQUIPO VISITANTE">
-        <button onclick="analizar()">GENERAR ANÁLISIS MAESTRO</button>
-        <div id="resultado" style="margin-top:20px; border-top:1px solid #333; padding-top:20px; display:none;">
-            <h3 id="titulo" style="color:#39ff14;"></h3>
-            <p>🧬 ADN TÁCTICO: <span id="adn"></span></p>
-            <p>BTTS: <b id="btts"></b>% | STAKE: <b id="stake"></b> U</p>
-        </div>
-    </div>
-    <script>
-        function analizar() {
-            var l = document.getElementById('local').value;
-            var v = document.getElementById('visit').value;
-            document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-            document.getElementById('adn').innerText = "Alta intensidad y presión en bloque.";
-            document.getElementById('btts').innerText = "89";
-            document.getElementById('stake').innerText = "3";
-            document.getElementById('resultado').style.display = 'block';
+
+<div class="container">
+    <h2>Football IQ PRO</h2>
+    <input type="text" id="local" placeholder="EQUIPO LOCAL">
+    <input type="text" id="visitante" placeholder="EQUIPO VISITANTE">
+    <button onclick="analizar()">ANALIZAR EQUIPOS</button>
+    <div id="resultado" style="margin-top: 20px;"></div>
+</div>
+
+<script>
+    function analizar() {
+        const local = document.getElementById('local').value;
+        const visitante = document.getElementById('visitante').value;
+        const res = document.getElementById('resultado');
+        if(local && visitante) {
+            res.innerHTML = `<strong>${local.toUpperCase()} vs ${visitante.toUpperCase()}</strong><br>
+                             ADN Táctico: Alta presión<br>
+                             BTTS: 75%<br>
+                             STAKE: 2 U`;
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
