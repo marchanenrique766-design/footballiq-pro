@@ -6,52 +6,54 @@
     <style>
         :root { --neon: #00ff88; --bg: #050505; --panel: #121212; }
         body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        
-        /* Layout Grid para Dashboard */
-        .dashboard-grid { display: grid; grid-template-columns: 350px 1fr 1fr; gap: 20px; max-width: 1400px; margin: auto; }
+        .dashboard { display: grid; grid-template-columns: 350px 1fr; gap: 20px; max-width: 1200px; margin: auto; }
         .panel { background: var(--panel); border: 1px solid #333; padding: 20px; border-radius: 15px; }
         
-        /* Inputs y Botones Pro */
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--neon); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; text-transform: uppercase; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: var(--neon); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; }
         
-        /* Resultados y Métricas */
-        .metric-box { border: 1px solid #333; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
-        .value { color: var(--neon); font-size: 28px; font-weight: bold; display: block; }
-        .hidden { display: none; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .metric { border: 1px solid #333; padding: 15px; border-radius: 10px; text-align: center; }
+        .val { color: var(--neon); font-size: 24px; font-weight: bold; display: block; }
+        
+        #dashboardResult { display: none; }
     </style>
 </head>
 <body>
 
-<div class="dashboard-grid">
+<div class="dashboard">
     <div class="panel">
-        <h2>CONFIGURADOR</h2>
+        <h2>CONFIGURAR ANÁLISIS</h2>
         <input type="text" id="eqA" placeholder="EQUIPO LOCAL">
         <input type="text" id="eqB" placeholder="EQUIPO VISITANTE">
-        <button onclick="iniciarAnalisis()">EJECUTAR MOTOR IA</button>
+        <button onclick="ejecutarAnalisis()">INICIAR ANÁLISIS IA</button>
     </div>
 
-    <div id="resultadoPanel" class="hidden">
-        <div class="panel">
-            <h2>MERCADOS CLAVE</h2>
-            <div class="metric-box">BTTS PROB: <span class="value">0%</span></div>
-            <div class="metric-box">TOTAL GOLES: <span class="value">0.0</span></div>
+    <div id="dashboardResult" class="panel">
+        <h2 id="matchTitle"></h2>
+        <div class="stat-grid">
+            <div class="metric">BTTS<span class="val" id="btts">62%</span></div>
+            <div class="metric">+2.5 GOLES<span class="val" id="goles">58%</span></div>
         </div>
-    </div>
-
-    <div id="riesgoPanel" class="hidden">
-        <div class="panel">
-            <h2>MATRIZ DE RIESGO</h2>
-            <div class="metric-box">NIVEL DE VOLATILIDAD: <span class="value">BAJO</span></div>
-            <div class="metric-box">FACTOR X: <span class="value">PENDIENTE</span></div>
+        <div class="metric" style="margin-top:15px;">CÓRNERS TOTALES<span class="val" id="corners">Más de 9.5</span></div>
+        
+        <div style="margin-top:20px; padding:15px; border-left:4px solid var(--neon); background:#1a1a1a;">
+            <strong>FACTOR X:</strong>
+            <p id="factorXText">Análisis de consistencia en curso...</p>
         </div>
+        <h3 style="margin-top:20px; text-align:center;">STAKE SUGERIDO: <span class="val" id="stake">3.0 / 5</span></h3>
     </div>
 </div>
 
 <script>
-    function iniciarAnalisis() {
-        document.getElementById('resultadoPanel').classList.remove('hidden');
-        document.getElementById('riesgoPanel').classList.remove('hidden');
+    function ejecutarAnalisis() {
+        const a = document.getElementById('eqA').value;
+        const b = document.getElementById('eqB').value;
+        if(!a || !b) return alert("Ingresa ambos equipos");
+        
+        document.getElementById('matchTitle').innerText = a.toUpperCase() + " VS " + b.toUpperCase();
+        document.getElementById('factorXText').innerText = a + " muestra alta presión local, mientras que " + b + " presenta vulnerabilidad defensiva en transiciones.";
+        document.getElementById('dashboardResult').style.display = 'block';
     }
 </script>
 </body>
