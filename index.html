@@ -3,29 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | ANALYTICS</title>
+    <title>FOOTBALLIQ PRO | ELITE DASHBOARD</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
+        :root { --neon: #00ff88; --bg: #050505; --panel: #121212; --border: #333; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
         .app-container { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 20px; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
+        
+        .panel { background: var(--panel); border: 1px solid var(--border); padding: 20px; border-radius: 15px; }
+        h2 { color: var(--neon); text-transform: uppercase; font-size: 1.1rem; margin-bottom: 20px; }
         
         input { width: 100%; padding: 18px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
-        button { width: 100%; padding: 20px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: black; font-size: 16px; text-transform: uppercase; }
+        button { width: 100%; padding: 20px; background: var(--neon); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: black; font-size: 16px; text-transform: uppercase; }
         
         /* Módulos ocultos hasta el análisis */
         #dashboard-completo { display: none; }
         
-        .metric-box { border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 15px; background: #1a1a1a; }
-        .val { color: #00ff88; font-size: 28px; font-weight: bold; display: block; margin-top: 5px; }
+        .metric-box { border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 15px; background: #1a1a1a; text-align: center; }
+        .val { color: var(--neon); font-size: 28px; font-weight: bold; display: block; margin-top: 5px; }
         
-        .factor-x { border-left: 4px solid #00ff88; padding-left: 15px; margin-top: 10px; font-style: italic; }
+        .factor-x { border-left: 4px solid var(--neon); padding-left: 15px; margin-top: 10px; font-style: italic; text-align: left; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div class="panel">
-        <h2 style="color:#00ff88;">CONFIGURAR ANÁLISIS</h2>
+        <h2>CONFIGURAR ANÁLISIS</h2>
         <input type="text" id="eqA" placeholder="EQUIPO LOCAL">
         <input type="text" id="eqB" placeholder="EQUIPO VISITANTE">
         <button onclick="activarAnalisis()">ANALIZAR PARTIDO</button>
@@ -33,36 +36,8 @@
 
     <div id="dashboard-completo">
         <div class="panel">
-            <h2 style="color:#00ff88;">RESULTADOS Y RIESGO</h2>
+            <h2 id="titulo-partido">RESULTADOS Y RIESGO</h2>
             
-            <div class="metric-box">BTTS<span class="val" id="btts">62%</span></div>
-            <div class="metric-box">+2.5 GOLES<span class="val" id="goles">58%</span></div>
-            <div class="metric-box">VOLATILIDAD IA<span class="val" id="vol">45%</span></div>
-            
-            <div class="metric-box">
-                <strong>FACTOR X (TENDENCIA):</strong>
-                <p class="factor-x" id="factor">Procesando profundidad táctica...</p>
-            </div>
-            
-            <div class="metric-box" style="text-align: center;">
-                STAKE SUGERIDO: <span class="val" id="stake">3.0 / 5</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function activarAnalisis() {
-        const a = document.getElementById('eqA').value;
-        const b = document.getElementById('eqB').value;
-        
-        if(a && b) {
-            document.getElementById('dashboard-completo').style.display = 'block';
-            document.getElementById('factor').innerText = a + " demuestra solidez ofensiva, mientras que " + b + " presenta vulnerabilidades defensivas críticas en los últimos 5 partidos.";
-        } else {
-            alert("Completa ambos campos para activar la IA.");
-        }
-    }
-</script>
-</body>
-</html>
+            <div class="metric-box">BTTS (AMBOS MARCAN)<span class="val" id="btts">62%</span></div>
+            <div class="metric-box">+2.5 GOLES<span class="val" id="goles">
+                
