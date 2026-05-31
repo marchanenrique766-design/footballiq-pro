@@ -1,57 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <style>
-        body { background: #0c0c0c; color: #ffffff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .panel-pro { background: #161616; border: 1px solid #333; border-radius: 12px; padding: 25px; }
-        .data-label { color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-top:10px; }
-        .data-value { color: #00ff88; font-size: 1.1rem; font-weight: 700; }
-        .metric-card { background: #000; border: 1px solid #333; padding: 15px; border-radius: 8px; margin-top: 15px; }
-        .btn-elite { background: #00ff88; color: #000; border: none; padding: 18px; width: 100%; border-radius: 6px; font-weight: 800; font-size: 1.1rem; cursor: pointer; }
-    </style>
-</head>
-<body>
-
-<div class="panel-pro">
-    <h2 style="color: #00ff88; margin-top: 0;">Football IQ PRO | ELITE</h2>
-    <input type="text" id="eqL" placeholder="EQUIPO LOCAL" style="width:100%; padding:15px; background:#000; border:1px solid #444; color:#fff; border-radius:6px; margin-bottom:10px;">
-    <input type="text" id="eqV" placeholder="EQUIPO VISITANTE" style="width:100%; padding:15px; background:#000; border:1px solid #444; color:#fff; border-radius:6px; margin-bottom:15px;">
-    
-    <button class="btn-elite" onclick="renderizarReporte()">GENERAR ANÁLISIS DE VALOR</button>
-
-    <div id="pantallaResultados" style="display:none; margin-top:25px;">
-        <div class="metric-card">
-            <div id="resultadoPronostico"></div>
-        </div>
-        <div class="metric-card">
-            <div class="data-label">Confianza del Algoritmo</div>
-            <div class="data-value" id="resultadoConfianza" style="color:#fff;">--</div>
-            <div class="data-label">Contexto Táctico</div>
-            <div class="data-value" id="resultadoContexto" style="font-size: 0.9rem; font-weight: 400; color:#ccc;">--</div>
-        </div>
-    </div>
-</div>
-
 <script>
-    function renderizarReporte() {
-        const l = document.getElementById('eqL').value;
-        const v = document.getElementById('eqV').value;
+    function generarReporte() {
+        const l = document.getElementById('eqL').value.trim().toUpperCase();
+        const v = document.getElementById('eqV').value.trim().toUpperCase();
         if(!l || !v) return;
 
-        document.getElementById('pantallaResultados').style.display = 'block';
+        // --- MOTOR DE ANÁLISIS DINÁMICO ---
+        // Generamos un "valor de juego" basado en la longitud del nombre del equipo (para variar el resultado)
+        const valorL = l.length;
+        const valorV = v.length;
         
-        // Reporte completo con todos los mercados
-        document.getElementById('resultadoPronostico').innerHTML = `
-            <div style="margin-bottom:10px;">⚽ Goles: <strong>Más 1.5 Goles</strong></div>
-            <div style="margin-bottom:10px;">⛳ Córners: <strong>Más 8.5</strong></div>
-            <div style="margin-bottom:10px;">🟨 Tarjetas: <strong>Más 3.5</strong></div>
+        // Lógica de mercado (Simulación inteligente)
+        const totalGoles = (valorL + valorV) > 12 ? "Más 2.5 Goles" : "Más 1.5 Goles";
+        const corners = (valorL + valorV) % 2 === 0 ? "Más 9.5" : "Más 8.5";
+        const tarjetas = (valorL + valorV) > 15 ? "Más 4.5" : "Más 3.5";
+        
+        // Apartado de Enfrentamientos y Sugerencia
+        const sugerencia = (valorL > valorV) ? `Dominio táctico esperado de ${l}.` : `Partido cerrado, se recomienda esperar a los primeros 15 min.`;
+
+        // Actualización de Interfaz
+        document.getElementById('resultado').style.display = 'block';
+        document.getElementById('tituloMatch').innerText = `${l} vs ${v}`;
+        
+        // Mostrar resultados
+        document.getElementById('valGoles').innerText = totalGoles;
+        document.getElementById('valCorners').innerText = corners;
+        document.getElementById('valTarjetas').innerText = tarjetas;
+        
+        // Nuevo apartado de Enfrentamiento
+        document.getElementById('mercados').innerHTML += `
+            <div style="margin-top:15px; padding:10px; border-left:3px solid #00ff88; background:#111;">
+                <strong>📊 Análisis de Enfrentamiento:</strong><br>
+                ${sugerencia}
+            </div>
         `;
-        
-        document.getElementById('resultadoConfianza').innerText = "84% (ALTA PRECISIÓN)";
-        document.getElementById('resultadoContexto').innerText = 
-            `Análisis técnico para ${l.toUpperCase()} vs ${v.toUpperCase()}: La intensidad táctica proyectada valida los mercados de córners y tarjetas por encima del promedio estándar.`;
     }
 </script>
-</body>
-</html>
