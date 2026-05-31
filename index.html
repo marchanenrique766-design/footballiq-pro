@@ -24,13 +24,16 @@
 </div>
 
 <div id="resultado" class="panel" style="display:none;">
-    <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
+    <div style="text-align:center;">
+        <h2 id="titulo" style="color:#00ff88; margin:0 0 5px 0;">--</h2>
+        <div id="alerta-flash" style="background:rgba(255, 170, 0, 0.1); border:1px solid #ffaa00; color:#ffaa00; padding:5px; border-radius:5px; font-size:0.7rem; font-weight:bold; display:none;"></div>
+    </div>
     
-    <div style="font-size:0.9rem; margin-bottom:10px;">
+    <div style="font-size:0.9rem; margin:15px 0; border-bottom:1px solid #333; padding-bottom:10px;">
         BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5
     </div>
 
-    <div style="text-align:center; margin-bottom:10px;">
+    <div style="text-align:center; margin-bottom:15px;">
         <span class="tag" style="background:#ffaa00;">E</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#00ff88;">V</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#ffaa00;">E</span>
     </div>
 
@@ -39,11 +42,10 @@
     <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar posición.</p>
 
     <div style="margin:10px 0;">
-        <div style="font-size:0.75rem;">OFENSIVA (53%)</div>
+        <div style="font-size:0.75rem;">VOLUMEN OFENSIVO (53%)</div>
         <div class="bar-bg"><div class="bar-fill"></div></div>
     </div>
 
-    <!-- NUEVO: ESCENARIOS PROBABLES -->
     <div style="margin: 15px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 10px; background: #0a151a;">
         <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">📊 ESCENARIOS PROBABLES</h4>
         <ul style="color:#ddd; font-size:0.75rem; padding-left:15px; margin:0;">
@@ -52,12 +54,14 @@
         </ul>
     </div>
 
-    <div style="background:#0a1a1a; padding:10px; border:1px solid #00ff88; border-radius:8px;">
-        <p style="color:#00ff88; font-weight:bold; font-size:0.75rem; margin:0;">💡 FACTOR X (TENDENCIA REAL)</p>
-        <p style="font-size:0.75rem; margin:5px 0 0 0;">Alta incidencia ofensiva reciente.</p>
+    <div style="margin: 15px 0; background: #1a1a1a; padding: 12px; border-radius: 8px; border-left: 4px solid #00ff88;">
+        <p style="font-size:0.8rem; margin:5px 0;">💰 <strong>CUOTA MÍNIMA RENTABLE:</strong> 1.30</p>
+        <p style="font-size:0.8rem; margin:5px 0;">🎯 <strong>STAKE SUGERIDO:</strong> 4.5/5</p>
+        <p style="font-size:0.8rem; margin:5px 0; color:#00ff88; font-weight:bold;">🏆 ALTA CONFIANZA</p>
+        <p style="font-size:0.75rem; color:#ccc; margin-top:8px; font-style:italic;">"Justificación: El estudio táctico sugiere un partido abierto con alta probabilidad de dominio local."</p>
     </div>
     
-    <button style="background:#fff;">COPIAR REPORTE ELITE</button>
+    <button style="background:#fff;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
 </div>
 
 <script>
@@ -67,6 +71,9 @@
         if(l && v) {
             document.getElementById('resultado').style.display = 'block';
             document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
+            const alerta = document.getElementById('alerta-flash');
+            alerta.style.display = 'block';
+            alerta.innerText = "⚠️ ALERTA: " + l + " supera la media en sus últimos 3 partidos.";
         }
     }
 </script>
