@@ -2,51 +2,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FOOTBALLIQ PRO</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; }
-        .container { max-width: 1000px; margin: auto; }
-        .grid { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; }
+        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
+        .app-container { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 20px; }
         
-        /* ESTO ES LO QUE LO MANTIENE OCULTO HASTA QUE SE ACTIVEN */
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
+        
+        input { width: 100%; padding: 18px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 20px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: black; font-size: 16px; text-transform: uppercase; }
+        
+        /* ESTO OCULTA EL PANEL COMPLETAMENTE */
         #zona-resultados { display: none; }
         
-        .caja-dato { border: 1px solid #333; padding: 15px; border-radius: 10px; margin-bottom: 10px; background: #1a1a1a; }
-        .valor { color: #00ff88; font-size: 20px; font-weight: bold; display: block; }
+        .metric-box { border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 15px; background: #1a1a1a; }
+        .val { color: #00ff88; font-size: 28px; font-weight: bold; display: block; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="grid">
-        <div class="panel">
-            <h2>CONFIGURAR ANÁLISIS</h2>
-            <input type="text" id="eqA" placeholder="LOCAL">
-            <input type="text" id="eqB" placeholder="VISITANTE">
-            <button onclick="procesar()">ANALIZAR PARTIDO</button>
-        </div>
+<div class="app-container">
+    <div class="panel">
+        <h2 style="color:#00ff88;">CONFIGURAR ANÁLISIS</h2>
+        <input type="text" id="eqA" placeholder="EQUIPO LOCAL">
+        <input type="text" id="eqB" placeholder="EQUIPO VISITANTE">
+        <button onclick="mostrarResultados()">ANALIZAR PARTIDO</button>
+    </div>
 
-        <div id="zona-resultados" class="panel">
-            <h2>RESULTADOS DEL ANÁLISIS</h2>
-            <div class="caja-dato">BTTS<span class="valor">62%</span></div>
-            <div class="caja-dato">+2.5 GOLES<span class="valor">58%</span></div>
-            <div class="caja-dato">CÓRNERS<span class="valor">Más de 9.5</span></div>
-        </div>
+    <div id="zona-resultados" class="panel">
+        <h2 style="color:#00ff88;">RESULTADOS</h2>
+        <div class="metric-box">BTTS<span class="val">62%</span></div>
+        <div class="metric-box">+2.5 GOLES<span class="val">58%</span></div>
+        <div class="metric-box">CÓRNERS<span class="val">Más de 9.5</span></div>
     </div>
 </div>
 
 <script>
-    function procesar() {
+    function mostrarResultados() {
         const a = document.getElementById('eqA').value;
         const b = document.getElementById('eqB').value;
         
-        if(a !== "" && b !== "") {
+        if(a && b) {
             document.getElementById('zona-resultados').style.display = 'block';
         } else {
-            alert("Completa los campos");
+            alert("Completa ambos campos");
         }
     }
 </script>
