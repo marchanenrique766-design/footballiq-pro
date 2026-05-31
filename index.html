@@ -1,35 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOOTBALLIQ PRO</title>
+    <style>
+        body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; }
+        .app { max-width: 500px; margin: auto; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #000; }
+        #dashboard { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <div class="panel">
+        <h2>CONFIGURADOR</h2>
+        <input type="text" id="eqLocal" placeholder="LOCAL (PSG)">
+        <input type="text" id="eqVis" placeholder="VISITANTE (ARSENAL)">
+        <button onclick="analizar()">ANALIZAR</button>
+    </div>
+
+    <div id="dashboard" class="panel">
+        <h2 id="titulo">RESULTADOS</h2>
+        <p>BTTS: <span id="btts">--</span></p>
+        <p>GOLES: <span id="goles">--</span></p>
+    </div>
+</div>
+
 <script>
     const db = {
-        "PSG": { adn: "Alta posesión, bloque alto y presión tras pérdida. Ataque por bandas.", hist: ["V","V","E","V","V"], btts: 62, goles: 58, corners: "Más de 9.5" },
-        "ARSENAL": { adn: "Bloque bajo compacto, transiciones directas y juego aéreo defensivo.", hist: ["D","V","E","D","V"], btts: 55, goles: 52, corners: "Más de 8.5" },
-        "FLAMENGO": { adn: "Dominio técnico, transiciones rápidas y gran capacidad de remate.", hist: ["V","E","V","V","D"], btts: 70, goles: 65, corners: "Más de 10.5" }
+        "PSG": { btts: "62%", goles: "58%" },
+        "ARSENAL": { btts: "55%", goles: "52%" }
     };
 
-    function ejecutarAnalisis() {
-        const inputL = document.getElementById('eqLocal').value;
-        const inputV = document.getElementById('eqVis').value;
+    function analizar() {
+        const l = document.getElementById('eqLocal').value.trim().toUpperCase();
+        const v = document.getElementById('eqVis').value.trim().toUpperCase();
         
-        // Limpiamos los textos
-        const l = inputL.trim().toUpperCase();
-        const v = inputV.trim().toUpperCase();
-        
-        console.log("Buscando:", l, "y", v); // ESTO TE AYUDARÁ A VER SI LEE BIEN
-        
-        if(db[l] && db[v]) {
+        if (db[l] && db[v]) {
             document.getElementById('dashboard').style.display = 'block';
-            document.getElementById('titulo').innerText = l + " VS " + v;
-            
-            actualizarGrafico('btts-ring', 'btts-val', db[l].btts);
-            actualizarGrafico('goles-ring', 'goles-val', db[l].goles);
-            document.getElementById('corners-val').innerText = db[l].corners;
-            document.getElementById('adn-texto').innerText = db[l].adn;
-            
-            const hist = document.getElementById('historial');
-            hist.innerHTML = db[l].hist.map(r => `<span class="pill" style="background:${r=='V'?'green':r=='E'?'orange':'red'}">${r}</span>`).join('');
+            document.getElementById('titulo').innerText = l + " vs " + v;
+            document.getElementById('btts').innerText = db[l].btts;
+            document.getElementById('goles').innerText = db[l].goles;
         } else {
-            // Error detallado
-            alert("No encontré '" + l + "' o '" + v + "'. \nDisponibles: PSG, ARSENAL, FLAMENGO");
+            alert("Equipos disponibles para prueba: PSG, ARSENAL");
         }
     }
-    // ... resto de la función actualizarGrafico
 </script>
+</body>
+</html>
