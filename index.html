@@ -1,61 +1,33 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
-import { ShieldAlert, BarChart3, Target } from 'lucide-react';
-
-export default function App() {
-  const [data, setData] = useState(null);
-
-  const analizar = () => {
-    setData({
-      match: "PSG VS ARSENAL",
-      tactical: "BLOQUE ALTO Y TRANSICIONES RÁPIDAS",
-      risk: "ALTO RIESGO",
-      volume: 60,
-      defense: 45
-    });
-  };
-
-  return (
-    <div className="min-h-screen bg-[#050505] text-white p-4 md:p-6 font-sans">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-[#00ff88] text-center font-bold text-2xl mb-6 tracking-widest uppercase">FootballIQ PRO</h1>
-        
-        {/* Panel de Entradas (Estilo Pro) */}
-        <div className="bg-[#121212] p-6 rounded-2xl border border-[#333] shadow-xl">
-          <label className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Equipo A (Local)</label>
-          <input className="w-full bg-[#1a1a1a] p-3 rounded-lg mt-1 mb-4 border border-[#444] text-white focus:border-[#00ff88] outline-none" placeholder="PSG" />
-          
-          <label className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Equipo B (Visitante)</label>
-          <input className="w-full bg-[#1a1a1a] p-3 rounded-lg mt-1 mb-6 border border-[#444] text-white focus:border-[#00ff88] outline-none" placeholder="Arsenal" />
-          
-          <button onClick={analizar} className="w-full bg-[#00ff88] text-black font-black py-4 rounded-lg hover:bg-[#00cc6a] transition-all">INICIAR ANÁLISIS</button>
-        </div>
-
-        {/* Panel de Resultados (Dashboard Pro) */}
-        {data && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-6 bg-[#121212] p-6 rounded-2xl border border-[#00ff88] shadow-2xl">
-            <h2 className="text-[#00ff88] font-bold text-lg mb-4 uppercase">{data.match}</h2>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-sm text-gray-300">
-                <Target className="text-[#00ff88]" size={20}/> {data.tactical}
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#0a0a0a] p-4 rounded-xl border border-[#333]">
-                  <div className="text-[10px] text-gray-500 uppercase">Volumen</div>
-                  <div className="font-bold text-[#00ff88] text-xl">{data.volume}%</div>
-                </div>
-                <div className="bg-[#0a0a0a] p-4 rounded-xl border border-[#333]">
-                  <div className="text-[10px] text-gray-500 uppercase">Defensa</div>
-                  <div className="font-bold text-white text-xl">{data.defense}%</div>
-                </div>
-              </div>
-              <div className="bg-red-950/20 text-red-500 font-bold text-center py-3 rounded-xl border border-red-900 uppercase tracking-widest">
-                ⚠ {data.risk}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOOTBALLIQ PRO</title>
+    <style>
+        body { background: #050505; color: white; font-family: sans-serif; padding: 20px; }
+        .card { background: #121212; padding: 20px; border-radius: 15px; border: 1px solid #333; max-width: 400px; margin: auto; }
+        h1 { color: #00ff88; text-align: center; }
+        input { width: 100%; padding: 12px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; border-radius: 8px; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #00ff88; color: black; border: none; borderRadius: 8px; font-weight: bold; cursor: pointer; }
+        #resultado { margin-top: 20px; padding: 20px; border: 1px solid #00ff88; border-radius: 15px; background: #000; max-width: 400px; margin: 20px auto; display: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>FOOTBALLIQ PRO</h1>
+        <input type="text" id="equipoA" placeholder="EQUIPO A (LOCAL)">
+        <input type="text" id="equipoB" placeholder="EQUIPO B (VISITANTE)">
+        <button onclick="analizar()">INICIAR ANÁLISIS</button>
     </div>
-  );
-}
+    <div id="resultado"></div>
+
+    <script>
+        function analizar() {
+            const res = document.getElementById('resultado');
+            res.style.display = 'block';
+            res.innerHTML = '<h2 style="color:#00ff88">ANÁLISIS: PSG VS ARSENAL</h2><p>⚽ BLOQUE ALTO Y TRANSICIONES RÁPIDAS</p><p style="color:#ff4444">⚠ ALTO RIESGO</p>';
+        }
+    </script>
+</body>
+</html>
