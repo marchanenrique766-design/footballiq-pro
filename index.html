@@ -2,62 +2,67 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>Football IQ PRO | ELITE</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; padding: 20px; }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
         .panel { background: #121212; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 600px; margin: auto; }
         input { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .res-item { margin-bottom: 12px; font-size: 1.2rem; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .res-item span { color: #39ff14; font-weight: bold; }
-        .tactica { margin-top: 20px; padding: 15px; border-left: 4px solid #39ff14; background: #1a1a1a; font-size: 0.95rem; line-height: 1.4; }
+        .market { color: #fff; font-size: 1.1rem; margin-bottom: 12px; }
+        .market span { color: #39ff14; font-weight: bold; }
+        .analisis-box { margin-top: 20px; padding: 15px; border-left: 4px solid #39ff14; background: #1a1a1a; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h2 style="color: #39ff14;">Football IQ PRO | DINÁMICO</h2>
+    <h2 style="color: #39ff14;">Football IQ PRO | ELITE</h2>
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    <button onclick="analizar()">GENERAR ANÁLISIS</button>
+    <button onclick="analizar()">GENERAR ANÁLISIS DE VALOR</button>
 
-    <div id="res" style="display:none; margin-top:25px;">
-        <h3 id="tMatch" style="margin-bottom: 15px;"></h3>
-        <div class="res-item">⚽ Goles: <span id="vGoles"></span></div>
-        <div class="res-item">⛳ Córners: <span id="vCorners"></span></div>
-        <div class="res-item">🟨 Tarjetas: <span id="vTarjetas"></span></div>
-        <div class="tactica" id="vSugerencia"></div>
+    <div id="resultado" style="display:none; margin-top:25px;">
+        <h3 id="titulo" style="border-bottom:1px solid #333; padding-bottom:10px;"></h3>
+        <div class="market">⚽ Goles: <span id="vGoles"></span></div>
+        <div class="market">⛳ Córners: <span id="vCorners"></span></div>
+        <div class="market">🟨 Tarjetas: <span id="vTarjetas"></span></div>
+        <div class="analisis-box" id="vAnalisis"></div>
     </div>
 </div>
 
 <script>
     function analizar() {
-        const l = document.getElementById('eqL').value.trim().toUpperCase();
-        const v = document.getElementById('eqV').value.trim().toUpperCase();
-        if(!l || !v) return;
+        const L = document.getElementById('eqL').value.trim().toUpperCase();
+        const V = document.getElementById('eqV').value.trim().toUpperCase();
+        if(!L || !V) return;
 
-        // --- MOTOR MATEMÁTICO DINÁMICO ---
-        // Combinamos los nombres para generar un ID único para cada partido
-        const idPart = (l.length * v.length) % 10;
+        // --- MATRIZ DE ANÁLISIS ---
+        // Lista de equipos de perfil "defensivo/friccionado"
+        const defensivos = ["ECUADOR", "LIGA", "EMELEC", "URUGUAY", "ITALIA", "FINLANDIA"];
         
-        // Resultados calculados matemáticamente para que cambien siempre
-        const goles = ["Más 1.5", "Más 2.5", "Más 3.5", "Menos 2.5", "Más 2.5"][idPart % 5];
-        const corners = ["Más 7.5", "Más 8.5", "Más 9.5", "Más 10.5", "Más 8.5"][idPart % 5];
-        const tarjetas = ["Más 3.5", "Más 4.5", "Más 2.5", "Más 5.5", "Más 4.5"][idPart % 5];
+        // Reglas de negocio: Detectar si el partido será "cerrado"
+        const esCerrado = (defensivos.includes(L) || defensivos.includes(V));
         
-        const tacticas = [
-            "Partido abierto: Alta intensidad en áreas rivales.",
-            "Duelo táctico: Se espera juego trabado en el mediocampo.",
-            "Tendencia ofensiva: Ambos equipos buscan el arco constantemente.",
-            "Bloque bajo: Partido de contragolpes y pocas concesiones.",
-            "Alta fricción: Partido con mucha disputa y posibles faltas."
-        ];
+        let res = {
+            goles: "Más 2.5",
+            corners: "Más 9.5",
+            tarjetas: "Más 3.5",
+            texto: "Partido abierto, alta intensidad ofensiva."
+        };
 
-        document.getElementById('res').style.display = 'block';
-        document.getElementById('tMatch').innerText = l + " VS " + v;
-        document.getElementById('vGoles').innerText = goles;
-        document.getElementById('vCorners').innerText = corners;
-        document.getElementById('vTarjetas').innerText = tarjetas;
-        document.getElementById('vSugerencia').innerText = "Análisis IA: " + tacticas[idPart % 5];
+        if (esCerrado) {
+            res.goles = "Menos 2.5";
+            res.corners = "Más 7.5";
+            res.tarjetas = "Más 5.5";
+            res.texto = "Partido táctico y friccionado. Se recomienda entrar a mercado de tarjetas.";
+        }
+
+        document.getElementById('resultado').style.display = 'block';
+        document.getElementById('titulo').innerText = L + " VS " + V;
+        document.getElementById('vGoles').innerText = res.goles;
+        document.getElementById('vCorners').innerText = res.corners;
+        document.getElementById('vTarjetas').innerText = res.tarjetas;
+        document.getElementById('vAnalisis').innerHTML = "<strong>Análisis Táctico IA:</strong><br>" + res.texto;
     }
 </script>
 </body>
