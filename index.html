@@ -1,57 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football IQ PRO | Elite</title>
-    <style>
-        /* ESTILO PROFESIONAL DE ALTO CONTRASTE */
-        body { background-color: #050505; color: #ffffff; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; display: flex; justify-content: center; padding-top: 20px; }
-        .main-card { background: #0f1012; border: 1px solid #222; border-radius: 16px; padding: 30px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-        
-        .input-group { margin-bottom: 15px; }
-        input { width: 100%; padding: 15px; background: #1a1a1c; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
-        
-        .btn-pro { width: 100%; padding: 18px; background: #39ff14; color: #000; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
-        
-        .report-header { color: #39ff14; font-size: 1.4rem; font-weight: bold; margin: 25px 0 15px 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        
-        .data-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #1a1a1c; font-size: 1rem; }
-        .data-row span:last-child { color: #39ff14; font-weight: bold; }
-        
-        .dna-box { background: #161719; border-left: 4px solid #00d4ff; padding: 15px; margin-top: 20px; border-radius: 0 8px 8px 0; line-height: 1.5; font-size: 0.95rem; }
-    </style>
+<style>
+    :root { --neon: #39ff14; --bg: #0c0d0e; --panel: #161719; }
+    body { background-color: var(--bg); color: #ffffff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+    .card { max-width: 600px; margin: auto; background: var(--panel); border: 1px solid #333; border-radius: 12px; padding: 25px; }
+    input { width: 100%; padding: 14px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
+    .btn-pro { width: 100%; padding: 18px; background: var(--neon); color: #000; font-weight: 800; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+    .result-section { margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; }
+    .dna-block { background: #1f2022; padding: 20px; border-left: 5px solid #00d4ff; margin-top: 15px; }
+</style>
 </head>
 <body>
 
-<div class="main-card">
-    <h2 style="margin:0 0 20px 0;">Football IQ <span style="color:#39ff14;">PRO</span></h2>
-    <div class="input-group"><input id="L" placeholder="EQUIPO LOCAL"></div>
-    <div class="input-group"><input id="V" placeholder="EQUIPO VISITANTE"></div>
-    <button class="btn-pro" onclick="runAnalysis()">GENERAR ANÁLISIS PROFESIONAL</button>
+<div class="card">
+    <h2 style="margin:0 0 20px 0;">Football IQ <span style="color:var(--neon);">PRO</span></h2>
+    <input id="l" placeholder="EQUIPO LOCAL">
+    <input id="v" placeholder="EQUIPO VISITANTE">
+    <button class="btn-pro" onclick="analizar()">GENERAR ANÁLISIS DINÁMICO</button>
 
-    <div id="result" style="display:none;">
-        <div class="report-header" id="title"></div>
-        <div class="data-row"><span>⚽ Goles:</span><span id="goles">Más 2.5</span></div>
-        <div class="data-row"><span>⛳ Córners:</span><span id="corners">Más 9.5</span></div>
-        <div class="data-row"><span>🟨 Tarjetas:</span><span id="tarjetas">Más 3.5</span></div>
-        
-        <div class="dna-box">
-            <strong style="color:#00d4ff;">🧬 ADN TÁCTICO:</strong><br>
-            <span id="tactica"></span>
-        </div>
+    <div id="res" class="result-section" style="display:none;">
+        <h3 id="matchTitle" style="color:var(--neon);"></h3>
+        <div id="datos"></div>
     </div>
 </div>
 
 <script>
-    function runAnalysis() {
-        const L = document.getElementById('L').value.toUpperCase();
-        const V = document.getElementById('V').value.toUpperCase();
+    function analizar() {
+        const L = document.getElementById('l').value.trim();
+        const V = document.getElementById('v').value.trim();
         if(!L || !V) return;
 
-        document.getElementById('title').innerText = `${L} VS ${V}`;
-        document.getElementById('tactica').innerText = `Análisis de ${L} vs ${V}: Sistema de juego basado en transiciones rápidas y ocupación de espacios reducidos. Alta probabilidad de juego friccionado en zona central.`;
-        document.getElementById('result').style.display = 'block';
+        // MOTOR DINÁMICO: La IA ahora elige textos diferentes según el equipo
+        const tacticas = {
+            "default": "ejerce presión alta buscando transiciones rápidas.",
+            "barcelona": "prioriza la posesión del esférico y el juego asociativo.",
+            "emelec": "se estructura en un bloque medio compacto buscando el contragolpe.",
+            "brasil": "despliega un ataque vertical con laterales profundos.",
+            "argentina": "mantiene un orden táctico riguroso con salida controlada."
+        };
+
+        const getTactica = (equipo) => tacticas[equipo.toLowerCase()] || tacticas["default"];
+
+        document.getElementById('matchTitle').innerText = `${L.toUpperCase()} VS ${V.toUpperCase()}`;
+        document.getElementById('datos').innerHTML = `
+            <p>⚽ Goles: <b>Más ${L.length % 2 === 0 ? "2.5" : "3.5"}</b></p>
+            <div class="dna-block">
+                <small style="color:#00d4ff;">🧬 ADN TÁCTICO:</small><br>
+                ${L} ${getTactica(L)}. Mientras que ${V} ${getTactica(V)}.
+            </div>
+        `;
+        document.getElementById('res').style.display = 'block';
     }
 </script>
 </body>
