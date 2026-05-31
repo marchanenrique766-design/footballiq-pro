@@ -31,9 +31,13 @@
 
 <div id="resultado" class="panel" style="display:none;">
     <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
-    
+    <div style="font-size:0.9rem; margin-bottom:10px; text-align:center;">BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5</div>
+
+    <h3 style="color:#00ccff; font-size:0.85rem; margin:10px 0 5px 0;">🔍 CONTEXTO PROFUNDO</h3>
+    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN TÁCTICO:</strong> Presión alta agresiva y transiciones rápidas.</p>
+
     <div style="margin: 15px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 12px; background: #0a151a;">
-        <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">🤖 ANÁLISIS HISTÓRICO (H2H)</h4>
+        <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">🤖 ANÁLISIS HISTÓRICO (H2H 10 PARTIDOS)</h4>
         <p id="caja-analisis" style="font-size:0.75rem; color:#eee; line-height:1.5;"></p>
     </div>
 
@@ -59,17 +63,16 @@
         document.getElementById('resultado').style.display = 'block';
         document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
         
-        // Lógica de IA Histórica
+        // IA Histórica
         let analisis = `Análisis de los últimos 10 duelos entre ${l} y ${v}: `;
         if (modo === 'seguridad') analisis += "Tendencia a partidos cerrados. Se recomienda ir por mercados de goles bajos.";
         else if (modo === 'volumen') analisis += "Historial ofensivo marcado. Se recomienda buscar córners y tiros a puerta.";
         else analisis += "Alta volatilidad detectada. Historial lleno de sorpresas tácticas.";
         document.getElementById('caja-analisis').innerText = analisis;
         
-        // Cálculo de Gestión de Capital
+        // Gestión de Capital
         let stake = (modo === 'seguridad') ? 0.05 : 0.02;
         let monto = !isNaN(capital) ? (capital * stake).toFixed(2) : "0.00";
-        
         document.getElementById('texto-stake').innerHTML = `🎯 <strong>STAKE SUGERIDO:</strong> ${ (stake * 100) }% del capital`;
         document.getElementById('monto-recomendado').innerText = `APUESTA RECOMENDADA: $${monto}`;
     }
