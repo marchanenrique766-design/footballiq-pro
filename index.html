@@ -36,6 +36,7 @@
     <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN:</strong> Presión alta agresiva.</p>
     <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar posición.</p>
 
+    <!-- Escenarios -->
     <div style="margin: 15px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 10px; background: #0a151a;">
         <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">📊 ESCENARIOS PROBABLES</h4>
         <ul style="color:#ddd; font-size:0.75rem; padding-left:15px; margin:0;">
@@ -44,6 +45,7 @@
         </ul>
     </div>
 
+    <!-- Semáforo -->
     <div style="margin: 15px 0; padding: 10px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; text-align: center;">
         <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">NIVEL DE SEGURIDAD</div>
         <div style="display: flex; gap: 5px; justify-content: center;">
@@ -54,8 +56,12 @@
         <div style="font-size: 0.75rem; color: #00ff88; margin-top: 5px; font-weight: bold;">ALTA SEGURIDAD</div>
     </div>
 
+    <!-- Gestión de Riesgo (Justificación Dinámica) -->
     <div style="margin: 15px 0; background: #1a1a1a; padding: 12px; border-radius: 8px; border-left: 4px solid #00ff88;">
         <p style="font-size:0.8rem; margin:5px 0;">💰 <strong>CUOTA:</strong> 1.30 | 🎯 <strong>STAKE:</strong> 4.5/5</p>
+        <p id="justificacion" style="font-size:0.75rem; color:#ccc; margin-top:8px; font-style:italic;">
+            "Cargando análisis táctico..."
+        </p>
     </div>
     
     <button style="background:#fff;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
@@ -68,6 +74,16 @@
         if(l && v) {
             document.getElementById('resultado').style.display = 'block';
             document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
+            
+            // Lógica del generador dinámico
+            const frases = [
+                "El volumen ofensivo de " + l + " sugiere un partido con alta presión desde el inicio.",
+                "Estadísticas tácticas indican que ambos equipos tienen debilidades defensivas latentes.",
+                "La tendencia de córners para este encuentro es superior al promedio de la liga.",
+                "El control del mediocampo por parte de " + v + " será clave para el resultado final."
+            ];
+            const aleatoria = frases[Math.floor(Math.random() * frases.length)];
+            document.getElementById('justificacion').innerText = "\"" + aleatoria + "\"";
         }
     }
 </script>
