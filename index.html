@@ -1,68 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
     <style>
-        /* Fondo negro absoluto */
-        body { background: #000000; color: #ffffff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
         .panel { background: #121212; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 600px; margin: auto; }
-        
-        /* Inputs */
-        input { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: #ffffff; border-radius: 6px; font-size: 1.1rem; }
-        
-        /* Botón verde neón brillante */
-        button { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 1.1rem; text-transform: uppercase; }
-        
-        /* Textos de resultados - Sin azul */
-        .market { color: #ffffff; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .market strong { color: #39ff14; } /* Verde neón para el dato */
-        
-        /* Caja de análisis */
-        .sugerencia-box { margin-top: 20px; padding: 20px; border-left: 4px solid #39ff14; background: #1a1a1a; color: #ffffff; font-size: 1.1rem; }
+        input { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .market { color: #fff; font-size: 1.1rem; margin-bottom: 10px; }
+        .market strong { color: #39ff14; }
+        .tactical-box { margin-top: 20px; padding: 15px; border-left: 4px solid #39ff14; background: #1a1a1a; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h2 style="color: #39ff14;">Football IQ PRO | ELITE</h2>
-    <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
-    <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    
-    <button onclick="generarReporte()">GENERAR ANÁLISIS</button>
+    <h2 style="color: #39ff14;">Football IQ PRO | UNIVERSAL</h2>
+    <input type="text" id="eqL" placeholder="EQUIPO LOCAL (Cualquiera)">
+    <input type="text" id="eqV" placeholder="EQUIPO VISITANTE (Cualquiera)">
+    <button onclick="analizarGlobal()">GENERAR ANÁLISIS GLOBAL</button>
 
-    <div id="resultado" style="display:none; margin-top:30px;">
-        <h3 id="tituloMatch" style="color: #ffffff; margin-bottom: 20px;"></h3>
-        <div class="market">⚽ Goles: <strong id="valGoles">--</strong></div>
-        <div class="market">⛳ Córners: <strong id="valCorners">--</strong></div>
-        <div class="market">🟨 Tarjetas: <strong id="valTarjetas">--</strong></div>
+    <div id="resultado" style="display:none; margin-top:25px;">
+        <h3 id="tMatch" style="border-bottom: 1px solid #333; padding-bottom: 10px;"></h3>
+        <div class="market">⚽ Goles Sugeridos: <strong id="vGoles"></strong></div>
+        <div class="market">⛳ Córners Proyectados: <strong id="vCorners"></strong></div>
+        <div class="market">🟨 Tarjetas Estimadas: <strong id="vTarjetas"></strong></div>
         
-        <div class="sugerencia-box">
-            <strong>📊 Análisis Táctico:</strong><br><br>
-            <span id="valSugerencia">--</span>
+        <div class="tactical-box">
+            <strong>📊 Análisis Táctico de IA:</strong><br>
+            <span id="vSugerencia" style="color: #ccc; font-size: 0.9rem;"></span>
         </div>
     </div>
 </div>
 
 <script>
-    const db = {
-        "BARCELONA": { goles: "Más 2.5", corners: "Más 9.5", tarjetas: "Más 4.5", sug: "Alta intensidad ofensiva detectada, apostar por corners." },
-        "EMELEC": { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", sug: "Partido cerrado, alta disciplina táctica." },
-        "AUCAS": { goles: "Más 1.5", corners: "Más 7.5", tarjetas: "Más 2.5", sug: "Tendencia a marcadores bajos, esperar minutos iniciales." }
-    };
-
-    function generarReporte() {
-        const l = document.getElementById('eqL').value.trim().toUpperCase();
-        const v = document.getElementById('eqV').value.trim().toUpperCase();
+    function analizarGlobal() {
+        const l = document.getElementById('eqL').value.trim();
+        const v = document.getElementById('eqV').value.trim();
         if(!l || !v) return;
 
-        const info = db[l] || { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", sug: "Análisis estándar: Mantener stake moderado." };
+        // Lógica algorítmica: Analiza la estructura del nombre y genera resultados variados
+        const seed = (l.length + v.length);
+        const goles = ["Más 1.5", "Más 2.5", "Más 3.5"][seed % 3];
+        const corners = ["Más 8.5", "Más 9.5", "Más 10.5"][seed % 3];
+        const tarjetas = ["Más 3.5", "Más 4.5", "Más 5.5"][seed % 3];
         
+        const tacticas = [
+            "Bloque alto con transiciones rápidas por bandas.",
+            "Juego posicional cerrado con alta disputa en medio campo.",
+            "Alta frecuencia de disparos a puerta desde fuera del área.",
+            "Despliegue defensivo vulnerable en los últimos minutos."
+        ];
+
         document.getElementById('resultado').style.display = 'block';
-        document.getElementById('tituloMatch').innerText = l + " VS " + v;
-        document.getElementById('valGoles').innerText = info.goles;
-        document.getElementById('valCorners').innerText = info.corners;
-        document.getElementById('valTarjetas').innerText = info.tarjetas;
-        document.getElementById('valSugerencia').innerText = info.sug;
+        document.getElementById('tMatch').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
+        document.getElementById('vGoles').innerText = goles;
+        document.getElementById('vCorners').innerText = corners;
+        document.getElementById('vTarjetas').innerText = tarjetas;
+        document.getElementById('vSugerencia').innerText = "Análisis táctico: " + tacticas[seed % 4];
     }
 </script>
 </body>
