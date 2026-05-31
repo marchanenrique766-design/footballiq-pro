@@ -1,143 +1,202 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | ELITE DASHBOARD</title>
-    <style>
-        :root {
-            --bg-color: #050505;
-            --panel-bg: #121212;
-            --border-color: #333;
-            --accent-green: #00ff88;
-            --text-white: #ffffff;
-            --text-gray: #a0a0a0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Football IQ PRO</title>
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: 350px 1fr 1fr;
-            gap: 20px;
-            max-width: 1400px;
-            margin: auto;
-        }
-
-        .panel {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            padding: 25px;
-            border-radius: 18px;
-        }
-
-        h2 {
-            color: var(--accent-green);
-            text-transform: uppercase;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #1a1a1a;
-            border: 1px solid #444;
-            color: var(--text-white);
-            border-radius: 10px;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--accent-green);
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #000;
-            text-transform: uppercase;
-        }
-
-        .metric-card {
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            border-radius: 12px;
-            background-color: #1a1a1a;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .metric-value {
-            color: var(--accent-green);
-            font-size: 2.2rem;
-            font-weight: bold;
-            display: block;
-        }
-
-        .factor-x-box {
-            background: #1a1a1a;
-            padding: 20px;
-            border-left: 5px solid var(--accent-green);
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-
-        #app-dashboard { display: none; } /* Oculto hasta que presiones analizar */
-    </style>
-</head>
-<body>
-
-<div class="dashboard-container">
-    <div class="panel">
-        <h2>CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqA" placeholder="EQUIPO LOCAL">
-        <input type="text" id="eqB" placeholder="EQUIPO VISITANTE">
-        <button onclick="activarSistema()">ANALIZAR PARTIDO</button>
-    </div>
-
-    <div id="app-dashboard" style="display: contents;">
-        <div class="panel" id="panel-indicadores">
-            <h2>MERCADOS Y STATS</h2>
-            <div class="metric-card">BTTS (AMBOS MARCAN)<span class="metric-value" id="btts-val">62%</span></div>
-            <div class="metric-card">+2.5 GOLES<span class="metric-value" id="goles-val">58%</span></div>
-            <div class="metric-card">CÓRNERS TOTALES<span class="metric-value" id="corners-val">Más de 9.5</span></div>
-        </div>
-
-        <div class="panel" id="panel-riesgo">
-            <h2 id="match-title">MATRIZ DE RIESGO</h2>
-            <div class="metric-card">VOLATILIDAD IA<span class="metric-value">45%</span></div>
-            <div class="factor-x-box">
-                <strong>FACTOR X (TENDENCIA REAL):</strong>
-                <p id="factor-text">Esperando datos de entrada...</p>
-            </div>
-            <h3 style="margin-top:20px; text-align:center;">STAKE SUGERIDO: <span class="metric-value" style="font-size: 1.8rem;">3.0 / 5</span></h3>
-        </div>
-    </div>
-</div>
-
-<script>
-    function activarSistema() {
-        const a = document.getElementById('eqA').value;
-        const b = document.getElementById('eqB').value;
-        
-        if (a && b) {
-            document.getElementById('app-dashboard').style.display = 'contents';
-            document.getElementById('match-title').innerText = a.toUpperCase() + " VS " + b.toUpperCase();
-            document.getElementById('factor-text').innerText = "Análisis IA: " + a + " mantiene una intensidad ofensiva superior en condición de local, mientras que " + b + " presenta vulnerabilidad defensiva en el sector izquierdo según los registros de los últimos 10 partidos.";
-        } else {
-            alert("Por favor, introduce ambos equipos para iniciar el análisis.");
-        }
+  <style>
+    :root{
+      --bg:#050505;
+      --panel:#0b0b0b;
+      --panel-2:#111111;
+      --line:#1b1b1b;
+      --text:#f3f3f3;
+      --muted:#8a8f98;
+      --green:#00e676;
+      --green-2:#00c853;
+      --green-soft:rgba(0,230,118,.16);
+      --shadow:0 0 0 1px rgba(0,230,118,.10), 0 0 24px rgba(0,230,118,.08);
+      --radius:18px;
     }
-</script>
-</body>
-</html>
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      background: radial-gradient(circle at top, #0d1a12 0%, #050505 30%);
+      color:var(--text);
+      font-family:'Inter', sans-serif;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:20px 12px;
+    }
+
+    .phone{
+      width:100%;
+      max-width:390px;
+      background:linear-gradient(180deg, rgba(15,15,15,.96), rgba(5,5,5,1));
+      border:1px solid rgba(255,255,255,.04);
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .topbar{
+      padding:18px 18px 10px;
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo{
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      border:1px solid rgba(0,230,118,.35);
+      display:grid;
+      place-items:center;
+      color:var(--green);
+      box-shadow:var(--shadow);
+      background:rgba(0,230,118,.05);
+      font-size:18px;
+    }
+
+    .brand h1{
+      font-family:'Orbitron', sans-serif;
+      font-size:20px;
+      letter-spacing:.4px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .tag{
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      color:#d7d7d7;
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .subtitle{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:6px;
+      line-height:1.45;
+    }
+
+    .datetime{
+      margin-top:14px;
+      padding-top:12px;
+      border-top:1px solid rgba(255,255,255,.05);
+      font-size:12px;
+      color:#bfc4cc;
+    }
+
+    .section{
+      padding:16px;
+    }
+
+    .mode-switch{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+    }
+
+    .mode-btn{
+      border:1px solid rgba(255,255,255,.06);
+      background:#0d0f10;
+      color:#d7d7d7;
+      padding:14px 10px;
+      border-radius:14px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:.25s ease;
+    }
+
+    .mode-btn.active{
+      color:#03140b;
+      background:linear-gradient(180deg, var(--green), var(--green-2));
+      box-shadow:0 0 0 1px rgba(0,230,118,.25), 0 0 20px rgba(0,230,118,.32);
+    }
+
+    .card{
+      margin-top:14px;
+      background:linear-gradient(180deg, #0b0b0b, #090909);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:22px;
+      padding:16px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+    }
+
+    .card-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-family:'Orbitron', sans-serif;
+      font-size:14px;
+      letter-spacing:1px;
+      margin-bottom:16px;
+      color:#f1f1f1;
+    }
+
+    .card-title .left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .green-dot{
+      color:var(--green);
+      font-size:14px;
+    }
+
+    .field{
+      margin-bottom:14px;
+    }
+
+    .label{
+      display:block;
+      font-size:11px;
+      color:#9da3aa;
+      margin-bottom:8px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .input{
+      width:100%;
+      background:#0f1011;
+      border:1px solid rgba(255,255,255,.11);
+      border-radius:14px;
+      padding:14px 14px;
+      color:#fff;
+      outline:none;
+      font-size:14px;
+      transition:.2s ease;
+    }
+
+    .input::placeholder{
+      color:#6f7680;
+    }
+
+    .input:focus{
+      border-color:rgba(0,230,118,.65);
+      box-sh
