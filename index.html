@@ -2,77 +2,90 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | ANALYTICS</title>
+    <title>FOOTBALLIQ PRO | ELITE</title>
     <style>
         :root { --neon: #00ff88; --bg: #050505; --panel: #121212; }
-        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
-        .app-container { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 20px; }
-        .panel { background: var(--panel); border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--neon); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; text-transform: uppercase; }
-        
-        #dashboard { display: none; }
-        .val { color: var(--neon); font-size: 24px; font-weight: bold; }
-        .pill { padding: 4px 10px; border-radius: 4px; font-weight: bold; margin-right: 5px; color: #fff; }
+        body { background: var(--bg); color: #fff; font-family: sans-serif; padding: 10px; }
+        .panel { background: var(--panel); border: 1px solid #333; padding: 15px; border-radius: 15px; margin-bottom: 15px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: var(--neon); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .ring { transform: rotate(-90deg); }
+        .progress { stroke: var(--neon); fill: none; stroke-width: 6; stroke-dasharray: 0, 251; transition: 1s; }
+        .pill { padding: 4px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="panel">
-        <h2 style="color:var(--neon);">CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqLocal" placeholder="EQUIPO LOCAL">
-        <input type="text" id="eqVis" placeholder="EQUIPO VISITANTE">
-        <button onclick="ejecutarAnalisis()">ANALIZAR PARTIDO</button>
-    </div>
+<div class="panel">
+    <h2 style="color:var(--neon);">CONFIGURADOR</h2>
+    <input type="text" id="eqLocal" placeholder="LOCAL">
+    <input type="text" id="eqVis" placeholder="VISITANTE">
+    <button onclick="analizar()">ANALIZAR PARTIDO</button>
+</div>
 
-    <div id="dashboard">
-        <div class="panel">
-            <h2 id="titulo" style="margin-top:0;">...</h2>
-            <div id="historial" style="display:flex; margin-bottom:15px;"></div>
-            
-            <div class="panel" style="background:#1a1a1a; margin-bottom:15px;">
-                BTTS: <span class="val" id="res-btts">0%</span><br>
-                +2.5 GOLES: <span class="val" id="res-goles">0%</span>
+<div id="dashboard" style="display:none;">
+    <div class="panel">
+        <h2 id="titulo">PSG VS ARSENAL</h2>
+        <div id="historial" style="display:flex; margin-bottom:15px;"></div>
+        
+        <div class="grid">
+            <div class="panel" style="background:#1a1a1a; text-align:center;">BTTS
+                <svg width="80" height="80"><circle cx="40" cy="40" r="30" stroke="#333" fill="none" stroke-width="6"/><circle id="btts-ring" class="progress" cx="40" cy="40" r="30"/></svg>
+                <div id="btts-val" style="font-weight:bold;">0%</div>
             </div>
-            
-            <div class="panel" style="background:#000; border-left:4px solid var(--neon);">
-                <p style="color:var(--neon); margin:0;">🔍 ANÁLISIS TÁCTICO:</p>
-                <p id="adn-texto" style="font-size:0.9rem; margin-top:5px;"></p>
+            <div class="panel" style="background:#1a1a1a; text-align:center;">+2.5 GOLES
+                <svg width="80" height="80"><circle cx="40" cy="40" r="30" stroke="#333" fill="none" stroke-width="6"/><circle id="goles-ring" class="progress" cx="40" cy="40" r="30"/></svg>
+                <div id="goles-val" style="font-weight:bold;">0%</div>
             </div>
         </div>
+
+        <div class="panel" style="background:#1a1a1a; margin-top:10px;">
+            <p style="color:var(--neon); margin:0;">CÓRNERS</p>
+            <h3 id="corners-val" style="margin:5px 0;">--</h3>
+        </div>
+
+        <div class="panel" style="background:#000; border-left:4px solid var(--neon);">
+            <p style="color:var(--neon); margin:0;">🔍 ADN TÁCTICO:</p>
+            <p id="adn-texto" style="font-size:0.9rem;"></p>
+        </div>
+        
+        <button onclick="copiarReporte()" style="background:#fff; margin-top:10px;">Copiar Bloque Elite</button>
     </div>
 </div>
 
 <script>
     const db = {
-        "PSG": { btts: 62, goles: 58, adn: "Alta posesión y presión alta.", hist: ["V","V","E","V","V"] },
-        "ARSENAL": { btts: 55, goles: 52, adn: "Bloque bajo y transiciones directas.", hist: ["D","V","E","D","V"] },
-        "FLAMENGO": { btts: 70, goles: 65, adn: "Dominio técnico y ataque veloz.", hist: ["V","E","V","V","D"] }
+        "PSG": { btts: 62, goles: 58, adn: "Posesión y presión alta.", hist: ["V","V","E","V","V"], corners: "Más de 9.5" },
+        "ARSENAL": { btts: 55, goles: 52, adn: "Bloque bajo y transiciones.", hist: ["D","V","E","D","V"], corners: "Más de 8.5" }
     };
 
-    function ejecutarAnalisis() {
+    function analizar() {
         const l = document.getElementById('eqLocal').value.trim().toUpperCase();
         const v = document.getElementById('eqVis').value.trim().toUpperCase();
-        
         if(db[l] && db[v]) {
             document.getElementById('dashboard').style.display = 'block';
             document.getElementById('titulo').innerText = l + " VS " + v;
+            document.getElementById('adn-texto').innerText = `${l} aporta ${db[l].adn} mientras que ${v} responde con ${db[v].adn}`;
+            document.getElementById('corners-val').innerText = db[l].corners;
             
-            // Lógica Comparativa: Ajustamos los resultados según la sinergia
-            let bttsFinal = Math.round((db[l].btts + db[v].btts) / 2);
-            let golesFinal = Math.round((db[l].goles + db[v].goles) / 2);
+            actualizarCirculo('btts-ring', 'btts-val', db[l].btts);
+            actualizarCirculo('goles-ring', 'goles-val', db[l].goles);
             
-            document.getElementById('res-btts').innerText = bttsFinal + "%";
-            document.getElementById('res-goles').innerText = golesFinal + "%";
-            document.getElementById('adn-texto').innerText = l + " aporta " + db[l].adn + " mientras que " + v + " responde con " + db[v].adn;
-            
-            const hist = document.getElementById('historial');
-            hist.innerHTML = db[l].hist.map(r => `<span class="pill" style="background:${r=='V'?'green':r=='E'?'orange':'red'}">${r}</span>`).join('');
-        } else {
-            alert("Equipos disponibles: PSG, ARSENAL, FLAMENGO");
+            document.getElementById('historial').innerHTML = db[l].hist.map(r => `<span class="pill" style="background:${r=='V'?'green':'red'}">${r}</span>`).join('');
         }
+    }
+
+    function actualizarCirculo(id, valId, p) {
+        document.getElementById(id).style.strokeDasharray = (p / 100 * 188) + " 188";
+        document.getElementById(valId).innerText = p + "%";
+    }
+
+    function copiarReporte() {
+        const l = document.getElementById('eqLocal').value;
+        const v = document.getElementById('eqVis').value;
+        navigator.clipboard.writeText(`⭐ REPORTE ELITE: ${l} vs ${v}\nAnálisis táctico completado.`);
+        alert("Reporte copiado al portapapeles");
     }
 </script>
 </body>
