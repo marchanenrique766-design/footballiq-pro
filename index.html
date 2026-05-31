@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football IQ PRO</title>
+    <title>Football IQ PRO | ELITE</title>
     <style>
         body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
         .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 10px; }
@@ -11,7 +11,7 @@
         button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 10px; cursor: pointer; }
         .tag { padding: 3px 7px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; margin: 1px; }
         .bar-bg { background: #222; height: 6px; border-radius: 3px; margin-top: 5px; }
-        .bar-fill { height: 6px; border-radius: 3px; background: #00ff88; width: 0%; transition: width 0.5s; }
+        .bar-fill { height: 6px; border-radius: 3px; background: #00ff88; width: 53%; }
     </style>
 </head>
 <body>
@@ -20,50 +20,53 @@
     <h2 style="color:#00ff88; font-size:1.1rem; margin:0;">CONFIGURAR ANÁLISIS</h2>
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    <button onclick="analizar()">ANALIZAR PARTIDO</button>
+    <button onclick="generar()">ANALIZAR PARTIDO</button>
 </div>
 
 <div id="resultado" class="panel" style="display:none;">
     <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
-    <div style="font-size:0.9rem; margin-bottom:10px;">
-        BTTS: <span id="valBtts">--</span> | +2.5 GOLES: <span id="valGoles">--</span><br>
-        CÓRNERS: <span id="valCorners">--</span>
-    </div>
     
+    <div style="font-size:0.9rem; margin-bottom:10px;">
+        BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5
+    </div>
+
     <div style="text-align:center; margin-bottom:10px;">
         <span class="tag" style="background:#ffaa00;">E</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#00ff88;">V</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#ffaa00;">E</span>
     </div>
 
     <h3 style="color:#00ccff; font-size:0.85rem; margin:0;">🔍 CONTEXTO PROFUNDO</h3>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN:</strong> <span id="txtAdn">Analizando...</span></p>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> <span id="txtObj">Analizando...</span></p>
+    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN:</strong> Presión alta agresiva.</p>
+    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar posición.</p>
 
     <div style="margin:10px 0;">
-        <div style="font-size:0.75rem;">VOLUMEN OFENSIVO</div>
-        <div class="bar-bg"><div id="barra" class="bar-fill"></div></div>
+        <div style="font-size:0.75rem;">OFENSIVA (53%)</div>
+        <div class="bar-bg"><div class="bar-fill"></div></div>
+    </div>
+
+    <!-- NUEVO: ESCENARIOS PROBABLES -->
+    <div style="margin: 15px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 10px; background: #0a151a;">
+        <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">📊 ESCENARIOS PROBABLES</h4>
+        <ul style="color:#ddd; font-size:0.75rem; padding-left:15px; margin:0;">
+            <li style="margin-bottom:5px;"><strong>Dominio Local:</strong> Presión alta y córners tempranos.</li>
+            <li><strong>Partido Cerrado:</strong> Alta probabilidad de under 2.5 goles.</li>
+        </ul>
     </div>
 
     <div style="background:#0a1a1a; padding:10px; border:1px solid #00ff88; border-radius:8px;">
-        <p style="color:#00ff88; font-weight:bold; font-size:0.75rem; margin:0;">💡 FACTOR X</p>
-        <p id="txtFactor" style="font-size:0.75rem; margin:5px 0 0 0;">Esperando datos...</p>
+        <p style="color:#00ff88; font-weight:bold; font-size:0.75rem; margin:0;">💡 FACTOR X (TENDENCIA REAL)</p>
+        <p style="font-size:0.75rem; margin:5px 0 0 0;">Alta incidencia ofensiva reciente.</p>
     </div>
-    <button style="background:#fff;" onclick="alert('Copiado al portapapeles')">COPIAR REPORTE</button>
+    
+    <button style="background:#fff;">COPIAR REPORTE ELITE</button>
 </div>
 
 <script>
-    function analizar() {
+    function generar() {
         const l = document.getElementById('eqL').value;
         const v = document.getElementById('eqV').value;
         if(l && v) {
             document.getElementById('resultado').style.display = 'block';
             document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-            document.getElementById('valBtts').innerText = "65%";
-            document.getElementById('valGoles').innerText = "60%";
-            document.getElementById('valCorners').innerText = "9.5+";
-            document.getElementById('txtAdn').innerText = l + " prioriza la presión alta.";
-            document.getElementById('txtObj').innerText = v + " necesita sumar puntos.";
-            document.getElementById('barra').style.width = "75%";
-            document.getElementById('txtFactor').innerText = "Alta probabilidad de juego directo por bandas.";
         }
     }
 </script>
