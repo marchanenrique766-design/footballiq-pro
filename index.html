@@ -2,65 +2,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FOOTBALLIQ PRO | ELITE</title>
+    <title>FOOTBALLIQ PRO</title>
     <style>
-        :root { --neon: #00ff88; --bg: #050505; --panel: #121212; }
-        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; }
+        .grid { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; }
         
-        /* Contenedor principal que ajusta el tamaño */
-        .grid-master { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 20px; 
-            max-width: 1200px; 
-            margin: auto; 
-        }
+        /* ESTO ES LO QUE LO MANTIENE OCULTO HASTA QUE SE ACTIVEN */
+        #zona-resultados { display: none; }
         
-        .panel { background: var(--panel); border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--neon); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; }
-        
-        /* ESTO ES LO QUE SOLUCIONA QUE APAREZCA ANTES DE TIEMPO */
-        #panel-resultados { display: none; }
-        
-        .metric { border: 1px solid #333; padding: 15px; border-radius: 10px; margin-bottom: 10px; text-align: center; }
-        .val { color: var(--neon); font-size: 24px; font-weight: bold; display: block; }
+        .caja-dato { border: 1px solid #333; padding: 15px; border-radius: 10px; margin-bottom: 10px; background: #1a1a1a; }
+        .valor { color: #00ff88; font-size: 20px; font-weight: bold; display: block; }
     </style>
 </head>
 <body>
 
-<div class="grid-master">
-    <div class="panel">
-        <h2>CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqA" placeholder="EQUIPO LOCAL">
-        <input type="text" id="eqB" placeholder="EQUIPO VISITANTE">
-        <button onclick="iniciarAnalisis()">ANALIZAR PARTIDO</button>
-    </div>
-
-    <div id="panel-resultados" style="display: contents;">
+<div class="container">
+    <div class="grid">
         <div class="panel">
-            <h2>MERCADOS Y STATS</h2>
-            <div class="metric">BTTS<span class="val">62%</span></div>
-            <div class="metric">+2.5 GOLES<span class="val">58%</span></div>
+            <h2>CONFIGURAR ANÁLISIS</h2>
+            <input type="text" id="eqA" placeholder="LOCAL">
+            <input type="text" id="eqB" placeholder="VISITANTE">
+            <button onclick="procesar()">ANALIZAR PARTIDO</button>
         </div>
-        <div class="panel">
-            <h2>MATRIZ DE RIESGO</h2>
-            <div class="metric">VOLATILIDAD<span class="val">45%</span></div>
-            <p>STAKE SUGERIDO: <b>3.0 / 5</b></p>
+
+        <div id="zona-resultados" class="panel">
+            <h2>RESULTADOS DEL ANÁLISIS</h2>
+            <div class="caja-dato">BTTS<span class="valor">62%</span></div>
+            <div class="caja-dato">+2.5 GOLES<span class="valor">58%</span></div>
+            <div class="caja-dato">CÓRNERS<span class="valor">Más de 9.5</span></div>
         </div>
     </div>
 </div>
 
 <script>
-    function iniciarAnalisis() {
+    function procesar() {
         const a = document.getElementById('eqA').value;
         const b = document.getElementById('eqB').value;
         
-        // Validación: solo muestra si hay texto en ambos campos
-        if(a.trim() !== "" && b.trim() !== "") {
-            document.getElementById('panel-resultados').style.display = 'contents';
+        if(a !== "" && b !== "") {
+            document.getElementById('zona-resultados').style.display = 'block';
         } else {
-            alert("Por favor, ingresa los nombres de los equipos.");
+            alert("Completa los campos");
         }
     }
 </script>
