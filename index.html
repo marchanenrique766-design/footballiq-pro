@@ -2,16 +2,19 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FOOTBALLIQ PRO | ELITE</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; }
         .app-container { max-width: 500px; margin: auto; }
         .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
         input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 18px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; }
-        .stat { font-size: 1.2rem; margin: 10px 0; color: #00ff88; font-weight: bold; }
-        .box { background: #000; padding: 15px; border-radius: 10px; border-left: 4px solid #00ff88; margin-top: 15px; }
+        
+        /* Nuevos estilos para las barras */
+        .bar-container { margin: 15px 0; }
+        .bar-label { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 5px; }
+        .bar-bg { background: #333; height: 8px; border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; background: #00ff88; transition: width 1s; }
     </style>
 </head>
 <body>
@@ -26,44 +29,37 @@
 
     <div id="dashboard" class="panel" style="display:none;">
         <h2 id="titulo">--</h2>
-        <div class="stat">BTTS: <span id="btts">--</span></div>
-        <div class="stat">+2.5 GOLES: <span id="goles">--</span></div>
-        <div class="stat">CÓRNERS: <span id="corners">--</span></div>
         
-        <div class="box">
-            <p id="jugador-clave" style="margin:0; font-weight:bold; color:#00ff88;"></p>
+        <div class="bar-container">
+            <div class="bar-label"><span>VOLUMEN OFENSIVO:</span> <span id="val-ofensivo">53%</span></div>
+            <div class="bar-bg"><div id="bar-ofensivo" class="bar-fill" style="width:53%"></div></div>
         </div>
-        
-        <div style="margin-top:20px;">
-            <p>💰 CUOTA MÍNIMA RENTABLE: <strong>1.30</strong></p>
-            <p>🎯 STAKE SUGERIDO: <strong>4.5/5</strong></p>
-            <h3 id="veredicto" style="color:#00ff88;">🏆 ALTA CONFIANZA</h3>
-            <p id="justificacion" style="font-size:0.9rem; font-style:italic;"></p>
+        <div class="bar-container">
+            <div class="bar-label"><span>INESTABILIDAD DEFENSIVA:</span> <span id="val-defensivo">52%</span></div>
+            <div class="bar-bg"><div id="bar-defensivo" class="bar-fill" style="width:52%; background:#ffaa00;"></div></div>
         </div>
-        
-        <button onclick="copiarReporte()" style="background:#fff; margin-top:15px;">COPIAR REPORTE ELITE</button>
+        <div class="bar-container">
+            <div class="bar-label"><span>FILTRO CONSISTENCIA IA:</span> <span id="val-filtro">75%</span></div>
+            <div class="bar-bg"><div id="bar-filtro" class="bar-fill" style="width:75%; background:#00ccff;"></div></div>
+        </div>
     </div>
 </div>
 
 <script>
     function analizar() {
-        const l = document.getElementById('eqLocal').value.toUpperCase();
-        const v = document.getElementById('eqVis').value.toUpperCase();
-        if(!l || !v) return;
-
         document.getElementById('dashboard').style.display = 'block';
-        document.getElementById('titulo').innerText = l + " VS " + v;
-        document.getElementById('btts').innerText = (Math.floor(Math.random() * 20) + 50) + "%";
-        document.getElementById('goles').innerText = (Math.floor(Math.random() * 20) + 45) + "%";
-        document.getElementById('corners').innerText = "MÁS DE 8.5 (Prob: 88%)";
-        document.getElementById('jugador-clave').innerText = "ESTRELLA (" + l + "): 85% de incidencia en jugadas de peligro.";
-        document.getElementById('justificacion').innerText = "Justificación: El estudio táctico de ambos equipos sugiere un partido abierto con alta probabilidad de dominio del local.";
-    }
+        document.getElementById('titulo').innerText = document.getElementById('eqLocal').value.toUpperCase() + " VS " + document.getElementById('eqVis').value.toUpperCase();
+        
+        // Simulación de valores dinámicos
+        const ofen = Math.floor(Math.random() * 40) + 40;
+        const defe = Math.floor(Math.random() * 40) + 30;
+        const filt = 75;
 
-    function copiarReporte() {
-        const texto = `⭐ REPORTE ELITE: ${document.getElementById('titulo').innerText}\nBTTS: ${document.getElementById('btts').innerText}\n+2.5 GOLES: ${document.getElementById('goles').innerText}\nVeredicto: ALTA CONFIANZA`;
-        navigator.clipboard.writeText(texto);
-        alert("¡Reporte copiado!");
+        document.getElementById('val-ofensivo').innerText = ofen + "%";
+        document.getElementById('bar-ofensivo').style.width = ofen + "%";
+        
+        document.getElementById('val-defensivo').innerText = defe + "%";
+        document.getElementById('bar-defensivo').style.width = defe + "%";
     }
 </script>
 </body>
