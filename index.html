@@ -3,107 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football IQ PRO | ELITE</title>
+    <title>Football IQ PRO | ANALIZADOR MATEMÁTICO</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
-        .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 10px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
+        .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
         input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 10px; cursor: pointer; }
-        .tag { padding: 3px 7px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; margin: 1px; }
-        .filter-btn { padding: 8px; font-size: 0.7rem; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; cursor: pointer; flex: 1; }
-        .filter-btn:active { background: #00ff88; color: #000; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h2 style="color:#00ff88; font-size:1.1rem; margin:0;">CONFIGURAR ANÁLISIS</h2>
-    <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
-    <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    <button onclick="generar('general')">GENERAR REPORTE ELITE</button>
+    <h2 style="color:#00ff88; font-size:1.1rem; margin-bottom:10px;">DATOS TÉCNICOS</h2>
+    <input type="number" id="promGoles" placeholder="Promedio Goles (ej: 2.5)" step="0.1">
+    <input type="number" id="promCorners" placeholder="Promedio Córners (ej: 9.5)" step="0.1">
+    <button onclick="calcular()">CALCULAR PROBABILIDAD REAL</button>
 </div>
 
 <div id="resultado" class="panel" style="display:none;">
-    <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
-    
-    <div id="estadisticas" style="font-size:0.9rem; margin-bottom:10px;">
-        BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5
-    </div>
-
-    <div style="text-align:center; margin-bottom:15px;">
-        <span class="tag" style="background:#ffaa00;">E</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#00ff88;">V</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#ffaa00;">E</span>
-    </div>
-
-    <h3 style="color:#00ccff; font-size:0.85rem; margin:0;">🔍 CONTEXTO PROFUNDO</h3>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN:</strong> Presión alta agresiva.</p>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar posición.</p>
-
-    <!-- Filtros Inteligentes -->
-    <div style="display: flex; gap: 5px; margin: 15px 0;">
-        <button class="filter-btn" onclick="generar('goles')">GOLES</button>
-        <button class="filter-btn" onclick="generar('corners')">CÓRNERS</button>
-        <button class="filter-btn" onclick="generar('ganador')">GANADOR</button>
-    </div>
-
-    <!-- ANÁLISIS IA -->
-    <div style="margin: 15px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 10px; background: #0a151a;">
-        <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">🤖 ANÁLISIS TÁCTICO IA</h4>
-        <p id="caja-analisis" style="font-size:0.75rem; color:#eee; line-height:1.4;"></p>
-    </div>
-
-    <!-- SEMÁFORO -->
-    <div style="margin: 15px 0; padding: 10px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; text-align: center;">
-        <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">NIVEL DE SEGURIDAD</div>
-        <div style="display: flex; gap: 5px; justify-content: center;">
-            <div style="height: 10px; width: 30%; border-radius: 5px; background: #00ff88;"></div>
-            <div style="height: 10px; width: 30%; border-radius: 5px; background: #222;"></div>
-            <div style="height: 10px; width: 30%; border-radius: 5px; background: #222;"></div>
-        </div>
-    </div>
-
-    <!-- RIESGO -->
-    <div style="margin: 15px 0; background: #1a1a1a; padding: 12px; border-radius: 8px; border-left: 4px solid #00ff88;">
-        <p style="font-size:0.8rem; margin:5px 0;">💰 <strong>CUOTA:</strong> 1.30 | 🎯 <strong>STAKE:</strong> 4.5/5</p>
-    </div>
-    
-    <button style="background:#fff;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
+    <h2 style="text-align:center; color:#00ff88; font-size:1.2rem;">RESULTADO DEL CÁLCULO</h2>
+    <div id="caja-reporte" style="font-size: 0.9rem; color: #eee; line-height: 1.6; border-top: 1px solid #333; padding-top: 10px;"></div>
 </div>
 
 <script>
-    function generar(tipo) {
-        const l = document.getElementById('eqL').value.trim();
-        const v = document.getElementById('eqV').value.trim();
+    function calcular() {
+        const goles = parseFloat(document.getElementById('promGoles').value);
+        const corners = parseFloat(document.getElementById('promCorners').value);
         
-        if(l && v) {
+        if(!isNaN(goles) && !isNaN(corners)) {
             document.getElementById('resultado').style.display = 'block';
-            document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
             
-            // Lógica para detectar equipos con tendencia "Under"
-            const equiposUnder = ['river', 'boca', 'independiente', 'racing', 'san lorenzo', 'velez'];
-            const esUnder = equiposUnder.includes(l.toLowerCase()) || equiposUnder.includes(v.toLowerCase());
+            // Lógica de cálculo matemático real (puedes ajustar los factores)
+            const probGoles = (goles / 4) * 100;
+            const probCorners = (corners / 12) * 100;
+            const seguridad = (probGoles + probCorners) / 2;
             
-            // Ajuste dinámico de datos
-            const btts = esUnder ? "32%" : "59%";
-            const goles = esUnder ? "41%" : "54%";
-            const corners = esUnder ? "7.5" : "8.5";
+            let consejo = seguridad > 60 ? "ALTA OPORTUNIDAD" : "MERCADO VOLÁTIL (EVITAR)";
             
-            document.getElementById('estadisticas').innerText = `BTTS: ${btts} | +2.5 GOLES: ${goles} | CÓRNERS: ${corners}`;
-
-            // Análisis inteligente de IA
-            let analisis = "";
-            if (esUnder) {
-                analisis = "<strong>Análisis IA:</strong> Los registros tácticos de estos equipos muestran un estilo defensivo muy marcado. La probabilidad de un partido cerrado es alta. <strong>Recomendación:</strong> Enfocarse en mercados de Under 2.5.";
-            } else if(tipo === 'goles') {
-                analisis = "<strong>Análisis Goles:</strong> La estadística muestra un historial de partidos abiertos. Se espera un ritmo alto con alta probabilidad de +2.5 goles.";
-            } else if(tipo === 'corners') {
-                analisis = "<strong>Análisis Córners:</strong> Debido al estilo de juego por bandas de ambos equipos, este partido presenta una tendencia clara a superar los 9.5 córners.";
-            } else if(tipo === 'ganador') {
-                analisis = "<strong>Análisis Ganador:</strong> El rendimiento reciente y la localía otorgan una ligera ventaja táctica a " + l + ".";
-            } else {
-                analisis = "<strong>Análisis General:</strong> Enfrentamiento táctico de alta intensidad. Recomendamos observar los primeros 15 minutos antes de operar.";
-            }
-            
-            document.getElementById('caja-analisis').innerHTML = analisis;
+            document.getElementById('caja-reporte').innerHTML = `
+                <p>📊 <strong>Probabilidad Goles:</strong> ${probGoles.toFixed(1)}%</p>
+                <p>🚩 <strong>Probabilidad Córners:</strong> ${probCorners.toFixed(1)}%</p>
+                <p style="color:#00ff88;">🎯 <strong>ESTADO:</strong> ${consejo}</p>
+                <p style="font-size:0.8rem; color:#888;">*Basado en los datos ingresados. No especules si el valor es menor al 50%.</p>
+            `;
+        } else {
+            alert("Por favor, ingresa números válidos.");
         }
     }
 </script>
