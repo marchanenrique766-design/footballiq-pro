@@ -4,42 +4,39 @@
     <meta charset="UTF-8">
     <title>FOOTBALLIQ PRO ELITE</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 15px; }
-        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 1200px; margin: auto; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        .val { color: #00ff88; font-size: 22px; font-weight: bold; }
-        h2 { color: #00ff88; text-transform: uppercase; margin-top: 0; }
-        .factor-x { background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff88; margin-top: 15px; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 10px; }
+        .grid-main { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 1200px; margin: auto; }
+        .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; }
+        h2 { color: #00ff88; font-size: 18px; text-transform: uppercase; margin-bottom: 15px; }
+        .val { color: #00ff88; font-weight: bold; }
+        .heat-cell { padding: 5px 10px; border-radius: 4px; display: inline-block; margin-right: 5px; font-weight: bold; }
+        .v { background: #00ff88; color: #000; } .e { background: #ffcc00; color: #000; }
     </style>
 </head>
 <body>
 
-<div class="dashboard">
-    <!-- Panel 1: Configuración y Stats -->
+<div class="grid-main">
+    <!-- Panel Izquierdo: Matriz de Riesgo y Trading Stats -->
     <div class="panel">
-        <h2>Football IQ PRO</h2>
-        <input type="text" placeholder="LOCAL" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white;">
-        <input type="text" placeholder="VISITANTE" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white;">
-        <button style="width:100%; padding:15px; background:#00ff88; border:none; font-weight:bold;">ANALIZAR PARTIDO</button>
-        
-        <div class="factor-x">
-            <strong>FACTOR X (TENDENCIA REAL)</strong>
-            <p>Análisis en tiempo real de rendimiento local y visitas europeas.</p>
+        <h2>MATRIZ DE RIESGO DE TRADING</h2>
+        <div style="display:flex; justify-content:space-between;">
+            <div>Volumen Ofensivo: <span class="val">60%</span></div>
+            <div>Inestabilidad: <span class="val">45%</span></div>
         </div>
+        <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
+        <h2>CONSOLE // TRADING STATS</h2>
+        <p>Eficacia (Win Rate): <span class="val">0%</span></p>
+        <p>Rendimiento Neto: <span class="val">+0.00 U</span></p>
     </div>
 
-    <!-- Panel 2: Indicadores y Matriz -->
+    <!-- Panel Derecho: Cobertura Premium e Inteligencia -->
     <div class="panel">
-        <h2>MATRIZ DE RIESGO</h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <div class="panel">Volumen Ofensivo<br><span class="val">60%</span></div>
-            <div class="panel">Inestabilidad<br><span class="val">45%</span></div>
-        </div>
-        <h3 style="color:#aaa;">STAKE SUGERIDO: <span class="val">3.0 / 5</span></h3>
-        
-        <div class="panel" style="margin-top:15px;">
-            <h3>BTTS: <span class="val">62%</span> | +2.5 GOLES: <span class="val">58%</span></h3>
-            <p>CÓRNERS TOTALES: Más de 9.5</p>
+        <h2>COBERTURA PREMIUM INTELLIGENCE</h2>
+        <p>Heatmap de Forma:</p>
+        <div>Arsenal: <span class="heat-cell v">V</span><span class="heat-cell e">E</span><span class="heat-cell v">V</span></div>
+        <div style="margin-top:10px;">Valor Clave (Player Props): <span class="val">Bukayo Saka (75% Prob.)</span></div>
+        <div style="margin-top:15px; background:#1a1a1a; padding:10px; border-left:4px solid #00ff88;">
+            <strong>APUESTA SUGERIDA KELLY: $6.00</strong>
         </div>
     </div>
 </div>
