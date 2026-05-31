@@ -1,76 +1,41 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | FULL ELITE</title>
-    <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
-        .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 15px; margin-bottom: 15px; }
-        input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; }
-        
-        /* Estilos de Barras */
-        .bar-container { margin: 12px 0; }
-        .bar-label { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; }
-        .bar-bg { background: #222; height: 6px; border-radius: 3px; margin-top: 4px; }
-        .bar-fill { height: 100%; border-radius: 3px; }
-    </style>
-</head>
-<body>
+<!-- Añadir este bloque dentro de tu div "dashboard" -->
+<div class="panel" style="background:#121212; border:1px solid #333; margin-top:15px;">
+    <!-- Indicadores de forma (E-D-V-D-E) -->
+    <div style="text-align:center; margin-bottom:15px;">
+        <span style="background:#ffaa00; padding:5px 10px; border-radius:4px; margin:2px;">E</span>
+        <span style="background:#ff4444; padding:5px 10px; border-radius:4px; margin:2px;">D</span>
+        <span style="background:#00ff88; padding:5px 10px; border-radius:4px; margin:2px;">V</span>
+        <span style="background:#ff4444; padding:5px 10px; border-radius:4px; margin:2px;">D</span>
+        <span style="background:#ffaa00; padding:5px 10px; border-radius:4px; margin:2px;">E</span>
+    </div>
 
-<div class="panel">
-    <h2 style="color:#00ff88; font-size:1.2rem;">CONFIGURAR ANÁLISIS</h2>
-    <input type="text" id="eqLocal" placeholder="EQUIPO LOCAL">
-    <input type="text" id="eqVis" placeholder="EQUIPO VISITANTE">
-    <button onclick="analizar()">ANALIZAR PARTIDO</button>
-</div>
-
-<div id="dashboard" class="panel" style="display:none;">
-    <h2 id="titulo" style="margin-top:0;">--</h2>
+    <h3 style="color:#00ccff; font-size:0.9rem; border-bottom:1px solid #333; padding-bottom:5px;">🔍 CONTEXTO PROFUNDO</h3>
     
-    <div style="color:#00ff88; font-size:1rem; margin-bottom:10px;">
-        BTTS: <span id="btts">--</span> | +2.5 GOLES: <span id="goles">--</span><br>
-        CÓRNERS: <span id="corners">--</span>
+    <!-- ADN Táctico -->
+    <div style="margin:10px 0;">
+        <p style="color:#00ccff; font-weight:bold; font-size:0.85rem; margin:0;">🧬 ADN TÁCTICO:</p>
+        <p id="adn-tactico" style="font-size:0.8rem; color:#ccc; line-height:1.4;">Cargando perfil táctico...</p>
     </div>
 
-    <div style="background:#000; padding:10px; border-left:4px solid #00ff88; margin-bottom:15px;">
-        <p id="jugador-clave" style="margin:0; font-size:0.9rem;"></p>
+    <!-- Objetivo -->
+    <div style="margin:10px 0;">
+        <p style="color:#ff4444; font-weight:bold; font-size:0.85rem; margin:0;">🎯 OBJETIVO:</p>
+        <p id="objetivo" style="font-size:0.8rem; color:#ccc; line-height:1.4;">Cargando motivación del equipo...</p>
     </div>
-
-    <!-- Barras -->
-    <div class="bar-container"><div class="bar-label"><span>VOLUMEN OFENSIVO:</span> <span>53%</span></div><div class="bar-bg"><div class="bar-fill" style="width:53%; background:#00ff88;"></div></div></div>
-    <div class="bar-container"><div class="bar-label"><span>INESTABILIDAD DEFENSIVA:</span> <span>52%</span></div><div class="bar-bg"><div class="bar-fill" style="width:52%; background:#ffaa00;"></div></div></div>
-    <div class="bar-container"><div class="bar-label"><span>FILTRO CONSISTENCIA IA:</span> <span>75%</span></div><div class="bar-bg"><div class="bar-fill" style="width:75%; background:#00ccff;"></div></div></div>
-
-    <div style="background:#0a1a1a; padding:10px; border-radius:8px; border:1px solid #00ff88; margin:15px 0;">
-        <p style="color:#00ff88; font-weight:bold; margin:0 0 5px 0; font-size:0.8rem;">💡 FACTOR X (TENDENCIA REAL)</p>
-        <p id="factor-x" style="font-size:0.8rem; margin:0;"></p>
-    </div>
-
-    <button onclick="copiarReporte()" style="background:#fff; color:#000;">COPIAR REPORTE ELITE</button>
 </div>
 
 <script>
+    // Actualización de la función analizar original
     function analizar() {
-        const l = document.getElementById('eqLocal').value.toUpperCase();
-        const v = document.getElementById('eqVis').value.toUpperCase();
-        if(!l || !v) return;
-
-        document.getElementById('dashboard').style.display = 'block';
-        document.getElementById('titulo').innerText = l + " VS " + v;
-        document.getElementById('btts').innerText = "59%";
-        document.getElementById('goles').innerText = "54%";
-        document.getElementById('corners').innerText = "MÁS DE 8.5 (Prob: 88%)";
-        document.getElementById('jugador-clave').innerText = "ESTRELLA (" + l + "): 85% de incidencia en jugadas de peligro.";
-        document.getElementById('factor-x').innerText = l + " ha mostrado una tendencia ofensiva agresiva en sus últimos 3 partidos, superando la media de corners.";
-    }
-
-    function copiarReporte() {
-        const t = `⚽ ANÁLISIS ${document.getElementById('titulo').innerText}\nBTTS: ${document.getElementById('btts').innerText}\n+2.5 Goles: ${document.getElementById('goles').innerText}\nCórners: ${document.getElementById('corners').innerText}\n¡Análisis generado por FootballIQ PRO!`;
-        navigator.clipboard.writeText(t);
-        alert("Reporte copiado para compartir");
+        // ... (tu código existente) ...
+        
+        // Nueva lógica para el contexto profundo
+        document.getElementById('adn-tactico').innerText = 
+            "Bragantino ejerce una presión alta agresiva buscando transiciones rápidas por las bandas, " +
+            "mientras que Internacional se estructura en un bloque medio compacto.";
+            
+        document.getElementById('objetivo').innerText = 
+            "Bragantino urge de puntos para alejarse de la zona de descenso; " +
+            "Internacional busca consolidarse en puestos de clasificación directa.";
     }
 </script>
-</body>
-</html>
