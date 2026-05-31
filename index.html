@@ -1,34 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <title>Football IQ PRO - Analista Experto</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; padding: 20px; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 10px; }
-        input, button { width: 100%; padding: 15px; margin: 5px 0; background: #222; color: #fff; border: 1px solid #444; }
-        button { background: #39ff14; color: #000; font-weight: bold; cursor: pointer; }
+        :root { --main: #39ff14; --bg: #0a0a0a; }
+        body { background: var(--bg); color: #fff; font-family: 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 20px; }
+        .wrapper { max-width: 600px; margin: auto; border: 1px solid #333; padding: 25px; border-radius: 12px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: var(--main); border: none; font-weight: bold; cursor: pointer; border-radius: 6px; margin-top: 10px; }
+        .report { display: none; margin-top: 25px; border-top: 1px solid #333; padding-top: 20px; }
+        .title { color: var(--main); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; }
+        .text { margin-bottom: 20px; line-height: 1.6; color: #ccc; }
     </style>
 </head>
 <body>
-    <div class="panel">
-        <h2>Football IQ PRO</h2>
-        <input id="l" placeholder="LOCAL">
-        <input id="v" placeholder="VISITANTE">
-        <button onclick="run()">GENERAR ANÁLISIS</button>
-        <div id="res" style="margin-top:20px;"></div>
+    <div class="wrapper">
+        <h2 style="margin-top:0;">Football IQ PRO</h2>
+        <input id="local" placeholder="EQUIPO LOCAL">
+        <input id="visit" placeholder="EQUIPO VISITANTE">
+        <button onclick="generar()">GENERAR ANÁLISIS EXPERTO</button>
+
+        <div id="report" class="report">
+            <h3 id="matchName" style="color:var(--main)"></h3>
+            <div class="title">ADN Táctico</div>
+            <div class="text" id="adn"></div>
+            <div class="title">Objetivo del Encuentro</div>
+            <div class="text" id="obj"></div>
+            <div class="title">Análisis de Mercado</div>
+            <div class="text" id="mercado"></div>
+        </div>
     </div>
 
     <script>
-        function run() {
-            const L = document.getElementById('l').value;
-            const V = document.getElementById('v').value;
-            const div = document.getElementById('res');
-            div.innerHTML = `
-                <h3 style="color:#39ff14">${L.toUpperCase()} VS ${V.toUpperCase()}</h3>
-                <p>⚽ Goles: Más 2.5</p>
-                <p>⛳ Córners: Más 9.5</p>
-                <p><strong>ADN TÁCTICO:</strong> ${L} busca presión alta, ${V} mantiene bloque medio.</p>
-                <p><strong>OBJETIVO:</strong> Puntos vitales para la clasificación.</p>
-            `;
+        function generar() {
+            const L = document.getElementById('local').value;
+            const V = document.getElementById('visit').value;
+            if(!L || !V) return;
+
+            // Datos de Análisis Técnico
+            document.getElementById('matchName').innerText = `${L.toUpperCase()} VS ${V.toUpperCase()}`;
+            document.getElementById('adn').innerText = `${L} prioriza un bloque defensivo compacto con transiciones rápidas por los costados. Por su parte, ${V} mantiene una presión alta asfixiante, buscando recuperar en campo rival.`;
+            document.getElementById('obj').innerText = `${L} necesita sumar tres puntos para escalar posiciones en la tabla. ${V} busca consolidar su racha positiva y acercarse a puestos de copas internacionales.`;
+            document.getElementById('mercado').innerText = "Goles: Más 2.5 | Córners: Más 9.5 | Tarjetas: Más 3.5";
+            
+            document.getElementById('report').style.display = 'block';
         }
     </script>
 </body>
