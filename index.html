@@ -5,27 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FOOTBALLIQ PRO</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; display: flex; justify-content: center; padding: 15px; }
         .app { width: 100%; max-width: 400px; }
-        .card { background: #121212; padding: 25px; border-radius: 20px; border: 1px solid #333; }
-        h3 { color: #00ff88; text-align: center; margin-bottom: 25px; }
+        .card { background: #121212; padding: 20px; border-radius: 20px; border: 1px solid #333; }
+        h3 { color: #00ff88; text-align: center; margin-bottom: 20px; }
         
-        /* Selector nativo estable para móvil */
-        select { 
-            width: 100%; 
-            padding: 16px; 
-            margin-bottom: 20px; 
-            background: #1a1a1a; 
-            color: #fff; 
-            border: 1px solid #444; 
-            border-radius: 12px; 
-            font-size: 16px; 
+        /* Botones de selección en lugar de selectores que fallan */
+        .opcion { 
+            width: 100%; padding: 15px; margin: 8px 0; background: #1a1a1a; 
+            color: #fff; border: 1px solid #444; border-radius: 12px; 
+            text-align: left; cursor: pointer; font-size: 15px;
         }
-        
-        button { width: 100%; padding: 18px; background: #00ff88; color: #000; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; }
+        .opcion:active { background: #00ff88; color: #000; }
         
         #panel { margin-top: 25px; padding: 20px; border-radius: 15px; border: 1px solid #00ff88; display: none; background: #000; }
-        .res-text { font-size: 16px; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -33,29 +26,21 @@
 <div class="app">
     <div class="card">
         <h3>FOOTBALLIQ PRO</h3>
+        <p style="color:#888; font-size: 14px; text-align: center;">Selecciona el partido:</p>
         
-        <select id="partidoSelector">
-            <option value="" disabled selected>Selecciona un partido...</option>
-            <option value="Real Madrid vs Barcelona">La Liga: Real Madrid vs Barcelona</option>
-            <option value="Man City vs Liverpool">Premier: Man City vs Liverpool</option>
-            <option value="Flamengo vs Coritiba">Brasileirão: Flamengo vs Coritiba</option>
-            <option value="River Plate vs Boca Juniors">Superliga: River Plate vs Boca Juniors</option>
-        </select>
-
-        <button type="button" onclick="mostrar()">GENERAR PRONÓSTICO</button>
+        <button class="opcion" onclick="analizar('Real Madrid vs Barcelona')">Real Madrid vs Barcelona</button>
+        <button class="opcion" onclick="analizar('Man City vs Liverpool')">Man City vs Liverpool</button>
+        <button class="opcion" onclick="analizar('Flamengo vs Coritiba')">Flamengo vs Coritiba</button>
+        <button class="opcion" onclick="analizar('River Plate vs Boca')">River Plate vs Boca Juniors</button>
 
         <div id="panel">
-            <div id="res" class="res-text"></div>
+            <div id="res" style="font-size: 16px;"></div>
         </div>
     </div>
 </div>
 
 <script>
-    function mostrar() {
-        const sel = document.getElementById('partidoSelector');
-        const partido = sel.options[sel.selectedIndex].text;
-        if(sel.value === "") return alert("Por favor selecciona un partido");
-        
+    function analizar(partido) {
         document.getElementById('panel').style.display = 'block';
         document.getElementById('res').innerHTML = `
             <b style="color:#00ff88">ANÁLISIS: ${partido.toUpperCase()}</b><br><br>
