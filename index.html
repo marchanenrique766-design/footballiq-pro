@@ -2,50 +2,48 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FOOTBALLIQ PRO - INTEGRACIÓN DE DATOS</title>
+    <title>FOOTBALLIQ PRO | ELITE</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1100px; margin: auto; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 12px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: #00ff88; border-radius: 6px; }
-        button { width: 100%; padding: 15px; background: #00ff88; border:none; border-radius:6px; font-weight:bold; cursor:pointer; }
-        .data-val { color: #00ff88; font-size: 1.5em; font-weight: bold; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: auto; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
+        
+        /* ESTO OCULTA TODO HASTA QUE SE ACTIVEN LOS DATOS */
+        #analisisResultados { display: none; }
+        
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: #00ff88; border-radius: 8px; }
+        button { width: 100%; padding: 15px; background: #00ff88; border: none; font-weight: bold; cursor: pointer; border-radius: 8px; }
+        .data-val { color: #00ff88; font-size: 24px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="grid">
-    <!-- PANEL DE ENTRADA (Lógica de Google Studio) -->
+<div class="dashboard">
     <div class="panel">
         <h2 style="color:#00ff88;">CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="equipoLocal" placeholder="LOCAL">
-        <input type="text" id="equipoVisitante" placeholder="VISITANTE">
-        <button onclick="procesarDatos()">GENERAR PRONÓSTICO IA</button>
+        <input type="text" id="local" placeholder="LOCAL">
+        <input type="text" id="visitante" placeholder="VISITANTE">
+        <button onclick="activar()">GENERAR ANÁLISIS IA</button>
     </div>
 
-    <!-- PANEL DE RESULTADOS (Dashboard) -->
-    <div id="dashboard" class="panel" style="display:none;">
-        <h2 id="tituloEvento" style="color:#00ff88;"></h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div>BTTS<br><span class="data-val">62%</span></div>
-            <div>+2.5 GOLES<br><span class="data-val">58%</span></div>
-        </div>
-        <p>CÓRNERS: <span class="data-val">Más de 9.5</span></p>
-        <div style="background:#1a1a1a; padding:10px; border-left:4px solid #00ff88;">
-            <strong>FACTOR X (TENDENCIA):</strong>
-            <p id="tendenciaText"></p>
+    <div id="analisisResultados" class="panel">
+        <h2 id="titulo"></h2>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div class="panel">BTTS<br><span class="data-val">62%</span></div>
+            <div class="panel">+2.5 GOLES<br><span class="data-val">58%</span></div>
         </div>
     </div>
 </div>
 
 <script>
-    function procesarDatos() {
-        const local = document.getElementById('equipoLocal').value;
-        const visitante = document.getElementById('equipoVisitante').value;
-        if(local && visitante) {
-            document.getElementById('tituloEvento').innerText = local.toUpperCase() + " VS " + visitante.toUpperCase();
-            document.getElementById('tendenciaText').innerText = local + " mantiene una tendencia de alta intensidad, mientras que " + visitante + " muestra vulnerabilidad defensiva en sus últimos 10 encuentros.";
-            document.getElementById('dashboard').style.display = 'block';
+    function activar() {
+        const l = document.getElementById('local').value;
+        const v = document.getElementById('visitante').value;
+        if(l && v) {
+            document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
+            document.getElementById('analisisResultados').style.display = 'block';
+        } else {
+            alert("Completa los equipos");
         }
     }
 </script>
