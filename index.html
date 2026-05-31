@@ -1,52 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football IQ PRO | ELITE</title>
-    <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 15px; width: 100%; box-sizing: border-box; }
-        input, select { width: 100%; padding: 15px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
-        button { width: 100%; padding: 18px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 15px; cursor: pointer; font-size: 1rem; }
-    </style>
-</head>
-<body>
-
-<div class="panel">
-    <h2 style="color:#00ff88; font-size:1.3rem;">CONFIGURAR ANÁLISIS</h2>
-    <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
-    <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    <select id="modoIA">
-        <option value="seguridad">MODO: SEGURIDAD</option>
-        <option value="volumen">MODO: VOLUMEN</option>
-        <option value="riesgo">MODO: ALTO RIESGO</option>
-    </select>
-    <button onclick="generarReporte()">GENERAR REPORTE ELITE</button>
-</div>
-
-<div id="resultado" class="panel" style="display:none;">
-    <h2 id="titulo" style="text-align:center; color:#00ff88; font-size:1.5rem;">--</h2>
-    <div style="font-size:0.9rem; text-align:center; color:#ddd; margin-bottom:15px;">BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5</div>
-    
-    <div style="border: 1px solid #00ccff; border-radius: 8px; padding: 15px; background: #0a151a;">
-        <h4 style="color:#00ccff; margin:0 0 10px 0;">🔍 CONTEXTO PROFUNDO</h4>
-        <p id="caja-contexto" style="font-size:0.95rem;"></p>
-    </div>
-
-    <div style="margin-top: 15px; border: 1px solid #00ff88; border-radius: 8px; padding: 15px; background: #0a2a1a;">
-        <h4 style="color:#00ff88; margin:0 0 10px 0;">🤖 ANÁLISIS HISTÓRICO (H2H)</h4>
-        <p id="caja-analisis" style="font-size:0.95rem;"></p>
-    </div>
-
-    <div style="margin-top: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #fff; text-align: center;">
-        <p style="font-size:0.8rem; color:#888;">GESTIÓN DE RIESGO PROFESIONAL</p>
-        <p id="stake-profesional" style="color:#00ff88; font-size:1.2rem; font-weight:bold;"></p>
-    </div>
-    
-    <button style="background:#fff;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
-</div>
-
 <script>
     function generarReporte() {
         const l = document.getElementById('eqL').value.trim().toUpperCase();
@@ -65,22 +16,24 @@
 
         if (l === "BOCA" || v === "BOCA") {
             contexto = "Presión alta agresiva y consolidación de puntos en tabla.";
-            analisis = (modo === 'seguridad') ? "Tendencia a Menos 2.5 Goles por solidez defensiva histórica." : "Tendencia a Más 1.5 Goles por necesidad de victoria.";
+            mercado = (modo === 'seguridad') ? "Menos 2.5 Goles" : "Más 1.5 Goles";
+            analisis = "Tendencia a resultados cerrados por solidez defensiva histórica.";
         } else if (l === "PSG" || v === "PSG") {
             contexto = "Transición rápida y búsqueda de espacios en profundidad.";
-            analisis = (modo === 'seguridad') ? "Tendencia a Más 1.5 Goles por estilo ofensivo." : "Tendencia a Más 8.5 Córners por juego por bandas.";
+            mercado = (modo === 'seguridad') ? "Más 1.5 Goles" : "Más 8.5 Córners";
+            analisis = "Tendencia a juego vertical con alta frecuencia de tiros de esquina.";
         } else {
             contexto = "Partido con alta disputa en mediocampo y posesión dividida.";
+            mercado = (modo === 'seguridad') ? "Menos 2.5 Goles" : "Más 1.5 Goles";
             analisis = "Tendencia equilibrada según historial directo reciente.";
         }
 
         stake = (modo === 'seguridad') ? "STAKE 8/10 (Muy Alta)" : 
                 (modo === 'volumen') ? "STAKE 6/10 (Alta)" : "STAKE 3/10 (Moderada)";
 
+        // Actualizamos los campos incluyendo el Pronóstico
         document.getElementById('caja-contexto').innerText = contexto;
-        document.getElementById('caja-analisis').innerText = analisis;
+        document.getElementById('caja-analisis').innerHTML = "<strong>Pronóstico: " + mercado + "</strong><br>" + analisis;
         document.getElementById('stake-profesional').innerText = stake;
     }
 </script>
-</body>
-</html>
