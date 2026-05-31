@@ -3,13 +3,19 @@ async function analizar() {
             const v = document.getElementById('visit').value;
             document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
             
-            // Llamamos a nuestro puente de seguridad que creamos en la carpeta /api
-            const respuesta = await fetch(`/api/get-data?team=${l}`);
-            const datos = await respuesta.json();
+            try {
+                // Llamamos a nuestro puente
+                const respuesta = await fetch(`/api/get-data?team=${l}`);
+                const datos = await respuesta.json();
+                
+                // DIAGNÓSTICO: Si hay datos, los mostramos en consola para ver qué trae
+                console.log(datos); 
+                
+                document.getElementById('adn').innerText = "CONEXIÓN EXITOSA";
+                document.getElementById('btts').innerText = "99"; // Cambiamos a 99 para ver si esto cambia en pantalla
+            } catch (error) {
+                document.getElementById('adn').innerText = "ERROR DE CONEXIÓN";
+            }
             
-            document.getElementById('adn').innerText = "Datos sincronizados con Football IQ PRO.";
-            // Aquí mostraremos los datos que vengan de la API cuando los procesemos
-            document.getElementById('btts').innerText = "90"; 
-            document.getElementById('stake').innerText = "3";
             document.getElementById('resultado').style.display = 'block';
         }
