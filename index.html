@@ -4,47 +4,45 @@
     <meta charset="UTF-8">
     <title>FOOTBALLIQ PRO ELITE</title>
     <style>
-        body { background-color: #050505; color: #ffffff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: auto; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 15px; }
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 1200px; margin: auto; }
         .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        h2 { color: #00ff88; margin-top: 0; }
-        .stat-val { color: #00ff88; font-size: 24px; font-weight: bold; }
-        .risk-box { border: 1px solid #ff4444; padding: 15px; border-radius: 10px; color: #ff4444; margin-top: 10px; }
+        .val { color: #00ff88; font-size: 22px; font-weight: bold; }
+        h2 { color: #00ff88; text-transform: uppercase; margin-top: 0; }
+        .factor-x { background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff88; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-<div class="grid-container">
+<div class="dashboard">
+    <!-- Panel 1: Configuración y Stats -->
     <div class="panel">
-        <h2>CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqA" placeholder="EQUIPO A (LOCAL)" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:8px;">
-        <input type="text" id="eqB" placeholder="EQUIPO B (VISITANTE)" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:8px;">
-        <button onclick="activarPoderes()" style="width:100%; padding:15px; background:#00ff88; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">INICIAR ANÁLISIS ELITE</button>
+        <h2>Football IQ PRO</h2>
+        <input type="text" placeholder="LOCAL" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white;">
+        <input type="text" placeholder="VISITANTE" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white;">
+        <button style="width:100%; padding:15px; background:#00ff88; border:none; font-weight:bold;">ANALIZAR PARTIDO</button>
         
-        <div id="results" style="display:none; margin-top:20px;">
-            <h3>TRADING STATS</h3>
-            <p>Eficacia: <span class="stat-val">0%</span></p>
-            <div class="risk-box">⚠ ADVERTENCIA: ALTO RIESGO</div>
+        <div class="factor-x">
+            <strong>FACTOR X (TENDENCIA REAL)</strong>
+            <p>Análisis en tiempo real de rendimiento local y visitas europeas.</p>
         </div>
     </div>
 
+    <!-- Panel 2: Indicadores y Matriz -->
     <div class="panel">
         <h2>MATRIZ DE RIESGO</h2>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <div class="panel">Volumen Ofensivo<br><span class="stat-val">60%</span></div>
-            <div class="panel">Inestabilidad<br><span class="stat-val">45%</span></div>
+            <div class="panel">Volumen Ofensivo<br><span class="val">60%</span></div>
+            <div class="panel">Inestabilidad<br><span class="val">45%</span></div>
         </div>
-        <h3 style="margin-top:20px;">STAKE SUGERIDO</h3>
-        <div class="stat-val">3.0 / 5</div>
-        <p style="font-size: 12px; color: #aaa;">Gestión de riesgo calculada para tu banca.</p>
+        <h3 style="color:#aaa;">STAKE SUGERIDO: <span class="val">3.0 / 5</span></h3>
+        
+        <div class="panel" style="margin-top:15px;">
+            <h3>BTTS: <span class="val">62%</span> | +2.5 GOLES: <span class="val">58%</span></h3>
+            <p>CÓRNERS TOTALES: Más de 9.5</p>
+        </div>
     </div>
 </div>
 
-<script>
-    function activarPoderes() {
-        document.getElementById('results').style.display = 'block';
-        // Aquí conectaremos la lógica de la IA después
-    }
-</script>
 </body>
 </html>
