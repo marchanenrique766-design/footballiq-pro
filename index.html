@@ -5,46 +5,53 @@
     <title>FOOTBALLIQ PRO ELITE</title>
     <style>
         body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: auto; }
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: auto; }
         .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        h2 { color: #00ff88; text-transform: uppercase; margin-top: 0; }
-        /* OCULTAMOS EL PANEL DE RESULTADOS POR DEFECTO */
-        #panelResultados { display: none; }
-        .val { color: #00ff88; font-weight: bold; }
+        
+        /* Estilo de Inputs como los de tu laptop */
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; }
+        
+        .val { color: #00ff88; font-size: 20px; font-weight: bold; }
+        #resultados { display: none; }
     </style>
 </head>
 <body>
 
-<div class="dashboard">
+<div class="main-grid">
     <div class="panel">
-        <h2>CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqA" placeholder="LOCAL" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:5px;">
-        <input type="text" id="eqB" placeholder="VISITANTE" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:5px;">
-        <button onclick="ejecutarAnalisis()" style="width:100%; padding:15px; background:#00ff88; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">ANALIZAR PARTIDO</button>
-    </div>
-
-    <div id="panelResultados" class="panel">
-        <h2>RESULTADOS PRO</h2>
-        <div id="contenido">
+        <h2 style="color:#00ff88;">CONFIGURAR ANÁLISIS</h2>
+        <input type="text" id="eqA" placeholder="EQUIPO A (LOCAL)">
+        <input type="text" id="eqB" placeholder="EQUIPO B (VISITANTE)">
+        <button onclick="activarAnalisis()">INICIAR ANÁLISIS PRO</button>
+        
+        <div id="resultados" style="margin-top:20px;">
+            <hr style="border:0; border-top:1px solid #333;">
             <p>Volumen Ofensivo: <span class="val">60%</span></p>
             <p>Inestabilidad: <span class="val">45%</span></p>
-            <hr style="border:0; border-top:1px solid #333;">
-            <p>BTTS: <span class="val">62%</span></p>
-            <p>Stake Sugerido: <span class="val">3.0 / 5</span></p>
+            <div style="border:1px solid #ff4444; color:#ff4444; padding:10px; border-radius:8px; margin-top:10px;">⚠ ALTO RIESGO</div>
         </div>
+    </div>
+
+    <div class="panel">
+        <h2 style="color:#00ff88;">MATRIZ DE RIESGO</h2>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div class="panel">BTTS<br><span class="val">62%</span></div>
+            <div class="panel">+2.5 GOLES<br><span class="val">58%</span></div>
+        </div>
+        <h3 style="color:#aaa; margin-top:20px;">STAKE SUGERIDO: <span class="val">3.0 / 5</span></h3>
+        <p style="font-size:12px; color:#666;">Cálculo basado en consistencia histórica.</p>
     </div>
 </div>
 
 <script>
-    function ejecutarAnalisis() {
+    function activarAnalisis() {
         const a = document.getElementById('eqA').value;
         const b = document.getElementById('eqB').value;
-        
-        if (a === "" || b === "") {
-            alert("Por favor, ingresa los nombres de ambos equipos.");
+        if(a && b) {
+            document.getElementById('resultados').style.display = 'block';
         } else {
-            // Muestra el panel solo si hay nombres
-            document.getElementById('panelResultados').style.display = 'block';
+            alert("¡Escribe los nombres de los equipos!");
         }
     }
 </script>
