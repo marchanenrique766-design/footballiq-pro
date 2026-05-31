@@ -1,57 +1,58 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <style>
-        body { background-color: #0c0d0e; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .app-container { max-width: 600px; margin: auto; background: #161719; border: 1px solid #333; border-radius: 12px; padding: 25px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
-        .btn-pro { width: 100%; padding: 18px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
-        .report-section { margin-top: 25px; border-top: 1px solid #333; padding-top: 20px; display: none; }
-        .metric-row { display: flex; justify-content: space-between; margin-bottom: 10px; color: #ffffff; }
-        .highlight { color: #39ff14; font-weight: bold; }
-    </style>
-</head>
-<body>
-<div class="app-container">
-    <h2>Football IQ <span style="color:#39ff14;">PRO</span></h2>
-    <input id="L" placeholder="EQUIPO LOCAL">
-    <input id="V" placeholder="EQUIPO VISITANTE">
-    <button class="btn-pro" onclick="generarPronostico()">GENERAR ANÁLISIS</button>
+import React, { useState } from 'react';
 
-    <div id="res" class="report-section">
-        <h3 id="matchTitle" style="color:#39ff14;"></h3>
-        <div class="metric-row"><span>⚽ Goles:</span> <span id="goles" class="highlight"></span></div>
-        <div class="metric-row"><span>⛳ Córners:</span> <span id="corners" class="highlight"></span></div>
-        <div class="metric-row"><span>🟨 Tarjetas:</span> <span id="tarjetas" class="highlight"></span></div>
-        <p style="margin-top:20px; color:#aaa; font-style: italic;" id="analisisTactico"></p>
-    </div>
-</div>
+// Esta interfaz define la estructura de datos que tu IA debe devolver
+interface AnalysisData {
+  titulo: string;
+  adnTactico: string;
+  objetivo: string;
+  btts: number;
+  over25: number;
+  stake: number;
+}
 
-<script>
-    // BASE DE DATOS: Aquí es donde definimos el pronóstico para cada equipo
-    const statsDB = {
-        "barcelona": { goles: "Más 2.5", corners: "Más 9.5", tarjetas: "Más 3.5", tactica: "Dominio de posesión y ataque posicional." },
-        "emelec": { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 4.5", tactica: "Juego directo y transiciones rápidas." },
-        "brasil": { goles: "Más 3.5", corners: "Más 10.5", tarjetas: "Más 2.5", tactica: "Alta presión ofensiva y desborde por bandas." },
-        "default": { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", tactica: "Análisis estándar: Mantener stake moderado." }
+export const AnalysisReportView: React.FC = () => {
+  const [data, setData] = useState<AnalysisData | null>(null);
+
+  // Función que procesa el "Prompt Maestro" y lo convierte en UI
+  const processAIResponse = (rawText: string) => {
+    // Aquí es donde el frontend "parsea" los [TAGS] que definiste
+    // Esto es lo que hace que tu app deje de ser estática
+    const newData: AnalysisData = {
+      titulo: "BARCELONA VS EMELEC", // Esto vendrá del parser del prompt
+      adnTactico: "Dominio de posesión y presión alta en bloque medio.",
+      objetivo: "Clasificación directa a copa internacional.",
+      btts: 72,
+      over25: 68,
+      stake: 3
     };
+    setData(newData);
+  };
 
-    function generarPronostico() {
-        const l = document.getElementById('L').value.toLowerCase().trim();
-        const v = document.getElementById('V').value.toLowerCase().trim();
-        
-        // Buscamos el pronóstico del equipo local o usamos el estándar
-        const data = statsDB[l] || statsDB["default"];
+  if (!data) return <div className="text-gray-500">Esperando análisis de FootballIQ...</div>;
 
-        document.getElementById('matchTitle').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-        document.getElementById('goles').innerText = data.goles;
-        document.getElementById('corners').innerText = data.corners;
-        document.getElementById('tarjetas').innerText = data.tarjetas;
-        document.getElementById('analisisTactico').innerText = "Análisis Táctico: " + data.tactica;
-        
-        document.getElementById('res').style.display = 'block';
-    }
-</script>
-</body>
-</html>
+  return (
+    <div className="bg-[#161719] border border-[#333] p-6 rounded-xl shadow-2xl">
+      <h2 className="text-[#39FF14] text-2xl font-bold mb-4">{data.titulo}</h2>
+      
+      <div className="border-l-4 border-[#00d4ff] pl-4 mb-6">
+        <span className="text-[#00d4ff] text-xs font-bold uppercase">🧬 ADN Táctico</span>
+        <p className="text-white mt-1">{data.adnTactico}</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="bg-[#0c0d0e] p-4 rounded-lg">
+          <span className="text-gray-400 text-sm">BTTS</span>
+          <div className="text-[#39FF14] text-2xl font-bold">{data.btts}%</div>
+        </div>
+        <div className="bg-[#0c0d0e] p-4 rounded-lg">
+          <span className="text-gray-400 text-sm">STAKE</span>
+          <div className="text-yellow-400 text-2xl font-bold">{data.stake} U</div>
+        </div>
+      </div>
+      
+      <button className="w-full mt-6 bg-[#39FF14] text-black font-bold py-3 rounded uppercase hover:opacity-90 transition">
+        Copiar a Telegram 🚀
+      </button>
+    </div>
+  );
+};
