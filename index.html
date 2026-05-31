@@ -3,63 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO</title>
+    <title>FOOTBALLIQ PRO - ELITE</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .app { max-width: 400px; margin: auto; }
-        .card { background: #121212; padding: 20px; border-radius: 20px; border: 1px solid #333; }
-        h3 { color: #00ff88; text-align: center; margin-bottom: 20px; }
-
-        /* Estilo idéntico a tu laptop */
-        .label { color: #888; font-size: 12px; margin-bottom: 5px; text-transform: uppercase; }
-        input { 
-            width: 100%; padding: 12px; margin-bottom: 15px; background: #1a1a1a; 
-            border: 1px solid #444; border-radius: 8px; color: #fff; box-sizing: border-box;
-        }
-        button { 
-            width: 100%; padding: 15px; background: #00ff88; color: #000; 
-            border: none; border-radius: 8px; font-weight: 900; cursor: pointer;
-        }
-
-        /* Panel Pro */
-        #panel { margin-top: 20px; padding: 15px; border: 1px solid #00ff88; border-radius: 10px; display: none; background: #000; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 15px; }
+        .dashboard { max-width: 450px; margin: auto; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+        h3 { color: #00ff88; margin-top: 0; }
+        
+        /* Buscadores estilo Laptop */
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; border-radius: 8px; color: #fff; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #00ff88; color: #000; font-weight: 900; border: none; border-radius: 8px; cursor: pointer; }
+        
+        /* Resultados Pro */
+        .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .stat-box { background: #000; padding: 10px; border: 1px solid #00ff88; border-radius: 8px; font-size: 12px; }
     </style>
 </head>
 <body>
 
-<div class="app">
-    <div class="card">
+<div class="dashboard">
+    <div class="panel">
         <h3>FOOTBALLIQ PRO</h3>
-        
-        <div class="label">EQUIPO A (LOCAL)</div>
-        <input type="text" id="equipoA" placeholder="Ej: Arsenal">
-        
-        <div class="label">EQUIPO B (VISITANTE)</div>
-        <input type="text" id="equipoB" placeholder="Ej: PSG">
-        
-        <button onclick="analizar()">INICIAR ANÁLISIS</button>
+        <input type="text" id="teamA" placeholder="EQUIPO A (LOCAL)">
+        <input type="text" id="teamB" placeholder="EQUIPO B (VISITANTE)">
+        <button onclick="generarAnalisis()">INICIAR ANÁLISIS</button>
+    </div>
 
-        <div id="panel">
-            <div id="res" style="color: #fff; font-size: 15px;"></div>
+    <div id="resultadoPro" class="panel" style="display:none;">
+        <h4 id="matchTitle" style="color:#00ff88;"></h4>
+        <div class="grid-stats">
+            <div class="stat-box">Volumen: 60%</div>
+            <div class="stat-box">Defensa: 45%</div>
+            <div class="stat-box">Confianza: 7.8/10</div>
+            <div class="stat-box">Stake: 3.0/5</div>
         </div>
+        <p style="font-size:12px; margin-top:15px; color:#aaa;">Estilo: Bloque alto y transiciones rápidas.</p>
     </div>
 </div>
 
 <script>
-    function analizar() {
-        const a = document.getElementById('equipoA').value;
-        const b = document.getElementById('equipoB').value;
-        if(!a || !b) return alert("Escribe ambos equipos");
-
-        document.getElementById('panel').style.display = 'block';
-        document.getElementById('res').innerHTML = `
-            <b style="color:#00ff88">ANÁLISIS: ${a.toUpperCase()} VS ${b.toUpperCase()}</b><br><br>
-            ⚽ Estilo: Bloque alto y transiciones rápidas<br>
-            🚩 Riesgo: Equilibrado<br>
-            <b style="color:#ff3333">⚠ ALTO RIESGO</b>
-        `;
+    function generarAnalisis() {
+        const a = document.getElementById('teamA').value;
+        const b = document.getElementById('teamB').value;
+        if(!a || !b) return alert("Completa los equipos");
+        
+        document.getElementById('matchTitle').innerText = a.toUpperCase() + " VS " + b.toUpperCase();
+        document.getElementById('resultadoPro').style.display = 'block';
     }
 </script>
-
 </body>
 </html>
