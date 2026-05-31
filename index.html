@@ -2,37 +2,49 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FOOTBALLIQ PRO</title>
+    <title>FOOTBALLIQ PRO ELITE</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; max-width: 500px; margin: auto; }
-        input { width: 100%; padding: 10px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 5px; }
-        button { width: 100%; padding: 15px; background: #00ff88; border: none; cursor: pointer; font-weight: bold; }
-        #res { display: none; margin-top: 20px; border-top: 1px solid #333; padding-top: 20px; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        .dashboard-container { display: grid; grid-template-columns: 350px 1fr; gap: 25px; max-width: 1200px; margin: auto; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
+        h2 { color: #00ff88; font-size: 18px; text-transform: uppercase; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; }
+        .stat-val { color: #00ff88; font-size: 22px; font-weight: bold; display: block; }
+        #panelResultados { display: none; }
     </style>
 </head>
 <body>
 
-<div class="panel">
-    <h2>CONFIGURAR ANÁLISIS</h2>
-    <input type="text" id="eqA" placeholder="LOCAL">
-    <input type="text" id="eqB" placeholder="VISITANTE">
-    <button onclick="run()">INICIAR ANÁLISIS</button>
+<div class="dashboard-container">
+    <div class="panel">
+        <h2>CONFIGURAR ANÁLISIS</h2>
+        <input type="text" id="eqA" placeholder="EQUIPO A (LOCAL)">
+        <input type="text" id="eqB" placeholder="EQUIPO B (VISITANTE)">
+        <button onclick="activarAnalisis()">GENERAR PRONÓSTICO IA</button>
+    </div>
 
-    <div id="res">
-        <h3 id="tit"></h3>
-        <p>BTTS: <b>62%</b></p>
-        <p>CÓRNERS: <b>Más de 9.5</b></p>
+    <div id="panelResultados" class="panel">
+        <h2>MATRIZ DE RIESGO Y PLAYER PROPS</h2>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="panel">Volumen Ofensivo<br><span class="stat-val">60%</span></div>
+            <div class="panel">Inestabilidad<br><span class="stat-val">45%</span></div>
+        </div>
+        <div style="margin-top:20px; background:#1a1a1a; padding:15px; border-left:4px solid #00ff88;">
+            <h3>VALOR CLAVE: BUKAYO SAKA</h3>
+            <p>Probabilidad de participación directa en gol: <span class="stat-val">75%</span></p>
+        </div>
     </div>
 </div>
 
 <script>
-    function run() {
+    function activarAnalisis() {
         const a = document.getElementById('eqA').value;
         const b = document.getElementById('eqB').value;
         if(a && b) {
-            document.getElementById('tit').innerText = a + " VS " + b;
-            document.getElementById('res').style.display = 'block';
+            document.getElementById('panelResultados').style.display = 'block';
+        } else {
+            alert("Completa ambos campos para analizar.");
         }
     }
 </script>
