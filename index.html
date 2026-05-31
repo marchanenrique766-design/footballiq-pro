@@ -1,31 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Interfaz de Apuestas</title>
-</head>
-<body>
-    <div class="container">
-        <h1>Eficacia (Win Rate)</h1>
-        <div class="partidos">
-            <h2>Partidos: 0 / 2</h2>
-            <h3>Rendimiento Neto: +0.00 U</h3>
-        </div>
-        <div class="historial">
-            <h2>Historial (2)</h2>
-            <p>01:39 p.m. - Flamengo vs Coritiba</p>
-            <p>BTTS: 42% | +2.5: 54%</p>
-            <p>Corners: Más de 8.5 córners</p>
-            <p>XG WIN/LOSS: OW - 0L</p>
-        </div>
-        <div class="racha">
-            <h2>Racha Actual: N/A</h2>
-            <p>0%</p>
-        </div>
-        <button class="delete-button">Eliminar</button>
-        <button class="secure-button">Seguro</button>
-    </div>
-</body>
-</html>
+// Card.jsx
+const DashboardCard = ({ title, children, color = "emerald" }) => (
+  <div className={`bg-[#121212] border border-${color}-500/40 rounded-xl p-5 shadow-lg`}>
+    <h2 className={`text-${color}-400 font-bold uppercase tracking-widest text-sm mb-4`}>
+      {title}
+    </h2>
+    {children}
+  </div>
+);
+
+export default DashboardCard;
