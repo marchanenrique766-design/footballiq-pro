@@ -2,37 +2,36 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Football IQ PRO</title>
     <style>
-        body { background-color: #0c0d0e; color: #fff; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
+        body { background-color: #0c0d0e; color: #ffffff; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
         .container { background: #161719; border: 1px solid #333; padding: 25px; border-radius: 12px; width: 100%; max-width: 450px; }
         input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
     </style>
 </head>
 <body>
-<div class="container">
-    <h2 style="color: #39ff14;">Football IQ PRO</h2>
-    <input id="local" placeholder="EQUIPO LOCAL">
-    <input id="visit" placeholder="EQUIPO VISITANTE">
-    <button onclick="analizar()">GENERAR ANÁLISIS MAESTRO</button>
-    <div id="resultado" style="margin-top:20px; border-top:1px solid #333; padding-top:20px; display:none;">
-        <h3 id="titulo" style="color:#39ff14;"></h3>
-        <p>🧬 ADN TÁCTICO: <span id="adn"></span></p>
-        <p>BTTS: <b id="btts"></b>% | STAKE: <b id="stake"></b> U</p>
+    <div class="container">
+        <h2 style="color: #39ff14;">Football IQ PRO</h2>
+        <input id="local" placeholder="EQUIPO LOCAL">
+        <input id="visit" placeholder="EQUIPO VISITANTE">
+        <button onclick="analizar()">GENERAR ANÁLISIS MAESTRO</button>
+        <div id="resultado" style="margin-top:20px; border-top:1px solid #333; padding-top:20px; display:none;">
+            <h3 id="titulo" style="color:#39ff14;"></h3>
+            <p>🧬 ADN TÁCTICO: <span id="adn"></span></p>
+            <p>BTTS: <b id="btts"></b>% | STAKE: <b id="stake"></b> U</p>
+        </div>
     </div>
-</div>
-<script>
-    function analizar() {
-        const l = document.getElementById('local').value;
-        const v = document.getElementById('visit').value;
-        document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-        document.getElementById('adn').innerText = "Alta intensidad y presión en bloque.";
-        document.getElementById('btts').innerText = Math.floor(Math.random() * 40) + 50;
-        document.getElementById('stake').innerText = Math.floor(Math.random() * 4) + 1;
-        document.getElementById('resultado').style.display = 'block';
-    }
-</script>
+    <script>
+        function analizar() {
+            var l = document.getElementById('local').value;
+            var v = document.getElementById('visit').value;
+            document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
+            document.getElementById('adn').innerText = "Alta intensidad y presión en bloque.";
+            document.getElementById('btts').innerText = Math.floor(Math.random() * 40) + 50;
+            document.getElementById('stake').innerText = Math.floor(Math.random() * 4) + 1;
+            document.getElementById('resultado').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
