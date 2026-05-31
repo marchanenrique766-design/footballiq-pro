@@ -2,43 +2,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOOTBALLIQ PRO</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; }
-        .card { max-width: 400px; margin: auto; background: #121212; padding: 20px; border-radius: 20px; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; justify-content: center; }
+        .app { width: 100%; max-width: 400px; }
+        .card { background: #121212; padding: 20px; border-radius: 20px; border: 1px solid #333; }
+        h3 { color: #00ff88; text-align: center; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
         
-        /* Estilo de los grupos de ligas */
         .liga-titulo { 
-            background: #222; padding: 15px; margin: 10px 0; border-radius: 12px; 
-            cursor: pointer; border: 1px solid #444; text-align: center; font-weight: bold;
+            background: #1a1a1a; padding: 16px; margin: 10px 0; border-radius: 12px; 
+            cursor: pointer; border: 1px solid #444; font-weight: bold; display: flex; justify-content: space-between;
         }
-        
-        /* Botones de partidos dentro de la liga */
         .btn-partido { 
-            width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; 
-            color: #ccc; border: 1px solid #333; border-radius: 8px; cursor: pointer;
+            width: 100%; padding: 14px; margin: 5px 0; background: #222; 
+            color: #fff; border: 1px solid #333; border-radius: 8px; cursor: pointer; text-align: left;
         }
+        .btn-partido:hover { background: #00ff88; color: #000; }
         
-        #panel { margin-top: 20px; padding: 15px; border: 1px solid #00ff88; border-radius: 15px; display: none; }
+        #panel { 
+            margin-top: 20px; padding: 20px; border: 1px solid #00ff88; 
+            border-radius: 15px; display: none; background: #000;
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h3 style="color:#00ff88; text-align:center;">FOOTBALLIQ PRO</h3>
-    
-    <!-- Ejemplo de organización por Ligas -->
-    <div class="liga-titulo" onclick="toggle('liga1')">▼ La Liga (España)</div>
-    <div id="liga1" style="display:none;">
-        <button class="btn-partido" onclick="analizar('Real Madrid vs Barcelona')">Real Madrid vs Barcelona</button>
-    </div>
+<div class="app">
+    <div class="card">
+        <h3>FOOTBALLIQ PRO</h3>
+        
+        <div class="liga-titulo" onclick="toggle('liga1')">La Liga (España) <span>▼</span></div>
+        <div id="liga1" style="display:none;">
+            <button class="btn-partido" onclick="analizar('Real Madrid vs Barcelona')">Real Madrid vs Barcelona</button>
+            <button class="btn-partido" onclick="analizar('Sevilla vs Betis')">Sevilla vs Betis</button>
+        </div>
 
-    <div class="liga-titulo" onclick="toggle('liga2')">▼ Premier League</div>
-    <div id="liga2" style="display:none;">
-        <button class="btn-partido" onclick="analizar('Man City vs Liverpool')">Man City vs Liverpool</button>
-    </div>
+        <div class="liga-titulo" onclick="toggle('liga2')">Premier League <span>▼</span></div>
+        <div id="liga2" style="display:none;">
+            <button class="btn-partido" onclick="analizar('Man City vs Liverpool')">Man City vs Liverpool</button>
+            <button class="btn-partido" onclick="analizar('Arsenal vs Man Utd')">Arsenal vs Man Utd</button>
+        </div>
 
-    <div id="panel">
-        <div id="res"></div>
+        <div id="panel">
+            <div id="res" style="font-size: 16px; line-height: 1.5;"></div>
+        </div>
     </div>
 </div>
 
@@ -48,14 +56,16 @@
         div.style.display = div.style.display === 'none' ? 'block' : 'none';
     }
     
-    function analizar(p) {
+    function analizar(partido) {
         document.getElementById('panel').style.display = 'block';
         document.getElementById('res').innerHTML = `
-            <b style="color:#00ff88">ANÁLISIS: ${p.toUpperCase()}</b><br>
-            ⚽ Recomendación: Alta (81%)<br>
-            🚩 Riesgo: Bajo
+            <b style="color:#00ff88">ANÁLISIS: ${partido.toUpperCase()}</b><br><br>
+            ⚽ Ambos Anotan: Recomendado (81%)<br>
+            🚩 Local o Empate: 89%<br>
+            <b style="color:#ff3333">⚠ RIESGO: ALTO</b>
         `;
     }
 </script>
+
 </body>
 </html>
