@@ -1,51 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
     <style>
-        body { background-color: #0c0d0e; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: #161719; border: 1px solid #333; border-radius: 12px; padding: 25px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
-        
-        /* Estilos del reporte profesional */
-        .report { margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; display: none; }
-        .section-title { color: #39ff14; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; display: block; font-weight: bold; }
-        .text-body { color: #ccc; line-height: 1.6; margin-bottom: 20px; }
+        body { background: #0c0d0e; color: #fff; font-family: sans-serif; padding: 20px; }
+        .app { max-width: 500px; margin: auto; background: #161719; border: 1px solid #333; padding: 25px; border-radius: 12px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 18px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
+        .box { background: #1f2022; padding: 20px; border-left: 5px solid #39ff14; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 style="color:#fff;">Football IQ <span style="color:#39ff14;">PRO</span></h2>
+    <div class="app">
+        <h2 style="color:#39ff14;">Football IQ PRO</h2>
         <input id="l" placeholder="EQUIPO LOCAL">
         <input id="v" placeholder="EQUIPO VISITANTE">
-        <button class="btn" onclick="generarReporte()">GENERAR ANÁLISIS EXPERTO</button>
-
-        <div id="res" class="report">
+        <button class="btn" onclick="analizar()">ANALIZAR</button>
+        <div id="res" style="display:none; margin-top:20px;">
             <h3 id="mt" style="color:#39ff14;"></h3>
-            
-            <span class="section-title">🧬 ADN Táctico</span>
-            <div class="text-body" id="adn"></div>
-            
-            <span class="section-title">🎯 Objetivo del Encuentro</span>
-            <div class="text-body" id="obj"></div>
-            
-            <span class="section-title">⚽ Análisis de Mercado</span>
-            <div class="text-body" id="mercado" style="color:#39ff14; font-weight:bold;"></div>
+            <div class="box">
+                <p id="adn"></p>
+            </div>
         </div>
     </div>
-
     <script>
-        function generarReporte() {
-            const l = document.getElementById('l').value.toUpperCase();
-            const v = document.getElementById('v').value.toUpperCase();
+        function analizar() {
+            const l = document.getElementById('l').value.trim();
+            const v = document.getElementById('v').value.trim();
             if(!l || !v) return;
 
-            document.getElementById('mt').innerText = l + " VS " + v;
-            document.getElementById('adn').innerText = `${l} ejerce una presión alta agresiva buscando transiciones rápidas, mientras que ${v} se estructura en un bloque medio compacto priorizando el orden.`;
-            document.getElementById('obj').innerText = `${l} necesita estabilizar su temporada en casa; ${v} busca consolidarse en los puestos de clasificación directa.`;
-            document.getElementById('mercado').innerText = "Más 2.5 Goles | Córners: Más 9.5";
-            
+            // ESTE ES EL MOTOR: Cambia el mensaje según los equipos
+            let analisis = "";
+            if (l.toLowerCase() === "barcelona" && v.toLowerCase() === "emelec") {
+                analisis = "Barcelona busca dominio posicional, mientras que Emelec prioriza el juego vertical.";
+            } else if (l.toLowerCase() === "brasil") {
+                analisis = "Brasil presenta un esquema ultra ofensivo. El rival deberá cerrar líneas.";
+            } else {
+                analisis = l + " y " + v + " plantean un partido de mucha fricción en el medio campo.";
+            }
+
+            document.getElementById('mt').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
+            document.getElementById('adn').innerText = "🧬 ADN TÁCTICO: " + analisis;
             document.getElementById('res').style.display = 'block';
         }
     </script>
