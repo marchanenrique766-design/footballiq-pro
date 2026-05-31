@@ -2,39 +2,42 @@
 <html lang="es">
 <head>
     <style>
-        body { background: #0c0c0c; color: #ffffff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .panel { background: #161616; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 600px; margin: auto; }
+        /* Fondo negro absoluto */
+        body { background: #000000; color: #ffffff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
         
-        /* Inputs mejorados */
-        input { width: 100%; padding: 15px; margin-bottom: 10px; background: #000; border: 1px solid #444; color: #ffffff; border-radius: 6px; font-size: 1rem; }
+        .panel { background: #121212; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 600px; margin: auto; }
         
-        /* Botón estilo premium */
-        button { width: 100%; padding: 18px; background: #00ff88; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 1rem; }
+        /* Inputs */
+        input { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: #ffffff; border-radius: 6px; font-size: 1.1rem; }
         
-        /* Resultados: Blanco y Verde Neón para máximo contraste */
-        .market { color: #ffffff; font-size: 1.2rem; margin-bottom: 12px; }
-        .market strong { color: #00ff88; }
+        /* Botón verde neón brillante */
+        button { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 1.1rem; text-transform: uppercase; }
         
-        .sugerencia-box { margin-top: 20px; padding: 15px; border-left: 4px solid #00ff88; background: #1a1a1a; color: #dddddd; font-size: 1rem; line-height: 1.4; }
+        /* Textos de resultados - Sin azul */
+        .market { color: #ffffff; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .market strong { color: #39ff14; } /* Verde neón para el dato */
+        
+        /* Caja de análisis */
+        .sugerencia-box { margin-top: 20px; padding: 20px; border-left: 4px solid #39ff14; background: #1a1a1a; color: #ffffff; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h2 style="color: #00ff88;">Football IQ PRO | ELITE</h2>
+    <h2 style="color: #39ff14;">Football IQ PRO | ELITE</h2>
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
     
     <button onclick="generarReporte()">GENERAR ANÁLISIS</button>
 
-    <div id="resultado" style="display:none; margin-top:25px;">
-        <h3 id="tituloMatch" style="color: #ffffff; border-bottom: 1px solid #333; padding-bottom: 10px;"></h3>
+    <div id="resultado" style="display:none; margin-top:30px;">
+        <h3 id="tituloMatch" style="color: #ffffff; margin-bottom: 20px;"></h3>
         <div class="market">⚽ Goles: <strong id="valGoles">--</strong></div>
         <div class="market">⛳ Córners: <strong id="valCorners">--</strong></div>
         <div class="market">🟨 Tarjetas: <strong id="valTarjetas">--</strong></div>
         
         <div class="sugerencia-box">
-            <strong>📊 Análisis Táctico:</strong><br>
+            <strong>📊 Análisis Táctico:</strong><br><br>
             <span id="valSugerencia">--</span>
         </div>
     </div>
@@ -42,9 +45,9 @@
 
 <script>
     const db = {
-        "BARCELONA": { goles: "Más 2.5", corners: "Más 9.5", tarjetas: "Más 4.5", sug: "Alta intensidad ofensiva, buscar mercados de corners." },
-        "EMELEC": { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", sug: "Partido cerrado, control táctico en medio campo." },
-        "AUCAS": { goles: "Más 1.5", corners: "Más 7.5", tarjetas: "Más 2.5", sug: "Tendencia a marcadores ajustados, esperar primeros minutos." }
+        "BARCELONA": { goles: "Más 2.5", corners: "Más 9.5", tarjetas: "Más 4.5", sug: "Alta intensidad ofensiva detectada, apostar por corners." },
+        "EMELEC": { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", sug: "Partido cerrado, alta disciplina táctica." },
+        "AUCAS": { goles: "Más 1.5", corners: "Más 7.5", tarjetas: "Más 2.5", sug: "Tendencia a marcadores bajos, esperar minutos iniciales." }
     };
 
     function generarReporte() {
@@ -52,7 +55,7 @@
         const v = document.getElementById('eqV').value.trim().toUpperCase();
         if(!l || !v) return;
 
-        const info = db[l] || { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", sug: "Análisis basado en métricas estándar." };
+        const info = db[l] || { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", sug: "Análisis estándar: Mantener stake moderado." };
         
         document.getElementById('resultado').style.display = 'block';
         document.getElementById('tituloMatch').innerText = l + " VS " + v;
