@@ -2,23 +2,23 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Football IQ PRO | ELITE</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
-        .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 10px; width: 100%; box-sizing: border-box; }
-        input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 10px; cursor: pointer; }
-        .btn-mode { padding: 8px; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; cursor: pointer; flex: 1; font-size: 0.7rem; }
+        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 15px; width: 100%; box-sizing: border-box; }
+        input { width: 100%; padding: 15px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+        button { width: 100%; padding: 18px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 15px; cursor: pointer; font-size: 1rem; }
+        .btn-mode { padding: 12px; background: #222; border: 1px solid #444; color: #fff; border-radius: 6px; cursor: pointer; flex: 1; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h2 style="color:#00ff88; font-size:1.1rem; margin:0;">CONFIGURAR ANÁLISIS</h2>
+    <h2 style="color:#00ff88; font-size:1.3rem; margin-top:0;">CONFIGURAR ANÁLISIS</h2>
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    
-    <div style="display: flex; gap: 5px; margin: 10px 0;">
+    <div style="display: flex; gap: 8px; margin: 15px 0;">
         <button class="btn-mode" onclick="setMode('seguridad')">SEGURIDAD</button>
         <button class="btn-mode" onclick="setMode('volumen')">VOLUMEN</button>
         <button class="btn-mode" onclick="setMode('riesgo')">ALTO RIESGO</button>
@@ -28,37 +28,38 @@
 </div>
 
 <div id="resultado" class="panel" style="display:none;">
-    <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
+    <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 15px 0; font-size:1.5rem;">--</h2>
+    <div style="font-size:1rem; margin-bottom:15px; text-align:center; color:#ddd;">BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5</div>
     
-    <div style="margin: 10px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 12px; background: #0a151a;">
-        <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">🤖 ANÁLISIS HISTÓRICO (H2H)</h4>
-        <p id="caja-analisis" style="font-size:0.8rem; color:#eee; line-height:1.4;"></p>
+    <h3 style="color:#00ccff; font-size:1.1rem; margin:15px 0 5px 0;">🔍 CONTEXTO PROFUNDO</h3>
+    <p style="font-size:0.95rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN TÁCTICO:</strong> Presión alta agresiva.</p>
+    <p style="font-size:0.95rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar puntos en tabla.</p>
+
+    <div style="margin: 20px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 15px; background: #0a151a;">
+        <h4 style="color:#00ccff; font-size:1rem; margin:0 0 10px 0;">🤖 ANÁLISIS HISTÓRICO (H2H)</h4>
+        <p id="caja-analisis" style="font-size:0.95rem; color:#eee; line-height:1.5;"></p>
     </div>
 
-    <div style="margin: 10px 0; padding: 12px; background: #1a1a1a; border-radius: 8px; border: 1px solid #00ff88; text-align: center;">
-        <p style="margin:0; font-size:0.7rem; color:#888; text-transform:uppercase;">Gestión de Riesgo Profesional</p>
-        <p id="stake-profesional" style="margin:5px 0 0 0; color:#00ff88; font-size:1rem; font-weight:bold;"></p>
+    <div style="margin: 20px 0; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #00ff88; text-align: center;">
+        <p style="margin:0; font-size:0.8rem; color:#888; text-transform:uppercase;">Gestión de Riesgo Profesional</p>
+        <p id="stake-profesional" style="margin:8px 0 0 0; color:#00ff88; font-size:1.2rem; font-weight:bold;"></p>
     </div>
     
     <button style="background:#fff;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
 </div>
 
 <script>
-    function setMode(m) { document.getElementById('modoIA').value = m; alert("Modo " + m + " fijado"); }
-
+    function setMode(m) { document.getElementById('modoIA').value = m; alert("Modo " + m + " seleccionado"); }
     function generarReporte() {
         const l = document.getElementById('eqL').value;
         const v = document.getElementById('eqV').value;
         const modo = document.getElementById('modoIA').value;
         if(!l || !v) return;
-
         document.getElementById('resultado').style.display = 'block';
         document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-        
         let mercado = (modo === 'seguridad') ? "Menos 2.5 Goles" : (modo === 'volumen') ? "Más 1.5 Goles" : "Menos 3.5 Goles";
         let stake = (modo === 'seguridad') ? "STAKE 8/10 (Muy Alta)" : (modo === 'volumen') ? "STAKE 6/10 (Alta)" : "STAKE 3/10 (Moderada)";
-        
-        document.getElementById('caja-analisis').innerHTML = `Tendencia histórica H2H detectada: <strong>${mercado}</strong>. Recomendación basada en el comportamiento histórico directo entre ${l} y ${v}.`;
+        document.getElementById('caja-analisis').innerHTML = `Tendencia H2H detectada: <strong>${mercado}</strong>. Recomendación basada en el comportamiento histórico directo entre ${l} y ${v}.`;
         document.getElementById('stake-profesional').innerText = stake;
     }
 </script>
