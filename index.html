@@ -1,39 +1,35 @@
-<script>
-    function analizarSeguro() {
-        const L = document.getElementById('eqL').value.trim().toUpperCase();
-        const V = document.getElementById('eqV').value.trim().toUpperCase();
-        if(!L || !V) return;
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; padding: 20px; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 10px; }
+        input, button { width: 100%; padding: 15px; margin: 5px 0; background: #222; color: #fff; border: 1px solid #444; }
+        button { background: #39ff14; color: #000; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="panel">
+        <h2>Football IQ PRO</h2>
+        <input id="l" placeholder="LOCAL">
+        <input id="v" placeholder="VISITANTE">
+        <button onclick="run()">GENERAR ANÁLISIS</button>
+        <div id="res" style="margin-top:20px;"></div>
+    </div>
 
-        // --- MOTOR DE ANÁLISIS PROFUNDO (ADN TÁCTICO) ---
-        // Aquí simulamos el contexto que quieres implementar
-        const adnTactico = `<strong>ADN TÁCTICO:</strong> ${L} prioriza la presión alta en campo rival, mientras que ${V} mantiene un bloque medio compacto buscando transiciones directas.`;
-        const objetivo = `<strong>OBJETIVO:</strong> Ambos equipos buscan puntos vitales para escalar posiciones en la tabla de clasificación.`;
-        const historico = `<strong>HISTÓRICO:</strong> Los enfrentamientos directos en este recinto suelen ser de alta intensidad, con una marcada tendencia a la acumulación de tiros de esquina.`;
-
-        // Lógica de mercado (sin borrar nada)
-        const esCerrado = (L.includes("LIGA") || V.includes("LIGA") || L.includes("ECUADOR"));
-        let res = {
-            goles: esCerrado ? "Menos 2.5" : "Más 2.5",
-            corners: esCerrado ? "Más 7.5" : "Más 9.5",
-            tarjetas: esCerrado ? "Más 5.5" : "Más 3.5",
-            confianza: esCerrado ? "MEDIA" : "ALTA",
-            stake: esCerrado ? "0.5% del Bank" : "1.5% del Bank"
-        };
-
-        // Mostrar en pantalla
-        document.getElementById('res').style.display = 'block';
-        document.getElementById('tMatch').innerText = L + " VS " + V;
-        document.getElementById('vGoles').innerText = res.goles;
-        document.getElementById('vCorners').innerText = res.corners;
-        document.getElementById('vTarjetas').innerText = res.tarjetas;
-        
-        // --- AQUÍ ESTÁ LO NUEVO: EL ANÁLISIS PROFUNDO ---
-        document.getElementById('vRiesgo').innerHTML = `
-            <div style="margin-bottom:10px;">${adnTactico}</div>
-            <div style="margin-bottom:10px;">${objetivo}</div>
-            <div style="margin-bottom:10px;">${historico}</div>
-            <hr style="border:0; border-top:1px solid #333;">
-            <strong>Confianza:</strong> ${res.confianza} | <strong>Gestión:</strong> ${res.stake}
-        `;
-    }
-</script>
+    <script>
+        function run() {
+            const L = document.getElementById('l').value;
+            const V = document.getElementById('v').value;
+            const div = document.getElementById('res');
+            div.innerHTML = `
+                <h3 style="color:#39ff14">${L.toUpperCase()} VS ${V.toUpperCase()}</h3>
+                <p>⚽ Goles: Más 2.5</p>
+                <p>⛳ Córners: Más 9.5</p>
+                <p><strong>ADN TÁCTICO:</strong> ${L} busca presión alta, ${V} mantiene bloque medio.</p>
+                <p><strong>OBJETIVO:</strong> Puntos vitales para la clasificación.</p>
+            `;
+        }
+    </script>
+</body>
+</html>
