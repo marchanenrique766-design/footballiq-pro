@@ -5,15 +5,18 @@
     <title>FOOTBALLIQ PRO ELITE</title>
     <style>
         body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .container { max-width: 600px; margin: auto; }
+        .container { max-width: 650px; margin: auto; }
         .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-        h2, h3 { color: #00ff88; text-transform: uppercase; }
+        h2, h3 { color: #00ff88; text-transform: uppercase; margin: 0 0 15px 0; }
         
-        /* Dashboards */
+        /* Grid de Indicadores */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .box { background: #0a0a0a; padding: 15px; border-radius: 10px; border: 1px solid #333; }
-        .val { color: #00ff88; font-size: 18px; font-weight: bold; }
-        .factor-x { border-left: 4px solid #00ff88; background: #1a1a1a; padding: 15px; margin-top: 15px; }
+        .stat-box { background: #0a0a0a; padding: 15px; border-radius: 10px; border: 1px solid #333; text-align: center; }
+        .stat-val { color: #00ff88; font-size: 22px; font-weight: bold; display: block; }
+        
+        /* Factor X y Riesgo */
+        .factor-x { border-left: 4px solid #00ff88; background: #1a1a1a; padding: 15px; margin-top: 15px; font-size: 14px; }
+        .risk-alert { color: #ff4444; font-weight: bold; text-align: center; margin-top: 10px; border-top: 1px solid #333; padding-top: 10px; }
     </style>
 </head>
 <body>
@@ -21,40 +24,41 @@
 <div class="container">
     <div class="panel">
         <h2>Configurar Análisis</h2>
-        <input type="text" id="eqA" placeholder="LOCAL" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:5px;">
-        <input type="text" id="eqB" placeholder="VISITANTE" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:5px;">
-        <button onclick="analizar()" style="width:100%; padding:15px; background:#00ff88; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">INICIAR ANÁLISIS IA</button>
+        <input type="text" id="eqA" placeholder="EQUIPO A (LOCAL)" style="width:100%; padding:12px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:8px;">
+        <input type="text" id="eqB" placeholder="EQUIPO B (VISITANTE)" style="width:100%; padding:12px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:8px;">
+        <button onclick="generarAnalisis()" style="width:100%; padding:15px; background:#00ff88; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">INICIAR ANÁLISIS ELITE</button>
     </div>
 
-    <div id="resultado" style="display:none;">
+    <div id="dashboard" style="display:none;">
         <div class="panel">
-            <h3 id="matchTitle"></h3>
+            <h3 id="tituloPartido"></h3>
             <div class="grid">
-                <div class="box">BTTS<br><span class="val">62%</span></div>
-                <div class="box">+2.5 GOLES<br><span class="val">58%</span></div>
+                <div class="stat-box">BTTS<span class="stat-val">62%</span></div>
+                <div class="stat-box">+2.5 GOLES<span class="stat-val">58%</span></div>
             </div>
-            <div class="box" style="margin-top:15px;">
-                CÓRNERS TOTALES<br><span class="val">Más de 9.5</span>
+            <div class="stat-box" style="margin-top:15px;">
+                CÓRNERS TOTALES: Más de 9.5
                 <p style="font-size:12px; color:#aaa;">Volumen proyectado según dinámicas de ataque.</p>
             </div>
+            <div class="risk-alert">⚠ ALTO RIESGO DETECTADO</div>
         </div>
 
         <div class="factor-x">
-            <strong>FACTOR X (TENDENCIA):</strong>
-            <p id="factorText" style="font-size:14px;"></p>
+            <strong>FACTOR X (TENDENCIA REAL):</strong>
+            <p id="factorText"></p>
         </div>
     </div>
 </div>
 
 <script>
-    function analizar() {
+    function generarAnalisis() {
         const a = document.getElementById('eqA').value;
         const b = document.getElementById('eqB').value;
-        if(!a || !b) return alert("Ingresa equipos");
+        if(!a || !b) return alert("Completa ambos equipos");
         
-        document.getElementById('matchTitle').innerText = a + " vs " + b;
-        document.getElementById('factorText').innerText = a + " ha marcado en el 90% de sus últimos 10 partidos, mientras que " + b + " ha encajado en 7 de sus últimas 10 visitas.";
-        document.getElementById('resultado').style.display = 'block';
+        document.getElementById('tituloPartido').innerText = a.toUpperCase() + " VS " + b.toUpperCase();
+        document.getElementById('factorText').innerText = a.toUpperCase() + " ha marcado en el 90% de sus últimos 10 partidos como local, mientras que " + b.toUpperCase() + " ha encajado en 7 de sus últimas 10 visitas.";
+        document.getElementById('dashboard').style.display = 'block';
     }
 </script>
 </body>
