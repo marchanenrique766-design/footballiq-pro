@@ -1,61 +1,28 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <style>
-        body { background: #0c0c0c; color: #fff; font-family: sans-serif; padding: 20px; }
-        .panel { background: #161616; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 500px; margin: auto; }
-        input { width: 100%; padding: 15px; margin-bottom: 10px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 18px; background: #00ff88; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; }
-        .resultado-box { margin-top: 20px; padding: 20px; border: 1px solid #333; display: none; }
-    </style>
-</head>
-<body>
-
-<div class="panel">
-    <h2 style="color: #00ff88;">Football IQ PRO | ELITE</h2>
-    <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
-    <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    <button onclick="generarAnalisis()">GENERAR ANÁLISIS DE VALOR</button>
-
-    <div id="resultado" class="resultado-box">
-        <h3 id="tMatch" style="color: #fff; margin-top:0;"></h3>
-        <div style="color:#00ff88; margin-bottom:10px;">⚽ Goles: <span id="vGoles" style="color:#fff;"></span></div>
-        <div style="color:#00ff88; margin-bottom:10px;">⛳ Córners: <span id="vCorners" style="color:#fff;"></span></div>
-        <div style="color:#00ff88; margin-bottom:10px;">🟨 Tarjetas: <span id="vTarjetas" style="color:#fff;"></span></div>
-        <div style="margin-top:15px; padding:10px; border-left:3px solid #00ccff; background:#111;">
-            <strong style="color:#00ccff;">📊 Análisis de Enfrentamiento:</strong>
-            <p id="vSugerencia" style="font-size:0.9rem; color:#ccc; margin:5px 0 0 0;"></p>
-        </div>
-    </div>
-</div>
-
 <script>
+    // 1. BASE DE DATOS DE EQUIPOS (Aquí añades tus equipos reales)
+    const baseDatos = {
+        "BARCELONA": { goles: "Más 2.5", corners: "Más 9.5", tarjetas: "Más 4.5", tactica: "Ataque constante por bandas." },
+        "EMELEC": { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", tactica: "Bloque defensivo y contraataque rápido." },
+        "AUCAS": { goles: "Menos 2.5", corners: "Más 7.5", tarjetas: "Más 2.5", tactica: "Partido cerrado, control de posesión." }
+    };
+
     function generarAnalisis() {
-        const l = document.getElementById('eqL').value.trim();
-        const v = document.getElementById('eqV').value.trim();
+        const l = document.getElementById('eqL').value.trim().toUpperCase();
+        const v = document.getElementById('eqV').value.trim().toUpperCase();
         if(!l || !v) return;
 
-        // --- EL MOTOR DE INTELIGENCIA ---
-        // Usamos los caracteres de los nombres para que el análisis sea ÚNICO por partido
-        const factor = (l.length + v.length) % 3; 
-        
-        const datos = [
-            { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", sug: "El local tiene dominio posicional, se sugiere entrar al mercado de corners temprano." },
-            { goles: "Más 2.5", corners: "Más 9.5", tarjetas: "Más 4.5", sug: "Alta intensidad defensiva, alto riesgo de tarjetas en el primer tiempo." },
-            { goles: "Menos 2.5", corners: "Más 7.5", tarjetas: "Más 2.5", sug: "Partido cerrado, alta probabilidad de empate o victoria mínima." }
-        ];
+        // 2. LÓGICA DE BÚSQUEDA
+        // Si los equipos están en la base, usa sus datos. Si no, genera un análisis estándar.
+        const statsL = baseDatos[l] || { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", tactica: "Partido equilibrado por falta de historial." };
+        const statsV = baseDatos[v] || { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", tactica: "Duelo de intensidad media." };
 
-        const resultado = datos[factor];
-
-        // Mostrar en pantalla
+        // 3. ACTUALIZACIÓN (Combinamos los datos de los dos equipos)
         document.getElementById('resultado').style.display = 'block';
-        document.getElementById('tMatch').innerText = l.toUpperCase() + " vs " + v.toUpperCase();
-        document.getElementById('vGoles').innerText = resultado.goles;
-        document.getElementById('vCorners').innerText = resultado.corners;
-        document.getElementById('vTarjetas').innerText = resultado.tarjetas;
-        document.getElementById('vSugerencia').innerText = resultado.sug;
+        document.getElementById('tMatch').innerText = l + " vs " + v;
+        
+        document.getElementById('vGoles').innerText = statsL.goles; // Usa el dato del local
+        document.getElementById('vCorners').innerText = statsV.corners; // Usa el dato del visitante
+        document.getElementById('vTarjetas').innerText = statsL.tarjetas; 
+        document.getElementById('vSugerencia').innerText = "Análisis: " + statsL.tactica + " vs " + statsV.tactica;
     }
 </script>
-</body>
-</html>
