@@ -1,11 +1,42 @@
-// Card.jsx
-const DashboardCard = ({ title, children, color = "emerald" }) => (
-  <div className={`bg-[#121212] border border-${color}-500/40 rounded-xl p-5 shadow-lg`}>
-    <h2 className={`text-${color}-400 font-bold uppercase tracking-widest text-sm mb-4`}>
-      {title}
-    </h2>
-    {children}
-  </div>
-);
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football IQ PRO</title>
+    <style>
+        body { background-color: #0b0b0b; color: #ffffff; font-family: sans-serif; margin: 0; padding: 20px; }
+        .card { 
+            background: #121212; 
+            border: 1px solid #00ff9d; 
+            border-radius: 15px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        }
+        h2 { color: #00ff9d; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
+        .stat { display: flex; justify-content: space-between; margin: 10px 0; }
+        .highlight { color: #00ff9d; font-weight: bold; }
+    </style>
+</head>
+<body>
 
-export default DashboardCard;
+    <div class="card">
+        <h2>Estadísticas Clave</h2>
+        <div class="stat">
+            <span>BTTS:</span>
+            <span class="highlight">42%</span>
+        </div>
+        <div class="stat">
+            <span>+2.5 GOLES:</span>
+            <span class="highlight">54%</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Veredicto</h2>
+        <p style="color: #00ff9d;">ALTA CONFIANZA: OPORTUNIDAD SEGURA</p>
+    </div>
+
+</body>
+</html>
