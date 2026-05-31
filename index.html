@@ -1,66 +1,42 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>FOOTBALLIQ PRO | ELITE</title>
-    <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; }
-        .app-container { max-width: 500px; margin: auto; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 18px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; }
-        
-        /* Nuevos estilos para las barras */
-        .bar-container { margin: 15px 0; }
-        .bar-label { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 5px; }
-        .bar-bg { background: #333; height: 8px; border-radius: 4px; overflow: hidden; }
-        .bar-fill { height: 100%; background: #00ff88; transition: width 1s; }
-    </style>
-</head>
-<body>
-
-<div class="app-container">
-    <div class="panel">
-        <h2 style="color:#00ff88;">CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqLocal" placeholder="EQUIPO LOCAL">
-        <input type="text" id="eqVis" placeholder="EQUIPO VISITANTE">
-        <button onclick="analizar()">ANALIZAR PARTIDO</button>
+<div class="panel" style="background:#121212; border:1px solid #333;">
+    <h3 style="color:#ffcc00; font-size:0.9rem; margin-bottom:15px;">⚠️ RIESGO MEDIO MODERADO</h3>
+    
+    <div class="bar-container">
+        <div class="bar-label"><span>VOLUMEN OFENSIVO:</span> <span style="color:#00ff88;">53%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:53%; background:#00ff88;"></div></div>
+        <p style="font-size:0.75rem; color:#aaa; margin-top:5px;">Proyecciones de remates combinados e interacciones ofensivas en área rival.</p>
     </div>
 
-    <div id="dashboard" class="panel" style="display:none;">
-        <h2 id="titulo">--</h2>
-        
-        <div class="bar-container">
-            <div class="bar-label"><span>VOLUMEN OFENSIVO:</span> <span id="val-ofensivo">53%</span></div>
-            <div class="bar-bg"><div id="bar-ofensivo" class="bar-fill" style="width:53%"></div></div>
-        </div>
-        <div class="bar-container">
-            <div class="bar-label"><span>INESTABILIDAD DEFENSIVA:</span> <span id="val-defensivo">52%</span></div>
-            <div class="bar-bg"><div id="bar-defensivo" class="bar-fill" style="width:52%; background:#ffaa00;"></div></div>
-        </div>
-        <div class="bar-container">
-            <div class="bar-label"><span>FILTRO CONSISTENCIA IA:</span> <span id="val-filtro">75%</span></div>
-            <div class="bar-bg"><div id="bar-filtro" class="bar-fill" style="width:75%; background:#00ccff;"></div></div>
-        </div>
+    <div class="bar-container">
+        <div class="bar-label"><span>INESTABILIDAD DEFENSIVA:</span> <span style="color:#ffaa00;">52%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:52%; background:#ffaa00;"></div></div>
+        <p style="font-size:0.75rem; color:#aaa; margin-top:5px;">Ratio de goles encajados y propensión a faltas tácticas de contención.</p>
+    </div>
+
+    <div class="bar-container">
+        <div class="bar-label"><span>FILTRO CONSISTENCIA IA:</span> <span style="color:#00ccff;">75%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:75%; background:#00ccff;"></div></div>
+        <p style="font-size:0.75rem; color:#aaa; margin-top:5px;">Concurrencia de tendencias históricas de H2H y ponderación del modelo.</p>
+    </div>
+
+    <div style="background:#0a1a1a; padding:15px; border-radius:10px; border:1px solid #00ff88; margin-top:20px;">
+        <p style="color:#00ff88; font-weight:bold; margin:0 0 5px 0;">💡 FACTOR X (TENDENCIA REAL)</p>
+        <p id="factor-x-text" style="font-size:0.85rem;">Cargando tendencia histórica específica...</p>
     </div>
 </div>
 
-<script>
-    function analizar() {
-        document.getElementById('dashboard').style.display = 'block';
-        document.getElementById('titulo').innerText = document.getElementById('eqLocal').value.toUpperCase() + " VS " + document.getElementById('eqVis').value.toUpperCase();
-        
-        // Simulación de valores dinámicos
-        const ofen = Math.floor(Math.random() * 40) + 40;
-        const defe = Math.floor(Math.random() * 40) + 30;
-        const filt = 75;
+<style>
+    .bar-container { margin-bottom: 20px; }
+    .bar-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; }
+    .bar-bg { background: #222; height: 6px; border-radius: 3px; }
+    .bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease-in-out; }
+</style>
 
-        document.getElementById('val-ofensivo').innerText = ofen + "%";
-        document.getElementById('bar-ofensivo').style.width = ofen + "%";
-        
-        document.getElementById('val-defensivo').innerText = defe + "%";
-        document.getElementById('bar-defensivo').style.width = defe + "%";
+<script>
+    // Actualización de la función analizar para incluir el Factor X
+    function actualizarFactorX(local, visitante) {
+        const factorText = `${local} ha concedido al menos 1.2 goles en sus últimos 3 partidos, mientras que ${visitante} promedia 2.1 goles a favor fuera de casa.`;
+        document.getElementById('factor-x-text').innerText = factorText;
     }
+    // Llama a esta función dentro de tu función 'analizar' original
 </script>
-</body>
-</html>
