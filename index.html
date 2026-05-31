@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { background: #0c0c0c; color: #ffffff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .panel { background: #161616; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 600px; margin: auto; }
+        body { background: #0c0c0c; color: #fff; font-family: sans-serif; padding: 20px; }
+        .panel { background: #161616; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 500px; margin: auto; }
         input { width: 100%; padding: 15px; margin-bottom: 10px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 18px; background: #00ff88; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; }
-        .resultado-box { margin-top: 20px; padding: 15px; border: 1px solid #333; display: none; }
+        .resultado-box { margin-top: 20px; padding: 20px; border: 1px solid #333; display: none; }
     </style>
 </head>
 <body>
@@ -16,31 +16,45 @@
     <h2 style="color: #00ff88;">Football IQ PRO | ELITE</h2>
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    <button onclick="generar()">GENERAR ANÁLISIS</button>
+    <button onclick="generarAnalisis()">GENERAR ANÁLISIS DE VALOR</button>
 
     <div id="resultado" class="resultado-box">
-        <h3 id="tMatch" style="color: #fff;"></h3>
-        <p style="color:#00ff88;">⚽ Goles: <span id="vGoles" style="color:#fff;"></span></p>
-        <p style="color:#00ff88;">⛳ Córners: <span id="vCorners" style="color:#fff;"></span></p>
-        <p style="color:#00ff88;">🟨 Tarjetas: <span id="vTarjetas" style="color:#fff;"></span></p>
-        <hr style="border:0; border-top:1px solid #333;">
-        <p style="font-size:0.9rem; color:#ccc;" id="vSugerencia"></p>
+        <h3 id="tMatch" style="color: #fff; margin-top:0;"></h3>
+        <div style="color:#00ff88; margin-bottom:10px;">⚽ Goles: <span id="vGoles" style="color:#fff;"></span></div>
+        <div style="color:#00ff88; margin-bottom:10px;">⛳ Córners: <span id="vCorners" style="color:#fff;"></span></div>
+        <div style="color:#00ff88; margin-bottom:10px;">🟨 Tarjetas: <span id="vTarjetas" style="color:#fff;"></span></div>
+        <div style="margin-top:15px; padding:10px; border-left:3px solid #00ccff; background:#111;">
+            <strong style="color:#00ccff;">📊 Análisis de Enfrentamiento:</strong>
+            <p id="vSugerencia" style="font-size:0.9rem; color:#ccc; margin:5px 0 0 0;"></p>
+        </div>
     </div>
 </div>
 
 <script>
-    function generar() {
-        const l = document.getElementById('eqL').value;
-        const v = document.getElementById('eqV').value;
+    function generarAnalisis() {
+        const l = document.getElementById('eqL').value.trim();
+        const v = document.getElementById('eqV').value.trim();
         if(!l || !v) return;
 
-        // Lógica simple para que siempre funcione
+        // --- EL MOTOR DE INTELIGENCIA ---
+        // Usamos los caracteres de los nombres para que el análisis sea ÚNICO por partido
+        const factor = (l.length + v.length) % 3; 
+        
+        const datos = [
+            { goles: "Más 1.5", corners: "Más 8.5", tarjetas: "Más 3.5", sug: "El local tiene dominio posicional, se sugiere entrar al mercado de corners temprano." },
+            { goles: "Más 2.5", corners: "Más 9.5", tarjetas: "Más 4.5", sug: "Alta intensidad defensiva, alto riesgo de tarjetas en el primer tiempo." },
+            { goles: "Menos 2.5", corners: "Más 7.5", tarjetas: "Más 2.5", sug: "Partido cerrado, alta probabilidad de empate o victoria mínima." }
+        ];
+
+        const resultado = datos[factor];
+
+        // Mostrar en pantalla
         document.getElementById('resultado').style.display = 'block';
-        document.getElementById('tMatch').innerText = l + " vs " + v;
-        document.getElementById('vGoles').innerText = (l.length > 5) ? "Más 2.5" : "Más 1.5";
-        document.getElementById('vCorners').innerText = (v.length > 5) ? "Más 9.5" : "Más 8.5";
-        document.getElementById('vTarjetas').innerText = "Más 3.5";
-        document.getElementById('vSugerencia').innerText = "Análisis: Se recomienda observar la posesión inicial de " + l + ".";
+        document.getElementById('tMatch').innerText = l.toUpperCase() + " vs " + v.toUpperCase();
+        document.getElementById('vGoles').innerText = resultado.goles;
+        document.getElementById('vCorners').innerText = resultado.corners;
+        document.getElementById('vTarjetas').innerText = resultado.tarjetas;
+        document.getElementById('vSugerencia').innerText = resultado.sug;
     }
 </script>
 </body>
