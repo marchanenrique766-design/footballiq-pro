@@ -3,50 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { background: #0a0a0a; color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; }
-        .app { max-width: 600px; margin: auto; background: #121212; border: 1px solid #333; border-radius: 10px; padding: 25px; }
-        .btn-gen { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
-        .dna-box { background: #1a1a1a; padding: 15px; border-left: 4px solid #39ff14; margin-top: 20px; font-size: 0.95rem; }
-        .market-val { color: #39ff14; font-size: 1.2rem; font-weight: bold; margin-top: 10px; }
+        /* Estilos de Alto Contraste para máxima legibilidad */
+        body { background: #000; color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+        .app-container { max-width: 600px; margin: auto; border: 1px solid #333; padding: 25px; border-radius: 8px; background: #0a0a0a; }
+        
+        /* Botón estilo profesional */
+        .btn-gen { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 4px; font-weight: 900; font-size: 1rem; cursor: pointer; text-transform: uppercase; margin-top: 15px; }
+        
+        /* Etiquetas de alto contraste */
+        .label { color: #39ff14; font-weight: bold; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-top: 20px; display: block; }
+        
+        /* Texto principal blanco brillante */
+        .content { color: #ffffff; font-size: 1.05rem; line-height: 1.5; }
+        
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #444; color: #fff; font-size: 1rem; }
     </style>
 </head>
 <body>
-<div class="app">
-    <h2 style="color:#fff;">Football IQ <span style="color:#39ff14;">PRO</span></h2>
-    <input id="l" placeholder="EQUIPO LOCAL" style="width:100%; padding:12px; margin:10px 0; background:#000; border:1px solid #333; color:#fff;">
-    <input id="v" placeholder="EQUIPO VISITANTE" style="width:100%; padding:12px; margin:10px 0; background:#000; border:1px solid #333; color:#fff;">
-    <button class="btn-gen" onclick="analizar()">GENERAR ANÁLISIS PROFESIONAL</button>
-    
+
+<div class="app-container">
+    <h2 style="color: #fff;">Football IQ PRO | <span style="color:#39ff14;">ANALISTA EXPERTO</span></h2>
+    <input id="L" placeholder="EQUIPO LOCAL">
+    <input id="V" placeholder="EQUIPO VISITANTE">
+    <button class="btn-gen" onclick="generar()">GENERAR ANÁLISIS</button>
+
     <div id="res" style="display:none; margin-top:30px;">
-        <h3 id="matchName" style="border-bottom:1px solid #333; padding-bottom:10px;"></h3>
-        <div class="market-val" id="mercado"></div>
-        <div class="dna-box" id="analisis"></div>
+        <h3 id="match" style="border-bottom: 2px solid #39ff14; padding-bottom: 10px; color:#39ff14;"></h3>
+        
+        <span class="label">🧬 ADN Táctico</span>
+        <div class="content" id="adn"></div>
+
+        <span class="label">🎯 Objetivo</span>
+        <div class="content" id="obj"></div>
     </div>
 </div>
 
 <script>
-    function analizar() {
-        const L = document.getElementById('l').value.trim();
-        const V = document.getElementById('v').value.trim();
+    function generar() {
+        const L = document.getElementById('L').value.toUpperCase();
+        const V = document.getElementById('V').value.toUpperCase();
         if(!L || !V) return;
 
-        // Base de datos de perfiles tácticos (Aquí es donde la IA se vuelve profesional)
-        const perfiles = {
-            "presion": "ejerce una presión alta asfixiante, buscando forzar errores en la salida.",
-            "bloque": "se estructura en un bloque medio compacto, priorizando el orden defensivo.",
-            "posesion": "prioriza la posesión progresiva y el juego asociativo en campo rival.",
-            "vertical": "busca transiciones rápidas y juego vertical directo hacia los delanteros."
-        };
-
-        const adnLocal = perfiles[L.length % 2 == 0 ? "presion" : "posesion"];
-        const adnVisit = perfiles[V.length % 2 == 0 ? "bloque" : "vertical"];
-
-        document.getElementById('matchName').innerText = `${L.toUpperCase()} VS ${V.toUpperCase()}`;
-        document.getElementById('mercado').innerText = "⚽ Mercado Sugerido: Más 2.5 Goles / Córners +9.5";
-        document.getElementById('analisis').innerHTML = `
-            <strong>ADN TÁCTICO:</strong> ${L} ${adnLocal} Mientras que ${V} ${adnVisit}<br><br>
-            <strong>OBJETIVO:</strong> Ambos equipos disputan puntos críticos para consolidarse en la zona de clasificación.
-        `;
+        document.getElementById('match').innerText = `${L} VS ${V}`;
+        document.getElementById('adn').innerText = `${L} ejerce una presión alta agresiva buscando transiciones rápidas, mientras que ${V} se estructura en un bloque medio compacto.`;
+        document.getElementById('obj').innerText = `${L} necesita estabilizar su temporada; ${V} busca consolidarse en los puestos de clasificación directa.`;
+        
         document.getElementById('res').style.display = 'block';
     }
 </script>
