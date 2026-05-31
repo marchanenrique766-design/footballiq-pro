@@ -2,15 +2,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Football IQ PRO | ELITE</title>
     <style>
         body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
         .panel { background: #121212; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 600px; margin: auto; }
         input { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .market { color: #fff; font-size: 1.1rem; margin-bottom: 12px; }
-        .market span { color: #39ff14; font-weight: bold; }
-        .analisis-box { margin-top: 20px; padding: 15px; border-left: 4px solid #39ff14; background: #1a1a1a; }
+        .res-item { margin-bottom: 12px; font-size: 1.1rem; }
+        .res-item span { color: #39ff14; font-weight: bold; }
+        .risk-box { margin-top: 20px; padding: 15px; border-radius: 8px; background: #1a1a1a; border: 1px solid #333; }
     </style>
 </head>
 <body>
@@ -19,50 +18,50 @@
     <h2 style="color: #39ff14;">Football IQ PRO | ELITE</h2>
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    <button onclick="analizar()">GENERAR ANÁLISIS DE VALOR</button>
+    <button onclick="analizarSeguro()">GENERAR ANÁLISIS DE VALOR</button>
 
-    <div id="resultado" style="display:none; margin-top:25px;">
-        <h3 id="titulo" style="border-bottom:1px solid #333; padding-bottom:10px;"></h3>
-        <div class="market">⚽ Goles: <span id="vGoles"></span></div>
-        <div class="market">⛳ Córners: <span id="vCorners"></span></div>
-        <div class="market">🟨 Tarjetas: <span id="vTarjetas"></span></div>
-        <div class="analisis-box" id="vAnalisis"></div>
+    <div id="res" style="display:none; margin-top:25px;">
+        <h3 id="tMatch" style="border-bottom: 1px solid #333; padding-bottom: 10px;"></h3>
+        <div class="res-item">⚽ Goles: <span id="vGoles"></span></div>
+        <div class="res-item">⛳ Córners: <span id="vCorners"></span></div>
+        <div class="res-item">🟨 Tarjetas: <span id="vTarjetas"></span></div>
+        <div class="risk-box" id="vRiesgo"></div>
     </div>
 </div>
 
 <script>
-    function analizar() {
-        const L = document.getElementById('eqL').value.trim().toUpperCase();
-        const V = document.getElementById('eqV').value.trim().toUpperCase();
-        if(!L || !V) return;
+    function analizarSeguro() {
+        const l = document.getElementById('eqL').value.trim().toUpperCase();
+        const v = document.getElementById('eqV').value.trim().toUpperCase();
+        if(!l || !v) return;
 
-        // --- MATRIZ DE ANÁLISIS ---
-        // Lista de equipos de perfil "defensivo/friccionado"
-        const defensivos = ["ECUADOR", "LIGA", "EMELEC", "URUGUAY", "ITALIA", "FINLANDIA"];
-        
-        // Reglas de negocio: Detectar si el partido será "cerrado"
-        const esCerrado = (defensivos.includes(L) || defensivos.includes(V));
+        // --- MOTOR DE GESTIÓN DE RIESGO ---
+        const cerrados = ["ECUADOR", "LIGA", "EMELEC", "URUGUAY", "ITALIA", "FINLANDIA"];
+        const esCerrado = (cerrados.includes(l) || cerrados.includes(v));
         
         let res = {
-            goles: "Más 2.5",
-            corners: "Más 9.5",
-            tarjetas: "Más 3.5",
-            texto: "Partido abierto, alta intensidad ofensiva."
+            goles: "Más 2.5", corners: "Más 9.5", tarjetas: "Más 3.5",
+            confianza: "ALTA", stake: "1.5% del Bank"
         };
 
         if (esCerrado) {
             res.goles = "Menos 2.5";
             res.corners = "Más 7.5";
             res.tarjetas = "Más 5.5";
-            res.texto = "Partido táctico y friccionado. Se recomienda entrar a mercado de tarjetas.";
+            res.confianza = "MEDIA (Alta Fricción)";
+            res.stake = "0.5% del Bank (Precaución)";
         }
 
-        document.getElementById('resultado').style.display = 'block';
-        document.getElementById('titulo').innerText = L + " VS " + V;
+        document.getElementById('res').style.display = 'block';
+        document.getElementById('tMatch').innerText = l + " VS " + v;
         document.getElementById('vGoles').innerText = res.goles;
         document.getElementById('vCorners').innerText = res.corners;
         document.getElementById('vTarjetas').innerText = res.tarjetas;
-        document.getElementById('vAnalisis').innerHTML = "<strong>Análisis Táctico IA:</strong><br>" + res.texto;
+        
+        document.getElementById('vRiesgo').innerHTML = `
+            <strong>Nivel de Confianza:</strong> <span style="color:${res.confianza.includes('ALTA') ? '#39ff14' : '#ffcc00'}">${res.confianza}</span><br>
+            <strong>Gestión de Capital:</strong> ${res.stake}
+        `;
     }
 </script>
 </body>
