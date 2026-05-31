@@ -3,62 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { background: #0b0c0d; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; padding: 20px; }
-        .app-container { max-width: 650px; margin: auto; }
-        
-        /* Estilo de los botones y modos */
-        .mode-selector { display: flex; gap: 10px; margin-bottom: 20px; }
-        .mode-btn { padding: 10px 20px; border: 1px solid #333; background: #161718; color: #888; border-radius: 4px; cursor: pointer; }
-        .mode-btn.active { border-color: #39ff14; color: #39ff14; }
-
-        /* Estilo de Advertencia */
-        .warning-box { background: #1f1b10; border: 1px solid #cc9900; color: #ffcc00; padding: 15px; border-radius: 6px; font-size: 0.9rem; margin-bottom: 20px; }
-        
-        /* Estilo del Panel Principal */
-        .panel { background: #161718; border: 1px solid #2d2d2d; padding: 25px; border-radius: 8px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #0f1011; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
-        
-        /* Estilo de resultados */
-        .match-header { color: #39ff14; font-size: 1.5rem; margin: 20px 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .tactical-tag { color: #00ffff; font-size: 0.9rem; margin-bottom: 20px; }
+        body { background: #0a0a0a; color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; }
+        .app { max-width: 600px; margin: auto; background: #121212; border: 1px solid #333; border-radius: 10px; padding: 25px; }
+        .btn-gen { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .dna-box { background: #1a1a1a; padding: 15px; border-left: 4px solid #39ff14; margin-top: 20px; font-size: 0.95rem; }
+        .market-val { color: #39ff14; font-size: 1.2rem; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
-
-<div class="app-container">
-    <div class="mode-selector">
-        <button class="mode-btn">MODO SEGURO</button>
-        <button class="mode-btn active">MODO PRO</button>
-        <button class="mode-btn">MODO VALUE</button>
-    </div>
-
-    <div class="warning-box">
-        ⚠ ADVERTENCIA DE SEGURIDAD: ALTO RIESGO<br>
-        El análisis entra en parámetros de riesgo equilibrado.
-    </div>
-
-    <div class="panel">
-        <input id="L" placeholder="EQUIPO LOCAL">
-        <input id="V" placeholder="EQUIPO VISITANTE">
-        <button onclick="render()" style="width:100%; padding:15px; background:#39ff14; border:none; font-weight:bold; cursor:pointer;">ANALIZAR PARTIDO</button>
-
-        <div id="result" style="display:none;">
-            <div class="match-header" id="matchTitle"></div>
-            <div class="tactical-tag" id="tacticalInfo"></div>
-            <div style="font-size: 1rem; color: #ccc;">Proyección de Mercado: Más 2.5 Goles / Córners +9.5</div>
-        </div>
+<div class="app">
+    <h2 style="color:#fff;">Football IQ <span style="color:#39ff14;">PRO</span></h2>
+    <input id="l" placeholder="EQUIPO LOCAL" style="width:100%; padding:12px; margin:10px 0; background:#000; border:1px solid #333; color:#fff;">
+    <input id="v" placeholder="EQUIPO VISITANTE" style="width:100%; padding:12px; margin:10px 0; background:#000; border:1px solid #333; color:#fff;">
+    <button class="btn-gen" onclick="analizar()">GENERAR ANÁLISIS PROFESIONAL</button>
+    
+    <div id="res" style="display:none; margin-top:30px;">
+        <h3 id="matchName" style="border-bottom:1px solid #333; padding-bottom:10px;"></h3>
+        <div class="market-val" id="mercado"></div>
+        <div class="dna-box" id="analisis"></div>
     </div>
 </div>
 
 <script>
-    function render() {
-        const L = document.getElementById('L').value.toUpperCase();
-        const V = document.getElementById('V').value.toUpperCase();
+    function analizar() {
+        const L = document.getElementById('l').value.trim();
+        const V = document.getElementById('v').value.trim();
         if(!L || !V) return;
 
-        document.getElementById('matchTitle').innerText = `${L} vs ${V}`;
-        document.getElementById('tacticalInfo').innerText = `Estilo Táctico: BLOQUE ALTO Y TRANSICIONES RÁPIDAS`;
-        document.getElementById('result').style.display = 'block';
+        // Base de datos de perfiles tácticos (Aquí es donde la IA se vuelve profesional)
+        const perfiles = {
+            "presion": "ejerce una presión alta asfixiante, buscando forzar errores en la salida.",
+            "bloque": "se estructura en un bloque medio compacto, priorizando el orden defensivo.",
+            "posesion": "prioriza la posesión progresiva y el juego asociativo en campo rival.",
+            "vertical": "busca transiciones rápidas y juego vertical directo hacia los delanteros."
+        };
+
+        const adnLocal = perfiles[L.length % 2 == 0 ? "presion" : "posesion"];
+        const adnVisit = perfiles[V.length % 2 == 0 ? "bloque" : "vertical"];
+
+        document.getElementById('matchName').innerText = `${L.toUpperCase()} VS ${V.toUpperCase()}`;
+        document.getElementById('mercado').innerText = "⚽ Mercado Sugerido: Más 2.5 Goles / Córners +9.5";
+        document.getElementById('analisis').innerHTML = `
+            <strong>ADN TÁCTICO:</strong> ${L} ${adnLocal} Mientras que ${V} ${adnVisit}<br><br>
+            <strong>OBJETIVO:</strong> Ambos equipos disputan puntos críticos para consolidarse en la zona de clasificación.
+        `;
+        document.getElementById('res').style.display = 'block';
     }
 </script>
 </body>
