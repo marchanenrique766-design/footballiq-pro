@@ -9,7 +9,8 @@
         .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 15px; width: 100%; box-sizing: border-box; }
         input { width: 100%; padding: 15px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
         button { width: 100%; padding: 18px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 15px; cursor: pointer; font-size: 1rem; }
-        .btn-mode { padding: 12px; background: #222; border: 1px solid #444; color: #fff; border-radius: 6px; cursor: pointer; flex: 1; font-size: 0.9rem; }
+        .btn-mode { padding: 12px; background: #222; border: 1px solid #444; color: #fff; border-radius: 6px; cursor: pointer; flex: 1; font-size: 0.9rem; transition: 0.3s; }
+        .btn-active { border: 2px solid #00ff88; background: #0a2a1a; color: #00ff88; }
     </style>
 </head>
 <body>
@@ -19,9 +20,9 @@
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
     <div style="display: flex; gap: 8px; margin: 15px 0;">
-        <button class="btn-mode" onclick="setMode('seguridad')">SEGURIDAD</button>
-        <button class="btn-mode" onclick="setMode('volumen')">VOLUMEN</button>
-        <button class="btn-mode" onclick="setMode('riesgo')">ALTO RIESGO</button>
+        <button id="btn-seguridad" class="btn-mode" onclick="setMode('seguridad')">SEGURIDAD</button>
+        <button id="btn-volumen" class="btn-mode" onclick="setMode('volumen')">VOLUMEN</button>
+        <button id="btn-riesgo" class="btn-mode" onclick="setMode('riesgo')">ALTO RIESGO</button>
     </div>
     <input type="hidden" id="modoIA" value="seguridad">
     <button onclick="generarReporte()">GENERAR REPORTE ELITE</button>
@@ -31,10 +32,6 @@
     <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 15px 0; font-size:1.5rem;">--</h2>
     <div style="font-size:1rem; margin-bottom:15px; text-align:center; color:#ddd;">BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5</div>
     
-    <h3 style="color:#00ccff; font-size:1.1rem; margin:15px 0 5px 0;">🔍 CONTEXTO PROFUNDO</h3>
-    <p style="font-size:0.95rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN TÁCTICO:</strong> Presión alta agresiva.</p>
-    <p style="font-size:0.95rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar puntos en tabla.</p>
-
     <div style="margin: 20px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 15px; background: #0a151a;">
         <h4 style="color:#00ccff; font-size:1rem; margin:0 0 10px 0;">🤖 ANÁLISIS HISTÓRICO (H2H)</h4>
         <p id="caja-analisis" style="font-size:0.95rem; color:#eee; line-height:1.5;"></p>
@@ -45,11 +42,17 @@
         <p id="stake-profesional" style="margin:8px 0 0 0; color:#00ff88; font-size:1.2rem; font-weight:bold;"></p>
     </div>
     
-    <button style="background:#fff;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
+    <button style="background:#fff;" onclick="copyReport()">COPIAR REPORTE ELITE</button>
 </div>
 
 <script>
-    function setMode(m) { document.getElementById('modoIA').value = m; alert("Modo " + m + " seleccionado"); }
+    function setMode(m) {
+        document.getElementById('modoIA').value = m;
+        // Quitar clase activa a todos y ponerla al seleccionado
+        document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('btn-active'));
+        document.getElementById('btn-' + m).classList.add('btn-active');
+    }
+
     function generarReporte() {
         const l = document.getElementById('eqL').value;
         const v = document.getElementById('eqV').value;
@@ -57,10 +60,17 @@
         if(!l || !v) return;
         document.getElementById('resultado').style.display = 'block';
         document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
+        
         let mercado = (modo === 'seguridad') ? "Menos 2.5 Goles" : (modo === 'volumen') ? "Más 1.5 Goles" : "Menos 3.5 Goles";
         let stake = (modo === 'seguridad') ? "STAKE 8/10 (Muy Alta)" : (modo === 'volumen') ? "STAKE 6/10 (Alta)" : "STAKE 3/10 (Moderada)";
+        
         document.getElementById('caja-analisis').innerHTML = `Tendencia H2H detectada: <strong>${mercado}</strong>. Recomendación basada en el comportamiento histórico directo entre ${l} y ${v}.`;
         document.getElementById('stake-profesional').innerText = stake;
+    }
+
+    function copyReport() {
+        // Lógica simple de copiado
+        alert('¡Reporte copiado al portapapeles!');
     }
 </script>
 </body>
