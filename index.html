@@ -6,16 +6,19 @@
     };
 
     function ejecutarAnalisis() {
-        // .trim() quita espacios, .toUpperCase() lo pone todo en mayúsculas
-        const l = document.getElementById('eqLocal').value.trim().toUpperCase();
-        const v = document.getElementById('eqVis').value.trim().toUpperCase();
+        const inputL = document.getElementById('eqLocal').value;
+        const inputV = document.getElementById('eqVis').value;
         
-        // Verificamos si los equipos existen en nuestra base
+        // Limpiamos los textos
+        const l = inputL.trim().toUpperCase();
+        const v = inputV.trim().toUpperCase();
+        
+        console.log("Buscando:", l, "y", v); // ESTO TE AYUDARÁ A VER SI LEE BIEN
+        
         if(db[l] && db[v]) {
             document.getElementById('dashboard').style.display = 'block';
             document.getElementById('titulo').innerText = l + " VS " + v;
             
-            // Actualizamos los datos
             actualizarGrafico('btts-ring', 'btts-val', db[l].btts);
             actualizarGrafico('goles-ring', 'goles-val', db[l].goles);
             document.getElementById('corners-val').innerText = db[l].corners;
@@ -24,16 +27,9 @@
             const hist = document.getElementById('historial');
             hist.innerHTML = db[l].hist.map(r => `<span class="pill" style="background:${r=='V'?'green':r=='E'?'orange':'red'}">${r}</span>`).join('');
         } else {
-            // Mensaje más claro
-            alert("⚠️ Equipo no encontrado. Asegúrate de escribir bien los nombres.\nDisponibles: PSG, ARSENAL, FLAMENGO");
+            // Error detallado
+            alert("No encontré '" + l + "' o '" + v + "'. \nDisponibles: PSG, ARSENAL, FLAMENGO");
         }
     }
-
-    function actualizarGrafico(ringId, textId, p) {
-        const ring = document.getElementById(ringId);
-        const circ = 2 * Math.PI * 30; // Radio 30
-        const offset = circ - (p / 100 * circ);
-        ring.style.strokeDasharray = (p / 100 * circ) + " " + circ;
-        document.getElementById(textId).innerText = p + "%";
-    }
+    // ... resto de la función actualizarGrafico
 </script>
