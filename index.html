@@ -2,50 +2,64 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Football IQ PRO - Analista Experto</title>
     <style>
-        :root { --main: #39ff14; --bg: #0a0a0a; }
-        body { background: var(--bg); color: #fff; font-family: 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 20px; }
-        .wrapper { max-width: 600px; margin: auto; border: 1px solid #333; padding: 25px; border-radius: 12px; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--main); border: none; font-weight: bold; cursor: pointer; border-radius: 6px; margin-top: 10px; }
-        .report { display: none; margin-top: 25px; border-top: 1px solid #333; padding-top: 20px; }
-        .title { color: var(--main); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; }
-        .text { margin-bottom: 20px; line-height: 1.6; color: #ccc; }
+        body { background: #0b0c0d; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; padding: 20px; }
+        .app-container { max-width: 650px; margin: auto; }
+        
+        /* Estilo de los botones y modos */
+        .mode-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .mode-btn { padding: 10px 20px; border: 1px solid #333; background: #161718; color: #888; border-radius: 4px; cursor: pointer; }
+        .mode-btn.active { border-color: #39ff14; color: #39ff14; }
+
+        /* Estilo de Advertencia */
+        .warning-box { background: #1f1b10; border: 1px solid #cc9900; color: #ffcc00; padding: 15px; border-radius: 6px; font-size: 0.9rem; margin-bottom: 20px; }
+        
+        /* Estilo del Panel Principal */
+        .panel { background: #161718; border: 1px solid #2d2d2d; padding: 25px; border-radius: 8px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #0f1011; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
+        
+        /* Estilo de resultados */
+        .match-header { color: #39ff14; font-size: 1.5rem; margin: 20px 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .tactical-tag { color: #00ffff; font-size: 0.9rem; margin-bottom: 20px; }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <h2 style="margin-top:0;">Football IQ PRO</h2>
-        <input id="local" placeholder="EQUIPO LOCAL">
-        <input id="visit" placeholder="EQUIPO VISITANTE">
-        <button onclick="generar()">GENERAR ANÁLISIS EXPERTO</button>
 
-        <div id="report" class="report">
-            <h3 id="matchName" style="color:var(--main)"></h3>
-            <div class="title">ADN Táctico</div>
-            <div class="text" id="adn"></div>
-            <div class="title">Objetivo del Encuentro</div>
-            <div class="text" id="obj"></div>
-            <div class="title">Análisis de Mercado</div>
-            <div class="text" id="mercado"></div>
-        </div>
+<div class="app-container">
+    <div class="mode-selector">
+        <button class="mode-btn">MODO SEGURO</button>
+        <button class="mode-btn active">MODO PRO</button>
+        <button class="mode-btn">MODO VALUE</button>
     </div>
 
-    <script>
-        function generar() {
-            const L = document.getElementById('local').value;
-            const V = document.getElementById('visit').value;
-            if(!L || !V) return;
+    <div class="warning-box">
+        ⚠ ADVERTENCIA DE SEGURIDAD: ALTO RIESGO<br>
+        El análisis entra en parámetros de riesgo equilibrado.
+    </div>
 
-            // Datos de Análisis Técnico
-            document.getElementById('matchName').innerText = `${L.toUpperCase()} VS ${V.toUpperCase()}`;
-            document.getElementById('adn').innerText = `${L} prioriza un bloque defensivo compacto con transiciones rápidas por los costados. Por su parte, ${V} mantiene una presión alta asfixiante, buscando recuperar en campo rival.`;
-            document.getElementById('obj').innerText = `${L} necesita sumar tres puntos para escalar posiciones en la tabla. ${V} busca consolidar su racha positiva y acercarse a puestos de copas internacionales.`;
-            document.getElementById('mercado').innerText = "Goles: Más 2.5 | Córners: Más 9.5 | Tarjetas: Más 3.5";
-            
-            document.getElementById('report').style.display = 'block';
-        }
-    </script>
+    <div class="panel">
+        <input id="L" placeholder="EQUIPO LOCAL">
+        <input id="V" placeholder="EQUIPO VISITANTE">
+        <button onclick="render()" style="width:100%; padding:15px; background:#39ff14; border:none; font-weight:bold; cursor:pointer;">ANALIZAR PARTIDO</button>
+
+        <div id="result" style="display:none;">
+            <div class="match-header" id="matchTitle"></div>
+            <div class="tactical-tag" id="tacticalInfo"></div>
+            <div style="font-size: 1rem; color: #ccc;">Proyección de Mercado: Más 2.5 Goles / Córners +9.5</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function render() {
+        const L = document.getElementById('L').value.toUpperCase();
+        const V = document.getElementById('V').value.toUpperCase();
+        if(!L || !V) return;
+
+        document.getElementById('matchTitle').innerText = `${L} vs ${V}`;
+        document.getElementById('tacticalInfo').innerText = `Estilo Táctico: BLOQUE ALTO Y TRANSICIONES RÁPIDAS`;
+        document.getElementById('result').style.display = 'block';
+    }
+</script>
 </body>
 </html>
