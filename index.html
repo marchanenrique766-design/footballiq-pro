@@ -3,29 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { background: #000000; color: #ffffff; font-family: sans-serif; padding: 20px; }
+        body { background: #000; color: #fff; font-family: sans-serif; padding: 20px; }
         .panel { background: #121212; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 600px; margin: auto; }
-        input { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: #ffffff; border-radius: 6px; box-sizing: border-box; }
+        input { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .resultado { margin-top: 25px; display: none; }
-        .item { margin-bottom: 10px; font-size: 1.1rem; color: #ffffff; }
-        .item span { color: #39ff14; font-weight: bold; }
-        .tactica { margin-top: 20px; padding: 15px; border-left: 4px solid #39ff14; background: #1a1a1a; font-size: 0.9rem; color: #cccccc; }
+        .res-item { margin-bottom: 12px; font-size: 1.2rem; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .res-item span { color: #39ff14; font-weight: bold; }
+        .tactica { margin-top: 20px; padding: 15px; border-left: 4px solid #39ff14; background: #1a1a1a; font-size: 0.95rem; line-height: 1.4; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h2 style="color: #39ff14;">Football IQ PRO</h2>
+    <h2 style="color: #39ff14;">Football IQ PRO | DINÁMICO</h2>
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
     <button onclick="analizar()">GENERAR ANÁLISIS</button>
 
-    <div id="res" class="resultado">
-        <h3 id="tMatch" style="border-bottom: 1px solid #333; padding-bottom: 10px;"></h3>
-        <div class="item">⚽ Goles: <span id="vGoles"></span></div>
-        <div class="item">⛳ Córners: <span id="vCorners"></span></div>
-        <div class="item">🟨 Tarjetas: <span id="vTarjetas"></span></div>
+    <div id="res" style="display:none; margin-top:25px;">
+        <h3 id="tMatch" style="margin-bottom: 15px;"></h3>
+        <div class="res-item">⚽ Goles: <span id="vGoles"></span></div>
+        <div class="res-item">⛳ Córners: <span id="vCorners"></span></div>
+        <div class="res-item">🟨 Tarjetas: <span id="vTarjetas"></span></div>
         <div class="tactica" id="vSugerencia"></div>
     </div>
 </div>
@@ -34,26 +33,31 @@
     function analizar() {
         const l = document.getElementById('eqL').value.trim().toUpperCase();
         const v = document.getElementById('eqV').value.trim().toUpperCase();
-        
-        if (l === "" || v === "") return;
+        if(!l || !v) return;
 
-        // Lógica de seguridad para evitar errores de carga
-        const esCerrado = (l.includes("LIGA") || v.includes("LIGA") || l.includes("EMELEC") || v.includes("EMELEC"));
+        // --- MOTOR MATEMÁTICO DINÁMICO ---
+        // Combinamos los nombres para generar un ID único para cada partido
+        const idPart = (l.length * v.length) % 10;
         
+        // Resultados calculados matemáticamente para que cambien siempre
+        const goles = ["Más 1.5", "Más 2.5", "Más 3.5", "Menos 2.5", "Más 2.5"][idPart % 5];
+        const corners = ["Más 7.5", "Más 8.5", "Más 9.5", "Más 10.5", "Más 8.5"][idPart % 5];
+        const tarjetas = ["Más 3.5", "Más 4.5", "Más 2.5", "Más 5.5", "Más 4.5"][idPart % 5];
+        
+        const tacticas = [
+            "Partido abierto: Alta intensidad en áreas rivales.",
+            "Duelo táctico: Se espera juego trabado en el mediocampo.",
+            "Tendencia ofensiva: Ambos equipos buscan el arco constantemente.",
+            "Bloque bajo: Partido de contragolpes y pocas concesiones.",
+            "Alta fricción: Partido con mucha disputa y posibles faltas."
+        ];
+
         document.getElementById('res').style.display = 'block';
         document.getElementById('tMatch').innerText = l + " VS " + v;
-        
-        if (esCerrado) {
-            document.getElementById('vGoles').innerText = "Menos 2.5";
-            document.getElementById('vCorners').innerText = "Más 7.5";
-            document.getElementById('vTarjetas').innerText = "Más 5.5";
-            document.getElementById('vSugerencia').innerText = "Análisis: Partido de alta fricción táctica detectado.";
-        } else {
-            document.getElementById('vGoles').innerText = "Más 2.5";
-            document.getElementById('vCorners').innerText = "Más 9.5";
-            document.getElementById('vTarjetas').innerText = "Más 3.5";
-            document.getElementById('vSugerencia').innerText = "Análisis: Partido con alta frecuencia de transiciones rápidas.";
-        }
+        document.getElementById('vGoles').innerText = goles;
+        document.getElementById('vCorners').innerText = corners;
+        document.getElementById('vTarjetas').innerText = tarjetas;
+        document.getElementById('vSugerencia').innerText = "Análisis IA: " + tacticas[idPart % 5];
     }
 </script>
 </body>
