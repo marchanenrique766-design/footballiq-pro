@@ -3,60 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football IQ PRO | ELITE</title>
+    <title>Football IQ PRO</title>
     <style>
         body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
         .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 10px; }
         input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 10px; }
-        .tag { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; margin: 2px; }
-        .bar-label { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-top: 10px; }
-        .bar-bg { background: #222; height: 6px; border-radius: 3px; margin-top: 4px; }
-        .bar-fill { height: 100%; border-radius: 3px; }
+        .tag { padding: 3px 7px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; margin: 1px; }
+        .bar-container { margin: 10px 0; }
+        .bar-bg { background: #222; height: 6px; border-radius: 3px; }
+        .bar-fill { height: 6px; border-radius: 3px; background: #00ff88; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h2 style="color:#00ff88; font-size:1.1rem; margin:0 0 10px 0;">CONFIGURAR ANÁLISIS</h2>
-    <input type="text" id="eqLocal" placeholder="EQUIPO LOCAL">
-    <input type="text" id="eqVis" placeholder="EQUIPO VISITANTE">
+    <h2 style="color:#00ff88; font-size:1.1rem; margin:0;">CONFIGURAR ANÁLISIS</h2>
+    <input type="text" id="eqLocal" placeholder="LOCAL">
+    <input type="text" id="eqVis" placeholder="VISITANTE">
     <button onclick="generar()">ANALIZAR PARTIDO</button>
 </div>
 
-<div id="resultado" class="panel" style="display:none;">
+<div id="res" class="panel" style="display:none;">
     <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
     
-    <!-- Pronósticos -->
-    <div style="font-size:0.9rem; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
-        BTTS: <span id="btts" style="color:#00ff88;">59%</span> | +2.5 GOLES: <span id="goles" style="color:#00ff88;">54%</span><br>
-        CÓRNERS: <span id="corners" style="color:#00ccff;">MÁS DE 8.5</span>
+    <div style="font-size:0.9rem; margin-bottom:10px;">
+        BTTS: 59% | +2.5 GOLES: 54%<br>
+        CÓRNERS: MÁS DE 8.5
     </div>
 
-    <!-- Forma -->
-    <div style="text-align:center; margin-bottom:15px;">
+    <div style="text-align:center; margin-bottom:10px;">
         <span class="tag" style="background:#ffaa00;">E</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#00ff88;">V</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#ffaa00;">E</span>
     </div>
 
-    <!-- Contexto Profundo -->
-    <h3 style="color:#00ccff; font-size:0.9rem; margin:0 0 5px 0;">🔍 CONTEXTO PROFUNDO</h3>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;"><strong>🧬 ADN TÁCTICO:</strong> <span id="adn">Cargando...</span></p>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;"><strong>🎯 OBJETIVO:</strong> <span id="obj">Cargando...</span></p>
+    <h3 style="color:#00ccff; font-size:0.85rem; margin:0;">🔍 CONTEXTO PROFUNDO</h3>
+    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN:</strong> Presión alta agresiva.</p>
+    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar posición.</p>
 
-    <!-- Barras -->
-    <div class="bar-label"><span>VOLUMEN OFENSIVO:</span> <span>53%</span></div>
-    <div class="bar-bg"><div class="bar-fill" style="width:53%; background:#00ff88;"></div></div>
-    
-    <div class="bar-label"><span>INESTABILIDAD DEFENSIVA:</span> <span>52%</span></div>
-    <div class="bar-bg"><div class="bar-fill" style="width:52%; background:#ffaa00;"></div></div>
+    <div class="bar-container">
+        <div style="font-size:0.75rem;">OFENSIVA (53%)</div>
+        <div class="bar-bg"><div class="bar-fill" style="width:53%;"></div></div>
+    </div>
 
-    <!-- Factor X -->
-    <div style="background:#0a1a1a; padding:10px; border-radius:8px; border:1px solid #00ff88; margin:15px 0;">
-        <p style="color:#00ff88; font-weight:bold; font-size:0.8rem; margin:0;">💡 FACTOR X (TENDENCIA REAL)</p>
-        <p id="factorx" style="font-size:0.8rem; margin:5px 0 0 0;">Análisis en curso...</p>
+    <div style="background:#0a1a1a; padding:10px; border:1px solid #00ff88; border-radius:8px; margin:10px 0;">
+        <p style="color:#00ff88; font-weight:bold; font-size:0.75rem; margin:0;">💡 FACTOR X (TENDENCIA REAL)</p>
+        <p style="font-size:0.75rem; margin:5px 0 0 0;">Alta incidencia ofensiva reciente.</p>
     </div>
     
-    <button onclick="copiarReporte()" style="background:#fff;">COPIAR REPORTE ELITE</button>
+    <button style="background:#fff;">COPIAR REPORTE ELITE</button>
 </div>
 
 <script>
@@ -64,15 +58,9 @@
         const l = document.getElementById('eqLocal').value;
         const v = document.getElementById('eqVis').value;
         if(l && v) {
-            document.getElementById('resultado').style.display = 'block';
+            document.getElementById('res').style.display = 'block';
             document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-            document.getElementById('adn').innerText = l + " ejerce presión alta agresiva.";
-            document.getElementById('obj').innerText = l + " busca consolidar su posición.";
-            document.getElementById('factorx').innerText = l + " promedia alta incidencia ofensiva reciente.";
         }
-    }
-    function copiarReporte() {
-        alert("Reporte copiado con éxito");
     }
 </script>
 </body>
