@@ -3,25 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | ELITE</title>
+    <title>FOOTBALLIQ PRO | ENGINE</title>
     <style>
         :root { --neon: #00ff88; --bg: #050505; --panel: #121212; }
         body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
         .app-container { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 20px; }
         .panel { background: var(--panel); border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        
         input { width: 100%; padding: 18px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 10px; box-sizing: border-box; }
         button { width: 100%; padding: 20px; background: var(--neon); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: black; text-transform: uppercase; }
         
-        /* Gráficos de Anillo */
-        .ring-container { position: relative; width: 100px; height: 100px; margin: 10px auto; }
-        .ring { transform: rotate(-90deg); }
-        .ring-bg { fill: none; stroke: #222; stroke-width: 8; }
-        .ring-progress { fill: none; stroke: var(--neon); stroke-width: 8; stroke-dasharray: 0, 251; transition: 1s ease-out; }
-        .val-text { position: absolute; top: 35px; left: 0; width: 100%; text-align: center; font-weight: bold; font-size: 1.2rem; }
-        
-        #dashboard-completo { display: none; }
+        #dashboard { display: none; }
         .metric-box { border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 15px; background: #1a1a1a; text-align: center; }
+        .val { color: var(--neon); font-size: 28px; font-weight: bold; display: block; }
+        
+        .status-pill { padding: 5px 12px; border-radius: 4px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -29,60 +24,54 @@
 <div class="app-container">
     <div class="panel">
         <h2 style="color:var(--neon);">CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqA" placeholder="EQUIPO LOCAL">
-        <input type="text" id="eqB" placeholder="EQUIPO VISITANTE">
-        <button onclick="activarAnalisis()">ANALIZAR PARTIDO</button>
+        <input type="text" id="eqLocal" placeholder="EQUIPO LOCAL (Ej: PSG)">
+        <input type="text" id="eqVis" placeholder="EQUIPO VISITANTE (Ej: ARSENAL)">
+        <button onclick="analizar()">ANALIZAR PARTIDO</button>
     </div>
 
-    <div id="dashboard-completo">
+    <div id="dashboard">
         <div class="panel">
-            <h2 id="titulo">RESULTADOS Y RIESGO</h2>
+            <h2 id="titulo-partido">PSG VS ARSENAL</h2>
+            <div id="historial-local" style="display:flex; gap:10px; margin-bottom:15px;"></div>
             
-            <div class="metric-box">
-                BTTS (AMBOS MARCAN)
-                <div class="ring-container">
-                    <svg class="ring" width="100" height="100">
-                        <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
-                        <circle class="ring-progress" id="btts-ring" cx="50" cy="50" r="40"></circle>
-                    </svg>
-                    <div class="val-text" id="btts-val">0%</div>
-                </div>
-            </div>
-
-            <div class="metric-box">
-                +2.5 GOLES TOTALES
-                <div class="ring-container">
-                    <svg class="ring" width="100" height="100">
-                        <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
-                        <circle class="ring-progress" id="goles-ring" cx="50" cy="50" r="40"></circle>
-                    </svg>
-                    <div class="val-text" id="goles-val">0%</div>
-                </div>
+            <div class="metric-box">BTTS<span class="val" id="btts">0%</span></div>
+            <div class="metric-box">+2.5 GOLES<span class="val" id="goles">0%</span></div>
+            
+            <div class="metric-box" style="text-align:left;">
+                <p style="color:var(--neon); margin:0;">🔍 ADN TÁCTICO:</p>
+                <p id="adn-texto" style="font-size:0.9rem;"></p>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    function activarAnalisis() {
-        const a = document.getElementById('eqA').value;
-        const b = document.getElementById('eqB').value;
-        if(a && b) {
-            document.getElementById('dashboard-completo').style.display = 'block';
-            // Simulación de valores (62% y 58%)
-            actualizarAnillo('btts-ring', 'btts-val', 62);
-            actualizarAnillo('goles-ring', 'goles-val', 58);
-        }
-    }
+    // Tu "Cerebro" de datos
+    const db = {
+        "PSG": { adn: "Alta presión alta y transiciones rápidas.", hist: ["V","V","E","V","V"], btts: 72, goles: 68 },
+        "ARSENAL": { adn: "Bloque bajo compacto y contraataque directo.", hist: ["D","V","E","D","V"], btts: 55, goles: 52 },
+        "FLAMENGO": { adn: "Posesión activa y bloque alto.", hist: ["V","E","V","V","D"], btts: 65, goles: 60 }
+    };
 
-    function actualizarAnillo(ringId, textId, porcentaje) {
-        const ring = document.getElementById(ringId);
-        const text = document.getElementById(textId);
-        const radio = 40;
-        const circunferencia = 2 * Math.PI * radio;
-        const offset = circunferencia - (porcentaje / 100 * circunferencia);
-        ring.style.strokeDasharray = `${(porcentaje / 100 * circunferencia)} ${circunferencia}`;
-        text.innerText = porcentaje + "%";
+    function analizar() {
+        const loc = document.getElementById('eqLocal').value.toUpperCase();
+        const vis = document.getElementById('eqVis').value.toUpperCase();
+        
+        if(db[loc] && db[vis]) {
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('titulo-partido').innerText = loc + " VS " + vis;
+            document.getElementById('btts').innerText = db[loc].btts + "%";
+            document.getElementById('goles').innerText = db[loc].goles + "%";
+            document.getElementById('adn-texto').innerText = db[loc].adn;
+            
+            // Pintar historial
+            const histCont = document.getElementById('historial-local');
+            histCont.innerHTML = db[loc].hist.map(r => 
+                `<span class="status-pill" style="background:${r=='V'?'green':r=='E'?'orange':'red'}">${r}</span>`
+            ).join('');
+        } else {
+            alert("Equipo no encontrado en la base de datos (Prueba PSG, ARSENAL o FLAMENGO)");
+        }
     }
 </script>
 </body>
