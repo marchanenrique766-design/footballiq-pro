@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
     <style>
-        body { background: #0c0d0e; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        body { background-color: #0c0d0e; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
         .app-container { max-width: 600px; margin: auto; background: #161719; border: 1px solid #333; padding: 25px; border-radius: 12px; }
         input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
-        .btn-pro { width: 100%; padding: 15px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+        .btn-pro { width: 100%; padding: 18px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
         .data-card { background: #1f2022; padding: 20px; border-left: 5px solid #39ff14; margin-top: 20px; }
         .label { color: #00d4ff; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
     </style>
@@ -29,12 +30,14 @@
 </div>
 
 <script>
+    // ESTA ES LA BASE DE DATOS. Puedes agregar todos los equipos que quieras aquí.
     const db = {
-        "barcelona": "Prioriza la posesión progresiva y el juego asociativo en campo rival.",
-        "emelec": "Se estructura en bloque medio compacto, priorizando transiciones rápidas.",
-        "brasil": "Ataque vertical agresivo con laterales profundos y presión alta.",
-        "argentina": "Orden táctico riguroso con salida controlada y juego interior.",
-        "default": "Plantea un partido de alta intensidad física con disputa en el medio campo."
+        "barcelona": "prioriza la posesión del esférico y el juego asociativo en campo rival.",
+        "emelec": "se estructura en bloque medio compacto, priorizando transiciones rápidas.",
+        "brasil": "despliega un ataque vertical agresivo con laterales profundos y presión alta.",
+        "argentina": "mantiene un orden táctico riguroso con salida controlada y juego interior.",
+        "alemania": "ejerce una presión asfixiante con transiciones veloces tras recuperación.",
+        "default": "plantea un partido de alta intensidad física con disputa cerrada en el medio campo."
     };
 
     function analizar() {
@@ -42,12 +45,19 @@
         const v = document.getElementById('V').value.toLowerCase().trim();
         if(!l || !v) return;
 
+        // El motor busca en la base de datos según el nombre que escribiste
         const tLocal = db[l] || db["default"];
         const tVisit = db[v] || db["default"];
 
         document.getElementById('matchName').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-        document.getElementById('tactica').innerText = `${l.charAt(0).toUpperCase() + l.slice(1)} ${tLocal} Mientras que ${v.charAt(0).toUpperCase() + v.slice(1)} ${tVisit}`;
-        document.getElementById('objetivo').innerText = "Ambos equipos disputan puntos críticos para consolidarse en la zona de clasificación.";
+        
+        // Aquí se combina la información dinámica
+        document.getElementById('tactica').innerText = 
+            `${l.charAt(0).toUpperCase() + l.slice(1)} ${tLocal} Mientras que ${v.charAt(0).toUpperCase() + v.slice(1)} ${tVisit}`;
+            
+        document.getElementById('objetivo').innerText = 
+            "Ambos equipos disputan puntos críticos para consolidarse en la zona de clasificación y mejorar su coeficiente táctico.";
+            
         document.getElementById('res').style.display = 'block';
     }
 </script>
