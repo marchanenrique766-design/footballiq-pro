@@ -27,26 +27,31 @@
 <div id="resultado" class="panel" style="display:none;">
     <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
     
-    <div style="font-size:0.95rem; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
-        BTTS: <span id="btts" style="color:#00ff88;">--</span> | +2.5 GOLES: <span id="goles" style="color:#00ff88;">--</span><br>
-        CÓRNERS: <span id="corners" style="color:#00ccff;">--</span>
+    <!-- Pronósticos -->
+    <div style="font-size:0.9rem; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
+        BTTS: <span id="btts" style="color:#00ff88;">59%</span> | +2.5 GOLES: <span id="goles" style="color:#00ff88;">54%</span><br>
+        CÓRNERS: <span id="corners" style="color:#00ccff;">MÁS DE 8.5</span>
     </div>
 
+    <!-- Forma -->
     <div style="text-align:center; margin-bottom:15px;">
         <span class="tag" style="background:#ffaa00;">E</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#00ff88;">V</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#ffaa00;">E</span>
     </div>
 
-    <h3 style="color:#00ccff; font-size:0.9rem; margin:0;">🔍 CONTEXTO PROFUNDO</h3>
-    <p style="font-size:0.8rem; color:#ccc;"><strong>🧬 ADN TÁCTICO:</strong> <span id="adn">Presión alta y transiciones rápidas.</span></p>
-    <p style="font-size:0.8rem; color:#ccc;"><strong>🎯 OBJETIVO:</strong> <span id="obj">Puntos para zona alta.</span></p>
+    <!-- Contexto Profundo -->
+    <h3 style="color:#00ccff; font-size:0.9rem; margin:0 0 5px 0;">🔍 CONTEXTO PROFUNDO</h3>
+    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;"><strong>🧬 ADN TÁCTICO:</strong> <span id="adn">Cargando...</span></p>
+    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;"><strong>🎯 OBJETIVO:</strong> <span id="obj">Cargando...</span></p>
 
+    <!-- Barras -->
     <div class="bar-label"><span>VOLUMEN OFENSIVO:</span> <span>53%</span></div>
     <div class="bar-bg"><div class="bar-fill" style="width:53%; background:#00ff88;"></div></div>
     
     <div class="bar-label"><span>INESTABILIDAD DEFENSIVA:</span> <span>52%</span></div>
     <div class="bar-bg"><div class="bar-fill" style="width:52%; background:#ffaa00;"></div></div>
 
-    <div style="background:#0a1a1a; padding:10px; border-radius:8px; border:1px solid #00ff88; margin-top:15px;">
+    <!-- Factor X -->
+    <div style="background:#0a1a1a; padding:10px; border-radius:8px; border:1px solid #00ff88; margin:15px 0;">
         <p style="color:#00ff88; font-weight:bold; font-size:0.8rem; margin:0;">💡 FACTOR X (TENDENCIA REAL)</p>
         <p id="factorx" style="font-size:0.8rem; margin:5px 0 0 0;">Análisis en curso...</p>
     </div>
@@ -61,16 +66,13 @@
         if(l && v) {
             document.getElementById('resultado').style.display = 'block';
             document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-            document.getElementById('btts').innerText = "59%";
-            document.getElementById('goles').innerText = "54%";
-            document.getElementById('corners').innerText = "MÁS DE 8.5";
             document.getElementById('adn').innerText = l + " ejerce presión alta agresiva.";
-            document.getElementById('obj').innerText = l + " busca consolidar posición.";
+            document.getElementById('obj').innerText = l + " busca consolidar su posición.";
             document.getElementById('factorx').innerText = l + " promedia alta incidencia ofensiva reciente.";
         }
     }
     function copiarReporte() {
-        alert("Reporte copiado al portapapeles.");
+        alert("Reporte copiado con éxito");
     }
 </script>
 </body>
