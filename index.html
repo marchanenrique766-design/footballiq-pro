@@ -2,46 +2,54 @@
 <html lang="es">
 <head>
     <style>
-        body { background: #0c0d0e; color: #fff; font-family: sans-serif; padding: 20px; }
-        .app { max-width: 500px; margin: auto; background: #161719; border: 1px solid #333; padding: 25px; border-radius: 12px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 18px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
-        .box { background: #1f2022; padding: 20px; border-left: 5px solid #39ff14; margin-top: 20px; }
+        body { background: #0c0d0e; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        .app-container { max-width: 600px; margin: auto; background: #161719; border: 1px solid #333; padding: 25px; border-radius: 12px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
+        .btn-pro { width: 100%; padding: 15px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+        .data-card { background: #1f2022; padding: 20px; border-left: 5px solid #39ff14; margin-top: 20px; }
+        .label { color: #00d4ff; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
 <body>
-    <div class="app">
-        <h2 style="color:#39ff14;">Football IQ PRO</h2>
-        <input id="l" placeholder="EQUIPO LOCAL">
-        <input id="v" placeholder="EQUIPO VISITANTE">
-        <button class="btn" onclick="analizar()">ANALIZAR</button>
-        <div id="res" style="display:none; margin-top:20px;">
-            <h3 id="mt" style="color:#39ff14;"></h3>
-            <div class="box">
-                <p id="adn"></p>
-            </div>
+<div class="app-container">
+    <h2>Football IQ <span style="color:#39ff14;">PRO</span></h2>
+    <input id="L" placeholder="EQUIPO LOCAL">
+    <input id="V" placeholder="EQUIPO VISITANTE">
+    <button class="btn-pro" onclick="analizar()">GENERAR ANÁLISIS REAL</button>
+
+    <div id="res" style="display:none; margin-top:20px;">
+        <h3 id="matchName" style="color:#39ff14;"></h3>
+        <div class="data-card">
+            <span class="label">🧬 ADN Táctico</span>
+            <p id="tactica" style="margin-top:5px;"></p>
+            <span class="label">🎯 Objetivo</span>
+            <p id="objetivo" style="margin-top:5px;"></p>
         </div>
     </div>
-    <script>
-        function analizar() {
-            const l = document.getElementById('l').value.trim();
-            const v = document.getElementById('v').value.trim();
-            if(!l || !v) return;
+</div>
 
-            // ESTE ES EL MOTOR: Cambia el mensaje según los equipos
-            let analisis = "";
-            if (l.toLowerCase() === "barcelona" && v.toLowerCase() === "emelec") {
-                analisis = "Barcelona busca dominio posicional, mientras que Emelec prioriza el juego vertical.";
-            } else if (l.toLowerCase() === "brasil") {
-                analisis = "Brasil presenta un esquema ultra ofensivo. El rival deberá cerrar líneas.";
-            } else {
-                analisis = l + " y " + v + " plantean un partido de mucha fricción en el medio campo.";
-            }
+<script>
+    const db = {
+        "barcelona": "Prioriza la posesión progresiva y el juego asociativo en campo rival.",
+        "emelec": "Se estructura en bloque medio compacto, priorizando transiciones rápidas.",
+        "brasil": "Ataque vertical agresivo con laterales profundos y presión alta.",
+        "argentina": "Orden táctico riguroso con salida controlada y juego interior.",
+        "default": "Plantea un partido de alta intensidad física con disputa en el medio campo."
+    };
 
-            document.getElementById('mt').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-            document.getElementById('adn').innerText = "🧬 ADN TÁCTICO: " + analisis;
-            document.getElementById('res').style.display = 'block';
-        }
-    </script>
+    function analizar() {
+        const l = document.getElementById('L').value.toLowerCase().trim();
+        const v = document.getElementById('V').value.toLowerCase().trim();
+        if(!l || !v) return;
+
+        const tLocal = db[l] || db["default"];
+        const tVisit = db[v] || db["default"];
+
+        document.getElementById('matchName').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
+        document.getElementById('tactica').innerText = `${l.charAt(0).toUpperCase() + l.slice(1)} ${tLocal} Mientras que ${v.charAt(0).toUpperCase() + v.slice(1)} ${tVisit}`;
+        document.getElementById('objetivo').innerText = "Ambos equipos disputan puntos críticos para consolidarse en la zona de clasificación.";
+        document.getElementById('res').style.display = 'block';
+    }
+</script>
 </body>
 </html>
