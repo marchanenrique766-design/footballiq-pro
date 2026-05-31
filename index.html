@@ -4,42 +4,49 @@
     <meta charset="UTF-8">
     <title>FOOTBALLIQ PRO ELITE</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 10px; }
-        .grid-main { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 1200px; margin: auto; }
-        .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; }
-        h2 { color: #00ff88; font-size: 18px; text-transform: uppercase; margin-bottom: 15px; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: auto; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
+        h2 { color: #00ff88; text-transform: uppercase; margin-top: 0; }
+        /* OCULTAMOS EL PANEL DE RESULTADOS POR DEFECTO */
+        #panelResultados { display: none; }
         .val { color: #00ff88; font-weight: bold; }
-        .heat-cell { padding: 5px 10px; border-radius: 4px; display: inline-block; margin-right: 5px; font-weight: bold; }
-        .v { background: #00ff88; color: #000; } .e { background: #ffcc00; color: #000; }
     </style>
 </head>
 <body>
 
-<div class="grid-main">
-    <!-- Panel Izquierdo: Matriz de Riesgo y Trading Stats -->
+<div class="dashboard">
     <div class="panel">
-        <h2>MATRIZ DE RIESGO DE TRADING</h2>
-        <div style="display:flex; justify-content:space-between;">
-            <div>Volumen Ofensivo: <span class="val">60%</span></div>
-            <div>Inestabilidad: <span class="val">45%</span></div>
-        </div>
-        <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
-        <h2>CONSOLE // TRADING STATS</h2>
-        <p>Eficacia (Win Rate): <span class="val">0%</span></p>
-        <p>Rendimiento Neto: <span class="val">+0.00 U</span></p>
+        <h2>CONFIGURAR ANÁLISIS</h2>
+        <input type="text" id="eqA" placeholder="LOCAL" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:5px;">
+        <input type="text" id="eqB" placeholder="VISITANTE" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:5px;">
+        <button onclick="ejecutarAnalisis()" style="width:100%; padding:15px; background:#00ff88; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">ANALIZAR PARTIDO</button>
     </div>
 
-    <!-- Panel Derecho: Cobertura Premium e Inteligencia -->
-    <div class="panel">
-        <h2>COBERTURA PREMIUM INTELLIGENCE</h2>
-        <p>Heatmap de Forma:</p>
-        <div>Arsenal: <span class="heat-cell v">V</span><span class="heat-cell e">E</span><span class="heat-cell v">V</span></div>
-        <div style="margin-top:10px;">Valor Clave (Player Props): <span class="val">Bukayo Saka (75% Prob.)</span></div>
-        <div style="margin-top:15px; background:#1a1a1a; padding:10px; border-left:4px solid #00ff88;">
-            <strong>APUESTA SUGERIDA KELLY: $6.00</strong>
+    <div id="panelResultados" class="panel">
+        <h2>RESULTADOS PRO</h2>
+        <div id="contenido">
+            <p>Volumen Ofensivo: <span class="val">60%</span></p>
+            <p>Inestabilidad: <span class="val">45%</span></p>
+            <hr style="border:0; border-top:1px solid #333;">
+            <p>BTTS: <span class="val">62%</span></p>
+            <p>Stake Sugerido: <span class="val">3.0 / 5</span></p>
         </div>
     </div>
 </div>
 
+<script>
+    function ejecutarAnalisis() {
+        const a = document.getElementById('eqA').value;
+        const b = document.getElementById('eqB').value;
+        
+        if (a === "" || b === "") {
+            alert("Por favor, ingresa los nombres de ambos equipos.");
+        } else {
+            // Muestra el panel solo si hay nombres
+            document.getElementById('panelResultados').style.display = 'block';
+        }
+    }
+</script>
 </body>
 </html>
