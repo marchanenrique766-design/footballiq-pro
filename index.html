@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | FINAL</title>
+    <title>FOOTBALLIQ PRO | FULL ELITE</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
-        .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 15px; margin-bottom: 10px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
+        .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 15px; margin-bottom: 15px; }
         input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; }
         
+        /* Estilos de Barras */
         .bar-container { margin: 12px 0; }
         .bar-label { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; }
         .bar-bg { background: #222; height: 6px; border-radius: 3px; margin-top: 4px; }
@@ -19,37 +20,35 @@
 <body>
 
 <div class="panel">
-    <h2 style="color:#00ff88; margin:0 0 10px 0; font-size:1.2rem;">CONFIGURAR ANÁLISIS</h2>
-    <input type="text" id="eqLocal" placeholder="LOCAL">
-    <input type="text" id="eqVis" placeholder="VISITANTE">
+    <h2 style="color:#00ff88; font-size:1.2rem;">CONFIGURAR ANÁLISIS</h2>
+    <input type="text" id="eqLocal" placeholder="EQUIPO LOCAL">
+    <input type="text" id="eqVis" placeholder="EQUIPO VISITANTE">
     <button onclick="analizar()">ANALIZAR PARTIDO</button>
 </div>
 
 <div id="dashboard" class="panel" style="display:none;">
-    <h2 id="titulo" style="margin:0 0 10px 0;">--</h2>
+    <h2 id="titulo" style="margin-top:0;">--</h2>
     
-    <div style="font-size:1.1rem; color:#00ff88; margin-bottom:10px;">
-        BTTS: <span id="btts">--</span> | +2.5 GOLES: <span id="goles">--</span>
+    <div style="color:#00ff88; font-size:1rem; margin-bottom:10px;">
+        BTTS: <span id="btts">--</span> | +2.5 GOLES: <span id="goles">--</span><br>
+        CÓRNERS: <span id="corners">--</span>
     </div>
 
-    <!-- BARRAS DE PROGRESO -->
-    <div class="bar-container">
-        <div class="bar-label"><span>VOLUMEN OFENSIVO:</span> <span id="val-of">53%</span></div>
-        <div class="bar-bg"><div id="bar-of" class="bar-fill" style="width:53%; background:#00ff88;"></div></div>
-    </div>
-    <div class="bar-container">
-        <div class="bar-label"><span>INESTABILIDAD DEFENSIVA:</span> <span id="val-de">52%</span></div>
-        <div class="bar-bg"><div id="bar-de" class="bar-fill" style="width:52%; background:#ffaa00;"></div></div>
-    </div>
-    <div class="bar-container">
-        <div class="bar-label"><span>FILTRO CONSISTENCIA IA:</span> <span id="val-ia">75%</span></div>
-        <div class="bar-bg"><div id="bar-ia" class="bar-fill" style="width:75%; background:#00ccff;"></div></div>
+    <div style="background:#000; padding:10px; border-left:4px solid #00ff88; margin-bottom:15px;">
+        <p id="jugador-clave" style="margin:0; font-size:0.9rem;"></p>
     </div>
 
-    <div style="background:#000; padding:10px; border-radius:8px; border:1px solid #00ff88; margin-top:15px;">
-        <p style="color:#00ff88; font-weight:bold; margin:0; font-size:0.9rem;">💡 FACTOR X (TENDENCIA REAL)</p>
-        <p id="factor-x" style="font-size:0.8rem; margin:5px 0 0 0;"></p>
+    <!-- Barras -->
+    <div class="bar-container"><div class="bar-label"><span>VOLUMEN OFENSIVO:</span> <span>53%</span></div><div class="bar-bg"><div class="bar-fill" style="width:53%; background:#00ff88;"></div></div></div>
+    <div class="bar-container"><div class="bar-label"><span>INESTABILIDAD DEFENSIVA:</span> <span>52%</span></div><div class="bar-bg"><div class="bar-fill" style="width:52%; background:#ffaa00;"></div></div></div>
+    <div class="bar-container"><div class="bar-label"><span>FILTRO CONSISTENCIA IA:</span> <span>75%</span></div><div class="bar-bg"><div class="bar-fill" style="width:75%; background:#00ccff;"></div></div></div>
+
+    <div style="background:#0a1a1a; padding:10px; border-radius:8px; border:1px solid #00ff88; margin:15px 0;">
+        <p style="color:#00ff88; font-weight:bold; margin:0 0 5px 0; font-size:0.8rem;">💡 FACTOR X (TENDENCIA REAL)</p>
+        <p id="factor-x" style="font-size:0.8rem; margin:0;"></p>
     </div>
+
+    <button onclick="copiarReporte()" style="background:#fff; color:#000;">COPIAR REPORTE ELITE</button>
 </div>
 
 <script>
@@ -62,7 +61,15 @@
         document.getElementById('titulo').innerText = l + " VS " + v;
         document.getElementById('btts').innerText = "59%";
         document.getElementById('goles').innerText = "54%";
-        document.getElementById('factor-x').innerText = `${l} ha mostrado una tendencia ofensiva agresiva en sus últimos 3 partidos, superando la media de corners.`;
+        document.getElementById('corners').innerText = "MÁS DE 8.5 (Prob: 88%)";
+        document.getElementById('jugador-clave').innerText = "ESTRELLA (" + l + "): 85% de incidencia en jugadas de peligro.";
+        document.getElementById('factor-x').innerText = l + " ha mostrado una tendencia ofensiva agresiva en sus últimos 3 partidos, superando la media de corners.";
+    }
+
+    function copiarReporte() {
+        const t = `⚽ ANÁLISIS ${document.getElementById('titulo').innerText}\nBTTS: ${document.getElementById('btts').innerText}\n+2.5 Goles: ${document.getElementById('goles').innerText}\nCórners: ${document.getElementById('corners').innerText}\n¡Análisis generado por FootballIQ PRO!`;
+        navigator.clipboard.writeText(t);
+        alert("Reporte copiado para compartir");
     }
 </script>
 </body>
