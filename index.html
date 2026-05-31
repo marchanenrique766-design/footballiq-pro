@@ -3,42 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO | ENGINE</title>
+    <title>FOOTBALLIQ PRO | ELITE ANALYTICS</title>
     <style>
         :root { --neon: #00ff88; --bg: #050505; --panel: #121212; }
-        body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
         .app-container { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 20px; }
         .panel { background: var(--panel); border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        input { width: 100%; padding: 18px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 10px; box-sizing: border-box; }
-        button { width: 100%; padding: 20px; background: var(--neon); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: black; text-transform: uppercase; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: var(--neon); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; text-transform: uppercase; }
+        
+        /* Gráficos */
+        .grid-results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .ring-container { position: relative; width: 80px; height: 80px; margin: 10px auto; }
+        .ring { transform: rotate(-90deg); }
+        .ring-progress { stroke: var(--neon); fill: none; stroke-width: 6; stroke-dasharray: 0, 251; transition: 1s; }
+        .val-text { position: absolute; top: 25px; left: 0; width: 100%; text-align: center; font-weight: bold; }
         
         #dashboard { display: none; }
-        .metric-box { border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 15px; background: #1a1a1a; text-align: center; }
-        .val { color: var(--neon); font-size: 28px; font-weight: bold; display: block; }
-        
-        .status-pill { padding: 5px 12px; border-radius: 4px; font-weight: bold; }
+        .pill { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div class="panel">
-        <h2 style="color:var(--neon);">CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqLocal" placeholder="EQUIPO LOCAL (Ej: PSG)">
-        <input type="text" id="eqVis" placeholder="EQUIPO VISITANTE (Ej: ARSENAL)">
-        <button onclick="analizar()">ANALIZAR PARTIDO</button>
+        <h2 style="color:var(--neon);">CONFIGURAR</h2>
+        <input type="text" id="eqLocal" placeholder="LOCAL">
+        <input type="text" id="eqVis" placeholder="VISITANTE">
+        <button onclick="ejecutarAnalisis()">ANALIZAR PARTIDO</button>
     </div>
 
     <div id="dashboard">
         <div class="panel">
-            <h2 id="titulo-partido">PSG VS ARSENAL</h2>
-            <div id="historial-local" style="display:flex; gap:10px; margin-bottom:15px;"></div>
+            <h2 id="titulo">PSG VS ARSENAL</h2>
+            <div id="historial" style="display:flex; gap:5px; margin-bottom:15px;"></div>
             
-            <div class="metric-box">BTTS<span class="val" id="btts">0%</span></div>
-            <div class="metric-box">+2.5 GOLES<span class="val" id="goles">0%</span></div>
-            
-            <div class="metric-box" style="text-align:left;">
-                <p style="color:var(--neon); margin:0;">🔍 ADN TÁCTICO:</p>
+            <div class="grid-results">
+                <div class="panel" style="background:#1a1a1a;">BTTS
+                    <div class="ring-container"><svg class="ring" width="80" height="80"><circle cx="40" cy="40" r="30" style="stroke:#333; fill:none; stroke-width:6;"/><circle class="ring-progress" id="btts-ring" cx="40" cy="40" r="30"/></svg><div class="val-text" id="btts-val">0%</div></div>
+                </div>
+                <div class="panel" style="background:#1a1a1a;">+2.5 GOLES
+                    <div class="ring-container"><svg class="ring" width="80" height="80"><circle cx="40" cy="40" r="30" style="stroke:#333; fill:none; stroke-width:6;"/><circle class="ring-progress" id="goles-ring" cx="40" cy="40" r="30"/></svg><div class="val-text" id="goles-val">0%</div></div>
+                </div>
+            </div>
+
+            <div class="panel" style="background:#1a1a1a; margin-top:15px;">
+                <p style="color:var(--neon);">CÓRNERS TOTALES</p>
+                <h3 id="corners-val" style="margin:0;">Más de 0.0</h3>
+            </div>
+
+            <div class="panel" style="background:#000; margin-top:15px; border-left:4px solid var(--neon);">
+                <p style="color:var(--neon); margin:0;">ADN TÁCTICO:</p>
                 <p id="adn-texto" style="font-size:0.9rem;"></p>
             </div>
         </div>
@@ -46,32 +61,37 @@
 </div>
 
 <script>
-    // Tu "Cerebro" de datos
+    // BASE DE DATOS MAESTRA
     const db = {
-        "PSG": { adn: "Alta presión alta y transiciones rápidas.", hist: ["V","V","E","V","V"], btts: 72, goles: 68 },
-        "ARSENAL": { adn: "Bloque bajo compacto y contraataque directo.", hist: ["D","V","E","D","V"], btts: 55, goles: 52 },
-        "FLAMENGO": { adn: "Posesión activa y bloque alto.", hist: ["V","E","V","V","D"], btts: 65, goles: 60 }
+        "PSG": { adn: "Alta posesión, bloque alto y presión tras pérdida. Ataque por bandas.", hist: ["V","V","E","V","V"], btts: 62, goles: 58, corners: "Más de 9.5" },
+        "ARSENAL": { adn: "Bloque bajo compacto, transiciones directas y juego aéreo defensivo.", hist: ["D","V","E","D","V"], btts: 55, goles: 52, corners: "Más de 8.5" },
+        "FLAMENGO": { adn: "Dominio técnico, transiciones rápidas y gran capacidad de remate.", hist: ["V","E","V","V","D"], btts: 70, goles: 65, corners: "Más de 10.5" }
     };
 
-    function analizar() {
-        const loc = document.getElementById('eqLocal').value.toUpperCase();
-        const vis = document.getElementById('eqVis').value.toUpperCase();
+    function ejecutarAnalisis() {
+        const l = document.getElementById('eqLocal').value.toUpperCase();
+        const v = document.getElementById('eqVis').value.toUpperCase();
         
-        if(db[loc] && db[vis]) {
+        if(db[l] && db[v]) {
             document.getElementById('dashboard').style.display = 'block';
-            document.getElementById('titulo-partido').innerText = loc + " VS " + vis;
-            document.getElementById('btts').innerText = db[loc].btts + "%";
-            document.getElementById('goles').innerText = db[loc].goles + "%";
-            document.getElementById('adn-texto').innerText = db[loc].adn;
+            document.getElementById('titulo').innerText = l + " VS " + v;
+            actualizarGrafico('btts-ring', 'btts-val', db[l].btts);
+            actualizarGrafico('goles-ring', 'goles-val', db[l].goles);
+            document.getElementById('corners-val').innerText = db[l].corners;
+            document.getElementById('adn-texto').innerText = db[l].adn;
             
-            // Pintar historial
-            const histCont = document.getElementById('historial-local');
-            histCont.innerHTML = db[loc].hist.map(r => 
-                `<span class="status-pill" style="background:${r=='V'?'green':r=='E'?'orange':'red'}">${r}</span>`
-            ).join('');
+            const hist = document.getElementById('historial');
+            hist.innerHTML = db[l].hist.map(r => `<span class="pill" style="background:${r=='V'?'green':r=='E'?'orange':'red'}">${r}</span>`).join('');
         } else {
-            alert("Equipo no encontrado en la base de datos (Prueba PSG, ARSENAL o FLAMENGO)");
+            alert("Equipos no encontrados. Prueba: PSG, ARSENAL, FLAMENGO");
         }
+    }
+
+    function actualizarGrafico(ringId, textId, p) {
+        const ring = document.getElementById(ringId);
+        const circ = 2 * Math.PI * 30;
+        ring.style.strokeDasharray = (p / 100 * circ) + " " + circ;
+        document.getElementById(textId).innerText = p + "%";
     }
 </script>
 </body>
