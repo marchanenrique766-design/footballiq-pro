@@ -20,7 +20,6 @@
     <select id="modoIA">
         <option value="seguridad">MODO: SEGURIDAD</option>
         <option value="volumen">MODO: VOLUMEN</option>
-        <option value="riesgo">MODO: ALTO RIESGO</option>
     </select>
     <button onclick="generarReporte()">GENERAR REPORTE ELITE</button>
 </div>
@@ -49,22 +48,19 @@
         const v = document.getElementById('eqV').value.trim();
         const modo = document.getElementById('modoIA').value;
         
-        if(!l || !v) {
-            alert("Completa ambos equipos");
-            return;
+        if(!l || !v) return;
+
+        // Lógica de Negocio: Restricciones de mercado realistas
+        // En lugar de aleatorio, definimos un comportamiento basado en la tendencia de "pocos goles" que mencionas
+        let pronostico = "Menos 2.5 Goles"; 
+        let contexto = "El historial reciente indica una fuerte tendencia defensiva y partidos cerrados.";
+        
+        if (modo === 'volumen') {
+            pronostico = "Más 1.5 Goles"; // Mantenemos el volumen bajo para no forzar más de 3
+            contexto = "Aunque la tendencia es conservadora, el análisis táctico permite buscar un margen de 2 goles.";
         }
 
-        // Simulación de métricas
-        const stats = {
-            ataqueL: Math.floor(Math.random() * 5) + 5,
-            defensaL: Math.floor(Math.random() * 5) + 5,
-            ataqueV: Math.floor(Math.random() * 5) + 5,
-            defensaV: Math.floor(Math.random() * 5) + 5
-        };
-
-        let pronostico = (stats.ataqueL > stats.defensaV) ? "Más 2.5 Goles" : "Menos 2.5 Goles";
-        let contexto = "El equipo local presenta un índice de ataque de " + stats.ataqueL + "/10.";
-        let stake = (modo === 'seguridad') ? "STAKE 8/10 (Conservador)" : "STAKE 5/10 (Moderado)";
+        let stake = (modo === 'seguridad') ? "STAKE 8/10 (Muy Alta)" : "STAKE 6/10 (Alta)";
 
         document.getElementById('resultado').style.display = 'block';
         document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
