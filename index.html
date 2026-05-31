@@ -9,10 +9,7 @@
         .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 10px; width: 100%; box-sizing: border-box; }
         input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 10px; cursor: pointer; }
-        .tag { padding: 3px 7px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; margin: 1px; }
         .btn-mode { padding: 8px; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; cursor: pointer; flex: 1; font-size: 0.7rem; }
-        /* Ajuste de contenedor para que no se descuadre */
-        #caja-analisis { word-wrap: break-word; overflow-wrap: break-word; }
     </style>
 </head>
 <body>
@@ -21,6 +18,8 @@
     <h2 style="color:#00ff88; font-size:1.1rem; margin:0;">CONFIGURAR ANÁLISIS</h2>
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
+    <input type="number" id="capital" placeholder="Capital disponible ($)">
+    
     <div style="display: flex; gap: 5px; margin: 10px 0;">
         <button class="btn-mode" onclick="setMode('seguridad')">SEGURIDAD</button>
         <button class="btn-mode" onclick="setMode('volumen')">VOLUMEN</button>
@@ -32,50 +31,47 @@
 
 <div id="resultado" class="panel" style="display:none;">
     <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
-    <div style="font-size:0.9rem; margin-bottom:10px; text-align:center;">BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5</div>
-
-    <h3 style="color:#00ccff; font-size:0.85rem; margin:10px 0 5px 0;">🔍 CONTEXTO PROFUNDO</h3>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN TÁCTICO:</strong> Presión alta agresiva y transiciones rápidas.</p>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar puntos en tabla.</p>
-
+    
     <div style="margin: 15px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 12px; background: #0a151a;">
-        <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">🤖 ANÁLISIS HISTÓRICO (H2H 10 PARTIDOS)</h4>
+        <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">🤖 ANÁLISIS HISTÓRICO (H2H)</h4>
         <p id="caja-analisis" style="font-size:0.75rem; color:#eee; line-height:1.5;"></p>
     </div>
 
-    <div style="margin: 15px 0; padding: 10px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; text-align: center;">
-        <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">NIVEL DE SEGURIDAD</div>
-        <div style="height:10px; width:100%; background:#222; border-radius:5px; margin-top:5px;">
-            <div style="height:10px; width:70%; background:#00ff88; border-radius:5px;"></div>
-        </div>
+    <div id="bloque-capital" style="margin: 15px 0; padding: 12px; background: #1a1a1a; border-radius: 8px; border-left: 4px solid #00ff88;">
+        <p id="texto-stake" style="margin:0; font-size:0.8rem;"></p>
+        <p id="monto-recomendado" style="margin:5px 0 0 0; color:#00ff88; font-size:1.1rem; font-weight:bold;"></p>
     </div>
     
     <button style="background:#fff;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
 </div>
 
 <script>
-    function setMode(m) { document.getElementById('modoIA').value = m; }
+    function setMode(m) { document.getElementById('modoIA').value = m; alert("Modo " + m + " seleccionado"); }
 
     function generarReporte() {
         const l = document.getElementById('eqL').value;
         const v = document.getElementById('eqV').value;
         const modo = document.getElementById('modoIA').value;
+        const capital = parseFloat(document.getElementById('capital').value);
+        
         if(!l || !v) return;
 
         document.getElementById('resultado').style.display = 'block';
         document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
         
-        let analisisIA = `Tras analizar los últimos 10 enfrentamientos directos (H2H) entre <strong>${l}</strong> y <strong>${v}</strong>, detectamos una tendencia clave: `;
+        // Lógica de IA Histórica
+        let analisis = `Análisis de los últimos 10 duelos entre ${l} y ${v}: `;
+        if (modo === 'seguridad') analisis += "Tendencia a partidos cerrados. Se recomienda ir por mercados de goles bajos.";
+        else if (modo === 'volumen') analisis += "Historial ofensivo marcado. Se recomienda buscar córners y tiros a puerta.";
+        else analisis += "Alta volatilidad detectada. Historial lleno de sorpresas tácticas.";
+        document.getElementById('caja-analisis').innerText = analisis;
         
-        if (modo === 'seguridad') {
-            analisisIA += "partidos de alta fricción táctica con predominio de resultados ajustados. Se recomienda el mercado de 'Menos de 3.5 goles' por la solidez defensiva mutua.";
-        } else if (modo === 'volumen') {
-            analisisIA += "una clara vocación ofensiva donde ambos equipos superan el promedio de 9.5 córners. El juego vertical prevalece en el historial reciente.";
-        } else {
-            analisisIA += "alta volatilidad histórica; los últimos choques han terminado en sorpresas tácticas con tarjetas tempranas. Ideal para buscar cuotas de valor en el primer tiempo.";
-        }
+        // Cálculo de Gestión de Capital
+        let stake = (modo === 'seguridad') ? 0.05 : 0.02;
+        let monto = !isNaN(capital) ? (capital * stake).toFixed(2) : "0.00";
         
-        document.getElementById('caja-analisis').innerHTML = analisisIA;
+        document.getElementById('texto-stake').innerHTML = `🎯 <strong>STAKE SUGERIDO:</strong> ${ (stake * 100) }% del capital`;
+        document.getElementById('monto-recomendado').innerText = `APUESTA RECOMENDADA: $${monto}`;
     }
 </script>
 </body>
