@@ -3,74 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOTBALLIQ PRO</title>
-    <!-- Estilos forzados para asegurar que no se vea blanco -->
+    <title>FOOTBALLIQ PRO ELITE</title>
     <style>
-        html, body { 
-            background-color: #050505 !important; 
-            color: #ffffff !important; 
-            margin: 0; 
-            padding: 20px; 
-            font-family: Arial, sans-serif;
-        }
-        .app-container { 
-            background-color: #121212 !important; 
-            max-width: 400px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            border-radius: 15px; 
-            border: 1px solid #333;
-        }
-        h1 { color: #00ff88 !important; text-align: center; }
-        input { 
-            width: 100%; 
-            padding: 12px; 
-            margin-bottom: 15px; 
-            background-color: #1a1a1a !important; 
-            border: 1px solid #444; 
-            color: white !important; 
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-        button { 
-            width: 100%; 
-            padding: 15px; 
-            background-color: #00ff88 !important; 
-            color: black !important; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            cursor: pointer;
-        }
-        #res { 
-            margin-top: 20px; 
-            padding: 15px; 
-            border: 1px solid #00ff88; 
-            border-radius: 10px; 
-            display: none;
-        }
+        body { background-color: #050505; color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 500px; margin: auto; }
+        
+        /* Panel Configuración */
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #00ff88; color: black; font-weight: 900; border: none; border-radius: 8px; cursor: pointer; }
+
+        /* Panel Resultados Elite */
+        .result-panel { display: none; border: 1px solid #00ff88; padding: 20px; border-radius: 15px; background: #000; }
+        .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .stat-card { background: #121212; padding: 10px; border-radius: 8px; border: 1px solid #333; font-size: 12px; }
+        .risk-high { color: #ff4444; font-weight: bold; margin-top: 10px; border-top: 1px solid #333; pt: 10px; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <h1>FOOTBALLIQ PRO</h1>
-    <input type="text" id="eqA" placeholder="EQUIPO A (LOCAL)">
-    <input type="text" id="eqB" placeholder="EQUIPO B (VISITANTE)">
-    <button onclick="analizar()">INICIAR ANÁLISIS</button>
-    
-    <div id="res">
-        <h2 style="color:#00ff88">ANÁLISIS: PSG VS ARSENAL</h2>
-        <p>⚽ Estilo: Bloque alto y transiciones rápidas</p>
-        <p style="color:#ff4444">⚠ ALTO RIESGO</p>
+<div class="container">
+    <div class="panel">
+        <h2 style="color:#00ff88; text-align:center;">FOOTBALLIQ PRO</h2>
+        <input type="text" id="eqA" placeholder="EQUIPO A (LOCAL)">
+        <input type="text" id="eqB" placeholder="EQUIPO B (VISITANTE)">
+        <button onclick="ejecutarAnalisis()">INICIAR ANÁLISIS ELITE</button>
+    </div>
+
+    <div id="resPanel" class="result-panel">
+        <h3 id="matchName" style="color:#00ff88;"></h3>
+        <div class="grid-stats">
+            <div class="stat-card">Volumen Ofensivo: <b>60%</b></div>
+            <div class="stat-card">Inestabilidad Defensiva: <b>45%</b></div>
+            <div class="stat-card">Confianza IA: <b>7.8/10</b></div>
+            <div class="stat-card">Stake Sugerido: <b>3.0/5</b></div>
+        </div>
+        <div class="risk-high">⚠ ADVERTENCIA: ALTO RIESGO</div>
     </div>
 </div>
 
 <script>
-    function analizar() {
-        document.getElementById('res').style.display = 'block';
+    function ejecutarAnalisis() {
+        const a = document.getElementById('eqA').value;
+        const b = document.getElementById('eqB').value;
+        if(!a || !b) return alert("Ingresa ambos equipos");
+        
+        document.getElementById('matchName').innerText = a.toUpperCase() + " VS " + b.toUpperCase();
+        document.getElementById('resPanel').style.display = 'block';
     }
 </script>
-
 </body>
 </html>
