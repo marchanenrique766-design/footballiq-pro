@@ -9,6 +9,7 @@
         .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 10px; }
         input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 10px; cursor: pointer; }
+        .tag { padding: 3px 7px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; margin: 1px; }
     </style>
 </head>
 <body>
@@ -21,17 +22,40 @@
 </div>
 
 <div id="resultado" class="panel" style="display:none;">
-    <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0;">--</h2>
+    <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
     
-    <!-- NUEVO: SEMÁFORO DE RIESGO -->
+    <div style="font-size:0.9rem; margin-bottom:10px;">
+        BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5
+    </div>
+
+    <div style="text-align:center; margin-bottom:15px;">
+        <span class="tag" style="background:#ffaa00;">E</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#00ff88;">V</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#ffaa00;">E</span>
+    </div>
+
+    <h3 style="color:#00ccff; font-size:0.85rem; margin:0;">🔍 CONTEXTO PROFUNDO</h3>
+    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN:</strong> Presión alta agresiva.</p>
+    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar posición.</p>
+
+    <div style="margin: 15px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 10px; background: #0a151a;">
+        <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">📊 ESCENARIOS PROBABLES</h4>
+        <ul style="color:#ddd; font-size:0.75rem; padding-left:15px; margin:0;">
+            <li style="margin-bottom:5px;"><strong>Dominio:</strong> Presión alta y córners.</li>
+            <li><strong>Partido:</strong> Alta probabilidad de under 2.5.</li>
+        </ul>
+    </div>
+
     <div style="margin: 15px 0; padding: 10px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; text-align: center;">
-        <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">NIVEL DE SEGURIDAD DEL ANÁLISIS</div>
+        <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">NIVEL DE SEGURIDAD</div>
         <div style="display: flex; gap: 5px; justify-content: center;">
             <div style="height: 10px; width: 30%; border-radius: 5px; background: #00ff88;"></div>
             <div style="height: 10px; width: 30%; border-radius: 5px; background: #222;"></div>
             <div style="height: 10px; width: 30%; border-radius: 5px; background: #222;"></div>
         </div>
         <div style="font-size: 0.75rem; color: #00ff88; margin-top: 5px; font-weight: bold;">ALTA SEGURIDAD</div>
+    </div>
+
+    <div style="margin: 15px 0; background: #1a1a1a; padding: 12px; border-radius: 8px; border-left: 4px solid #00ff88;">
+        <p style="font-size:0.8rem; margin:5px 0;">💰 <strong>CUOTA:</strong> 1.30 | 🎯 <strong>STAKE:</strong> 4.5/5</p>
     </div>
     
     <button style="background:#fff;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
