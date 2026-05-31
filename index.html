@@ -2,49 +2,43 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FOOTBALLIQ PRO ELITE</title>
+    <title>FOOTBALLIQ PRO | ARCHITECT</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .dashboard-container { display: grid; grid-template-columns: 350px 1fr; gap: 25px; max-width: 1200px; margin: auto; }
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; }
-        h2 { color: #00ff88; font-size: 18px; text-transform: uppercase; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; }
-        .stat-val { color: #00ff88; font-size: 22px; font-weight: bold; display: block; }
-        #panelResultados { display: none; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: grid; grid-template-rows: auto 1fr; height: 100vh; gap: 20px; padding: 20px; }
+        .grid-main { display: grid; grid-template-columns: 300px 1fr 1fr; gap: 20px; }
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 12px; }
+        .stat-box { border: 1px solid #333; padding: 15px; border-radius: 8px; text-align: center; }
+        .val { color: #00ff88; font-size: 24px; font-weight: bold; display: block; }
+        #app-dashboard { display: none; } /* Oculto por defecto */
     </style>
 </head>
 <body>
 
-<div class="dashboard-container">
-    <div class="panel">
-        <h2>CONFIGURAR ANÁLISIS</h2>
-        <input type="text" id="eqA" placeholder="EQUIPO A (LOCAL)">
-        <input type="text" id="eqB" placeholder="EQUIPO B (VISITANTE)">
-        <button onclick="activarAnalisis()">GENERAR PRONÓSTICO IA</button>
-    </div>
+<div class="panel">
+    <input type="text" id="eqA" placeholder="LOCAL">
+    <input type="text" id="eqB" placeholder="VISITANTE">
+    <button onclick="bootSystem()">ACTIVAR MOTOR IA</button>
+</div>
 
-    <div id="panelResultados" class="panel">
-        <h2>MATRIZ DE RIESGO Y PLAYER PROPS</h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <div class="panel">Volumen Ofensivo<br><span class="stat-val">60%</span></div>
-            <div class="panel">Inestabilidad<br><span class="stat-val">45%</span></div>
-        </div>
-        <div style="margin-top:20px; background:#1a1a1a; padding:15px; border-left:4px solid #00ff88;">
-            <h3>VALOR CLAVE: BUKAYO SAKA</h3>
-            <p>Probabilidad de participación directa en gol: <span class="stat-val">75%</span></p>
-        </div>
+<div id="app-dashboard" class="grid-main">
+    <div class="panel">
+        <h2>MATRIZ DE RIESGO</h2>
+        <div class="stat-box">Volumen Ofensivo<span class="val">60%</span></div>
+    </div>
+    <div class="panel">
+        <h2>PLAYER PROPS // IA</h2>
+        <div class="stat-box">Bukayo Saka<span class="val">75%</span></div>
+    </div>
+    <div class="panel">
+        <h2>TRADING STATS</h2>
+        <div class="stat-box">Eficacia<span class="val">0%</span></div>
     </div>
 </div>
 
 <script>
-    function activarAnalisis() {
-        const a = document.getElementById('eqA').value;
-        const b = document.getElementById('eqB').value;
-        if(a && b) {
-            document.getElementById('panelResultados').style.display = 'block';
-        } else {
-            alert("Completa ambos campos para analizar.");
+    function bootSystem() {
+        if(document.getElementById('eqA').value) {
+            document.getElementById('app-dashboard').style.display = 'grid';
         }
     }
 </script>
