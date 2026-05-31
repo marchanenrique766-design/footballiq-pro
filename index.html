@@ -1,57 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<style>
-    :root { --neon: #39ff14; --bg: #0c0d0e; --panel: #161719; }
-    body { background-color: var(--bg); color: #ffffff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-    .card { max-width: 600px; margin: auto; background: var(--panel); border: 1px solid #333; border-radius: 12px; padding: 25px; }
-    input { width: 100%; padding: 14px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
-    .btn-pro { width: 100%; padding: 18px; background: var(--neon); color: #000; font-weight: 800; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
-    .result-section { margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; }
-    .dna-block { background: #1f2022; padding: 20px; border-left: 5px solid #00d4ff; margin-top: 15px; }
-</style>
+    <meta charset="UTF-8">
+    <style>
+        body { background-color: #0c0d0e; color: #fff; font-family: sans-serif; padding: 20px; }
+        .app { max-width: 500px; margin: auto; background: #161719; border: 1px solid #333; padding: 20px; border-radius: 12px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+        .box { background: #1f2022; padding: 15px; border-left: 4px solid #39ff14; margin-top: 20px; }
+    </style>
 </head>
 <body>
-
-<div class="card">
-    <h2 style="margin:0 0 20px 0;">Football IQ <span style="color:var(--neon);">PRO</span></h2>
-    <input id="l" placeholder="EQUIPO LOCAL">
-    <input id="v" placeholder="EQUIPO VISITANTE">
-    <button class="btn-pro" onclick="analizar()">GENERAR ANÁLISIS DINÁMICO</button>
-
-    <div id="res" class="result-section" style="display:none;">
-        <h3 id="matchTitle" style="color:var(--neon);"></h3>
-        <div id="datos"></div>
-    </div>
-</div>
-
-<script>
-    function analizar() {
-        const L = document.getElementById('l').value.trim();
-        const V = document.getElementById('v').value.trim();
-        if(!L || !V) return;
-
-        // MOTOR DINÁMICO: La IA ahora elige textos diferentes según el equipo
-        const tacticas = {
-            "default": "ejerce presión alta buscando transiciones rápidas.",
-            "barcelona": "prioriza la posesión del esférico y el juego asociativo.",
-            "emelec": "se estructura en un bloque medio compacto buscando el contragolpe.",
-            "brasil": "despliega un ataque vertical con laterales profundos.",
-            "argentina": "mantiene un orden táctico riguroso con salida controlada."
-        };
-
-        const getTactica = (equipo) => tacticas[equipo.toLowerCase()] || tacticas["default"];
-
-        document.getElementById('matchTitle').innerText = `${L.toUpperCase()} VS ${V.toUpperCase()}`;
-        document.getElementById('datos').innerHTML = `
-            <p>⚽ Goles: <b>Más ${L.length % 2 === 0 ? "2.5" : "3.5"}</b></p>
-            <div class="dna-block">
-                <small style="color:#00d4ff;">🧬 ADN TÁCTICO:</small><br>
-                ${L} ${getTactica(L)}. Mientras que ${V} ${getTactica(V)}.
+    <div class="app">
+        <h2 style="color:#39ff14;">Football IQ PRO</h2>
+        <input id="l" placeholder="EQUIPO LOCAL">
+        <input id="v" placeholder="EQUIPO VISITANTE">
+        <button class="btn" onclick="gen()">GENERAR</button>
+        <div id="res" style="display:none; margin-top:20px;">
+            <h3 id="mt" style="color:#39ff14;"></h3>
+            <div class="box">
+                <p>🧬 <b>ADN TÁCTICO:</b> El análisis de los equipos indica un partido de alta intensidad física y transiciones rápidas.</p>
+                <p>🎯 <b>OBJETIVO:</b> Ambos equipos buscan consolidar su posición en la tabla de clasificación.</p>
             </div>
-        `;
-        document.getElementById('res').style.display = 'block';
-    }
-</script>
+        </div>
+    </div>
+    <script>
+        function gen() {
+            const l = document.getElementById('l').value.toUpperCase();
+            const v = document.getElementById('v').value.toUpperCase();
+            if(!l || !v) return;
+            document.getElementById('mt').innerText = l + " VS " + v;
+            document.getElementById('res').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
