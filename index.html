@@ -1,64 +1,35 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <style>
-        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .panel { background: #121212; border: 1px solid #333; border-radius: 12px; padding: 25px; max-width: 600px; margin: auto; }
-        input { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 18px; background: #39ff14; color: #000; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .market { color: #fff; font-size: 1.1rem; margin-bottom: 10px; }
-        .market strong { color: #39ff14; }
-        .tactical-box { margin-top: 20px; padding: 15px; border-left: 4px solid #39ff14; background: #1a1a1a; }
-    </style>
-</head>
-<body>
-
-<div class="panel">
-    <h2 style="color: #39ff14;">Football IQ PRO | UNIVERSAL</h2>
-    <input type="text" id="eqL" placeholder="EQUIPO LOCAL (Cualquiera)">
-    <input type="text" id="eqV" placeholder="EQUIPO VISITANTE (Cualquiera)">
-    <button onclick="analizarGlobal()">GENERAR ANÁLISIS GLOBAL</button>
-
-    <div id="resultado" style="display:none; margin-top:25px;">
-        <h3 id="tMatch" style="border-bottom: 1px solid #333; padding-bottom: 10px;"></h3>
-        <div class="market">⚽ Goles Sugeridos: <strong id="vGoles"></strong></div>
-        <div class="market">⛳ Córners Proyectados: <strong id="vCorners"></strong></div>
-        <div class="market">🟨 Tarjetas Estimadas: <strong id="vTarjetas"></strong></div>
-        
-        <div class="tactical-box">
-            <strong>📊 Análisis Táctico de IA:</strong><br>
-            <span id="vSugerencia" style="color: #ccc; font-size: 0.9rem;"></span>
-        </div>
-    </div>
-</div>
-
 <script>
     function analizarGlobal() {
-        const l = document.getElementById('eqL').value.trim();
-        const v = document.getElementById('eqV').value.trim();
+        const l = document.getElementById('eqL').value.trim().toUpperCase();
+        const v = document.getElementById('eqV').value.trim().toUpperCase();
         if(!l || !v) return;
 
-        // Lógica algorítmica: Analiza la estructura del nombre y genera resultados variados
-        const seed = (l.length + v.length);
-        const goles = ["Más 1.5", "Más 2.5", "Más 3.5"][seed % 3];
-        const corners = ["Más 8.5", "Más 9.5", "Más 10.5"][seed % 3];
-        const tarjetas = ["Más 3.5", "Más 4.5", "Más 5.5"][seed % 3];
-        
-        const tacticas = [
-            "Bloque alto con transiciones rápidas por bandas.",
-            "Juego posicional cerrado con alta disputa en medio campo.",
-            "Alta frecuencia de disparos a puerta desde fuera del área.",
-            "Despliegue defensivo vulnerable en los últimos minutos."
-        ];
+        // --- MOTOR DE DETECCIÓN DE FRICCIÓN ---
+        // Definimos qué equipos son "defensivos" o qué partidos son "cerrados"
+        const equiposDefensivos = ["LIGA", "EMELEC", "URUGUAY", "ITALIA"];
+        const esPartidoCerrado = (equiposDefensivos.includes(l) || equiposDefensivos.includes(v));
 
+        let pronostico = {
+            goles: "Más 2.5",
+            corners: "Más 9.5",
+            tarjetas: "Más 4.5",
+            analisis: "Partido abierto, alta frecuencia de transiciones ofensivas."
+        };
+
+        // Si el motor detecta fricción, ajustamos el pronóstico a un modo "Seguridad"
+        if (esPartidoCerrado) {
+            pronostico.goles = "Menos 2.5"; // Pronóstico de fricción
+            pronostico.corners = "Más 7.5";
+            pronostico.tarjetas = "Más 5.5"; // ¡Más fricción = más tarjetas!
+            pronostico.analisis = "Partido altamente friccionado y táctico. Se recomienda mercado de tarjetas.";
+        }
+
+        // Mostrar resultados con diseño limpio
         document.getElementById('resultado').style.display = 'block';
-        document.getElementById('tMatch').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
-        document.getElementById('vGoles').innerText = goles;
-        document.getElementById('vCorners').innerText = corners;
-        document.getElementById('vTarjetas').innerText = tarjetas;
-        document.getElementById('vSugerencia').innerText = "Análisis táctico: " + tacticas[seed % 4];
+        document.getElementById('tMatch').innerText = l + " VS " + v;
+        document.getElementById('vGoles').innerText = pronostico.goles;
+        document.getElementById('vCorners').innerText = pronostico.corners;
+        document.getElementById('vTarjetas').innerText = pronostico.tarjetas;
+        document.getElementById('vSugerencia').innerText = pronostico.analisis;
     }
 </script>
-</body>
-</html>
