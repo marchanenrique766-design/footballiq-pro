@@ -1,36 +1,57 @@
 import React, { useState } from 'react';
 
 export const AnalysisReportView: React.FC = () => {
-  // 1. Estados para capturar lo que escribes
   const [local, setLocal] = useState('');
   const [visitante, setVisitante] = useState('');
   const [reporte, setReporte] = useState<any>(null);
 
-  // 2. Función que activa el análisis
-  const procesar = () => {
-    // Aquí simulamos que la IA genera el reporte basado en tus inputs
+  const analizar = () => {
+    // Aquí es donde procesarás la respuesta de la IA (Gemini/Sportmonks)
+    // He puesto valores dinámicos para que veas que la UI finalmente reacciona
     setReporte({
-      titulo: `${local.toUpperCase()} vs ${visitante.toUpperCase()}`,
-      tactica: `Análisis táctico para ${local}: alta presión y control.`,
-      btts: Math.floor(Math.random() * (95 - 60) + 60), // Genera un % aleatorio para que veas cambio
+      titulo: `${local.toUpperCase()} ⚽ ${visitante.toUpperCase()}`,
+      adn: "Transición rápida y alta intensidad física.",
+      btts: Math.floor(Math.random() * (90 - 50) + 50),
       stake: Math.floor(Math.random() * 5) + 1
     });
   };
 
   return (
-    <div className="p-6 bg-[#0c0d0e] text-white">
-      {/* Formulario de entrada */}
-      <input className="block w-full p-2 mb-2 bg-black border" placeholder="Local" onChange={(e) => setLocal(e.target.value)} />
-      <input className="block w-full p-2 mb-4 bg-black border" placeholder="Visitante" onChange={(e) => setVisitante(e.target.value)} />
-      <button className="w-full bg-[#39FF14] text-black font-bold p-3" onClick={procesar}>ANALIZAR EQUIPOS</button>
+    <div className="bg-[#161719] border border-[#333] p-6 rounded-xl shadow-2xl text-white">
+      <h2 className="text-xl font-bold mb-4 text-[#39FF14]">Football IQ PRO</h2>
+      
+      <input 
+        className="w-full p-3 mb-2 bg-black border border-[#444] rounded text-white" 
+        placeholder="Equipo Local" 
+        onChange={(e) => setLocal(e.target.value)} 
+      />
+      <input 
+        className="w-full p-3 mb-4 bg-black border border-[#444] rounded text-white" 
+        placeholder="Equipo Visitante" 
+        onChange={(e) => setVisitante(e.target.value)} 
+      />
+      
+      <button 
+        className="w-full bg-[#39FF14] text-black font-bold p-3 rounded uppercase hover:opacity-90" 
+        onClick={analizar}
+      >
+        Generar Análisis Maestro
+      </button>
 
-      {/* Resultados dinámicos */}
       {reporte && (
-        <div className="mt-6 border-t pt-4">
-          <h2 className="text-[#39FF14] text-xl">{reporte.titulo}</h2>
-          <p>🧬 ADN Táctico: {reporte.tactica}</p>
-          <p>BTTS: {reporte.btts}%</p>
-          <p>STAKE: {reporte.stake} U</p>
+        <div className="mt-6 border-t border-[#333] pt-4">
+          <h3 className="text-[#39FF14] font-bold text-lg mb-2">{reporte.titulo}</h3>
+          <p className="text-sm mb-4">🧬 ADN Táctico: {reporte.adn}</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-[#0c0d0e] p-3 rounded">
+              <span className="text-gray-400 text-xs">BTTS</span>
+              <div className="text-2xl font-bold">{reporte.btts}%</div>
+            </div>
+            <div className="bg-[#0c0d0e] p-3 rounded">
+              <span className="text-gray-400 text-xs">STAKE</span>
+              <div className="text-2xl font-bold">{reporte.stake} U</div>
+            </div>
+          </div>
         </div>
       )}
     </div>
