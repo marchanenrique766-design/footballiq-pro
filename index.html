@@ -1,46 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
     <style>
-        body { background: #0c0d0e; color: #fff; font-family: sans-serif; padding: 20px; }
-        .app { max-width: 500px; margin: auto; background: #161719; border: 1px solid #333; padding: 25px; border-radius: 12px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #39ff14; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
-        .res-box { background: #1f2022; padding: 20px; border-left: 5px solid #39ff14; margin-top: 20px; }
+        body { background: #0c0d0e; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        .app { max-width: 600px; margin: auto; background: #161719; border: 1px solid #333; border-radius: 12px; padding: 30px; }
+        input { width: 100%; padding: 14px; margin: 8px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 18px; background: #39ff14; color: #000; font-weight: 800; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .report-section { margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; }
+        .data-label { color: #00d4ff; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
+        .data-value { color: #fff; font-size: 1rem; margin-bottom: 15px; line-height: 1.5; }
     </style>
 </head>
 <body>
 <div class="app">
-    <input id="l" placeholder="EQUIPO LOCAL">
-    <input id="v" placeholder="EQUIPO VISITANTE">
-    <button class="btn" onclick="ejecutarAnalisis()">ANALIZAR EQUIPOS</button>
-    <div id="resultado" style="display:none;" class="res-box">
-        <h3 id="titulo" style="color:#39ff14;"></h3>
-        <p id="cuerpo"></p>
+    <h2 style="color:#fff;">Football IQ <span style="color:#39ff14;">PRO</span></h2>
+    <input id="local" placeholder="EQUIPO LOCAL">
+    <input id="visit" placeholder="EQUIPO VISITANTE">
+    <button class="btn" onclick="generarInforme()">GENERAR INFORME TÉCNICO</button>
+
+    <div id="informe" class="report-section" style="display:none;">
+        <h3 id="matchTitle" style="color:#39ff14;"></h3>
+        <div class="data-label">🧬 Perfil Táctico Combinado</div>
+        <div class="data-value" id="tactica"></div>
+        <div class="data-label">📈 Proyección de Mercado</div>
+        <div class="data-value" id="mercado"></div>
     </div>
 </div>
 
 <script>
-function ejecutarAnalisis() {
-    const l = document.getElementById('l').value.trim().toLowerCase();
-    const v = document.getElementById('v').value.trim().toLowerCase();
-    
-    // LOGICA DINAMICA: Esto asegura que el resultado CAMBIE según el equipo
-    let analisis = "";
-    
-    if (l === "barcelona" || v === "barcelona") {
-        analisis = "Análisis: Barcelona presenta un índice de posesión superior al 65%. Se recomienda mercado de goles.";
-    } else if (l === "brasil" || v === "brasil") {
-        analisis = "Análisis: Brasil muestra una alta frecuencia de disparos a puerta. Se detecta alta volatilidad.";
-    } else {
-        analisis = "Análisis: Partido equilibrado. El modelo táctico sugiere baja incidencia de goles iniciales. Estudiar córners.";
-    }
+    // Base de datos técnica
+    const perfiles = {
+        "barcelona": "Equipo de control, posesión alta y transiciones lentas.",
+        "emelec": "Equipo vertical, contraataque rápido y presión alta.",
+        "brasil": "Potencia ofensiva con extremos abiertos y juego interior.",
+        "argentina": "Control táctico, orden defensivo y juego de pases cortos.",
+        "default": "Equipo con juego estándar, alta intensidad y transiciones equilibradas."
+    };
 
-    document.getElementById('titulo').innerText = l.toUpperCase() + " vs " + v.toUpperCase();
-    document.getElementById('cuerpo').innerText = analisis;
-    document.getElementById('resultado').style.display = 'block';
-}
+    function generarInforme() {
+        const L = document.getElementById('local').value.toLowerCase().trim();
+        const V = document.getElementById('visit').value.toLowerCase().trim();
+        
+        const pL = perfiles[L] || perfiles["default"];
+        const pV = perfiles[V] || perfiles["default"];
+
+        document.getElementById('matchTitle').innerText = L.toUpperCase() + " VS " + V.toUpperCase();
+        document.getElementById('tactica').innerText = `El local (${L.toUpperCase()}) utiliza: ${pL} Frente a un visitante (${V.toUpperCase()}) que presenta: ${pV}`;
+        document.getElementById('mercado').innerText = "Recomendación: Más 2.5 Goles en el partido | Córners: Superior a 8.5 | Mantener stake moderado.";
+        
+        document.getElementById('informe').style.display = 'block';
+    }
 </script>
 </body>
 </html>
