@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football IQ PRO | ELITE</title>
+    <title>Football IQ PRO | ANALISTA</title>
     <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
         .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 10px; }
         input { width: 100%; padding: 12px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 8px; font-weight: bold; color: #000; text-transform: uppercase; margin-top: 10px; cursor: pointer; }
-        .tag { padding: 3px 7px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; margin: 1px; }
     </style>
 </head>
 <body>
@@ -18,53 +17,18 @@
     <h2 style="color:#00ff88; font-size:1.1rem; margin:0;">CONFIGURAR ANÁLISIS</h2>
     <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
     <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
-    <button onclick="generar()">ANALIZAR PARTIDO</button>
+    <button onclick="generar()">GENERAR REPORTE IA</button>
 </div>
 
 <div id="resultado" class="panel" style="display:none;">
-    <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
+    <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 15px 0;">--</h2>
     
-    <div style="font-size:0.9rem; margin-bottom:10px;">
-        BTTS: 59% | +2.5 GOLES: 54% | CÓRNERS: 8.5
-    </div>
-
-    <div style="text-align:center; margin-bottom:15px;">
-        <span class="tag" style="background:#ffaa00;">E</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#00ff88;">V</span><span class="tag" style="background:#ff4444;">D</span><span class="tag" style="background:#ffaa00;">E</span>
-    </div>
-
-    <h3 style="color:#00ccff; font-size:0.85rem; margin:0;">🔍 CONTEXTO PROFUNDO</h3>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🧬 <strong>ADN:</strong> Presión alta agresiva.</p>
-    <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">🎯 <strong>OBJETIVO:</strong> Consolidar posición.</p>
-
-    <!-- Escenarios -->
-    <div style="margin: 15px 0; border: 1px solid #00ccff; border-radius: 8px; padding: 10px; background: #0a151a;">
-        <h4 style="color:#00ccff; font-size:0.8rem; margin:0 0 8px 0;">📊 ESCENARIOS PROBABLES</h4>
-        <ul style="color:#ddd; font-size:0.75rem; padding-left:15px; margin:0;">
-            <li style="margin-bottom:5px;"><strong>Dominio:</strong> Presión alta y córners.</li>
-            <li><strong>Partido:</strong> Alta probabilidad de under 2.5.</li>
-        </ul>
-    </div>
-
-    <!-- Semáforo -->
-    <div style="margin: 15px 0; padding: 10px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; text-align: center;">
-        <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">NIVEL DE SEGURIDAD</div>
-        <div style="display: flex; gap: 5px; justify-content: center;">
-            <div style="height: 10px; width: 30%; border-radius: 5px; background: #00ff88;"></div>
-            <div style="height: 10px; width: 30%; border-radius: 5px; background: #222;"></div>
-            <div style="height: 10px; width: 30%; border-radius: 5px; background: #222;"></div>
-        </div>
-        <div style="font-size: 0.75rem; color: #00ff88; margin-top: 5px; font-weight: bold;">ALTA SEGURIDAD</div>
-    </div>
-
-    <!-- Gestión de Riesgo (Justificación Dinámica) -->
-    <div style="margin: 15px 0; background: #1a1a1a; padding: 12px; border-radius: 8px; border-left: 4px solid #00ff88;">
-        <p style="font-size:0.8rem; margin:5px 0;">💰 <strong>CUOTA:</strong> 1.30 | 🎯 <strong>STAKE:</strong> 4.5/5</p>
-        <p id="justificacion" style="font-size:0.75rem; color:#ccc; margin-top:8px; font-style:italic;">
-            "Cargando análisis táctico..."
-        </p>
-    </div>
+    <h3 style="color:#00ccff; font-size:0.85rem; margin:0 0 10px 0;">🤖 ANÁLISIS TÁCTICO IA</h3>
+    <p id="caja-analisis" style="font-size:0.85rem; color:#eee; line-height:1.4; border-left:3px solid #00ccff; padding-left:10px;"></p>
     
-    <button style="background:#fff;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
+    <div style="margin-top:20px; text-align:center;">
+        <p style="font-size:0.75rem; color:#888;">Reporte generado automáticamente. No requiere ajustes adicionales.</p>
+    </div>
 </div>
 
 <script>
@@ -75,15 +39,10 @@
             document.getElementById('resultado').style.display = 'block';
             document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
             
-            // Lógica del generador dinámico
-            const frases = [
-                "El volumen ofensivo de " + l + " sugiere un partido con alta presión desde el inicio.",
-                "Estadísticas tácticas indican que ambos equipos tienen debilidades defensivas latentes.",
-                "La tendencia de córners para este encuentro es superior al promedio de la liga.",
-                "El control del mediocampo por parte de " + v + " será clave para el resultado final."
-            ];
-            const aleatoria = frases[Math.floor(Math.random() * frases.length)];
-            document.getElementById('justificacion').innerText = "\"" + aleatoria + "\"";
+            // IA narrativa automática
+            const analisis = `El enfrentamiento entre <strong>${l}</strong> y <strong>${v}</strong> se define por un claro contraste de estilos. Mientras el local impone un ritmo de presión alta, el visitante se perfila para el contragolpe táctico. Las métricas sugieren una alta probabilidad de goles en ambas porterías (BTTS) y un volumen de córners superior a la media. <strong>Recomendación:</strong> Enfocarse en mercados de goles y saques de esquina.`;
+            
+            document.getElementById('caja-analisis').innerHTML = analisis;
         }
     }
 </script>
