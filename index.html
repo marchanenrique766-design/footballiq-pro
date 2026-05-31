@@ -2,54 +2,45 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FOOTBALLIQ PRO ELITE</title>
     <style>
-        body { background-color: #050505; color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; }
         .container { max-width: 500px; margin: auto; }
-        
-        /* Panel Configuración */
         .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #00ff88; color: black; font-weight: 900; border: none; border-radius: 8px; cursor: pointer; }
-
-        /* Panel Resultados Elite */
-        .result-panel { display: none; border: 1px solid #00ff88; padding: 20px; border-radius: 15px; background: #000; }
-        .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .stat-card { background: #121212; padding: 10px; border-radius: 8px; border: 1px solid #333; font-size: 12px; }
-        .risk-high { color: #ff4444; font-weight: bold; margin-top: 10px; border-top: 1px solid #333; pt: 10px; }
+        h2 { color: #00ff88; margin-top: 0; }
+        
+        /* Dashboard de Indicadores */
+        .grid-indicadores { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .indicador { background: #0a0a0a; padding: 20px; border-radius: 15px; border: 1px solid #00ff88; text-align: center; }
+        .porcentaje { font-size: 24px; font-weight: bold; color: #00ff88; display: block; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="panel">
-        <h2 style="color:#00ff88; text-align:center;">FOOTBALLIQ PRO</h2>
-        <input type="text" id="eqA" placeholder="EQUIPO A (LOCAL)">
-        <input type="text" id="eqB" placeholder="EQUIPO B (VISITANTE)">
-        <button onclick="ejecutarAnalisis()">INICIAR ANÁLISIS ELITE</button>
+        <h2>FOOTBALLIQ PRO</h2>
+        <input type="text" id="eqA" placeholder="LOCAL" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:8px;">
+        <input type="text" id="eqB" placeholder="VISITANTE" style="width:100%; padding:10px; margin-bottom:10px; background:#1a1a1a; border:1px solid #444; color:white; border-radius:8px;">
+        <button onclick="mostrarPronosticos()" style="width:100%; padding:15px; background:#00ff88; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">INICIAR ANÁLISIS</button>
     </div>
 
-    <div id="resPanel" class="result-panel">
-        <h3 id="matchName" style="color:#00ff88;"></h3>
-        <div class="grid-stats">
-            <div class="stat-card">Volumen Ofensivo: <b>60%</b></div>
-            <div class="stat-card">Inestabilidad Defensiva: <b>45%</b></div>
-            <div class="stat-card">Confianza IA: <b>7.8/10</b></div>
-            <div class="stat-card">Stake Sugerido: <b>3.0/5</b></div>
+    <div id="panelIndicadores" style="display:none;">
+        <h3 style="color:#00ff88;">PANEL DE INDICADORES</h3>
+        <div class="grid-indicadores">
+            <div class="indicador">BTTS<span class="porcentaje" id="bttsVal">62%</span></div>
+            <div class="indicador">+2.5 GOLES<span class="porcentaje" id="golesVal">58%</span></div>
         </div>
-        <div class="risk-high">⚠ ADVERTENCIA: ALTO RIESGO</div>
+        <div class="panel" style="margin-top:15px;">
+            <p><strong>CÓRNERS TOTALES:</strong> Más de 9.5 córners</p>
+            <p style="font-size:12px; color:#aaa;">Volumen proyectado de tiros de esquina conforme a centros y dinámicas de ataque por las bandas.</p>
+        </div>
     </div>
 </div>
 
 <script>
-    function ejecutarAnalisis() {
-        const a = document.getElementById('eqA').value;
-        const b = document.getElementById('eqB').value;
-        if(!a || !b) return alert("Ingresa ambos equipos");
-        
-        document.getElementById('matchName').innerText = a.toUpperCase() + " VS " + b.toUpperCase();
-        document.getElementById('resPanel').style.display = 'block';
+    function mostrarPronosticos() {
+        document.getElementById('panelIndicadores').style.display = 'block';
     }
 </script>
 </body>
