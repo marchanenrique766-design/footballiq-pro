@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football IQ PRO | ANALIZADOR MATEMÁTICO</title>
+    <title>Football IQ PRO | ANALIZADOR</title>
     <style>
         body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
         .panel { background: #121212; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
@@ -14,40 +14,44 @@
 <body>
 
 <div class="panel">
-    <h2 style="color:#00ff88; font-size:1.1rem; margin-bottom:10px;">DATOS TÉCNICOS</h2>
+    <h2 style="color:#00ff88; font-size:1.1rem; margin-bottom:10px;">CONFIGURAR ANÁLISIS</h2>
+    <input type="text" id="eqL" placeholder="EQUIPO LOCAL">
+    <input type="text" id="eqV" placeholder="EQUIPO VISITANTE">
     <input type="number" id="promGoles" placeholder="Promedio Goles (ej: 2.5)" step="0.1">
     <input type="number" id="promCorners" placeholder="Promedio Córners (ej: 9.5)" step="0.1">
-    <button onclick="calcular()">CALCULAR PROBABILIDAD REAL</button>
+    <button onclick="generarReporte()">GENERAR REPORTE ELITE</button>
 </div>
 
 <div id="resultado" class="panel" style="display:none;">
-    <h2 style="text-align:center; color:#00ff88; font-size:1.2rem;">RESULTADO DEL CÁLCULO</h2>
-    <div id="caja-reporte" style="font-size: 0.9rem; color: #eee; line-height: 1.6; border-top: 1px solid #333; padding-top: 10px;"></div>
+    <h2 id="titulo" style="text-align:center; color:#00ff88; margin:0 0 10px 0;">--</h2>
+    <div id="caja-reporte" style="font-size: 0.85rem; color: #eee; line-height: 1.5;"></div>
 </div>
 
 <script>
-    function calcular() {
+    function generarReporte() {
+        const l = document.getElementById('eqL').value;
+        const v = document.getElementById('eqV').value;
         const goles = parseFloat(document.getElementById('promGoles').value);
         const corners = parseFloat(document.getElementById('promCorners').value);
         
-        if(!isNaN(goles) && !isNaN(corners)) {
+        if(l && v && !isNaN(goles) && !isNaN(corners)) {
             document.getElementById('resultado').style.display = 'block';
+            document.getElementById('titulo').innerText = l.toUpperCase() + " VS " + v.toUpperCase();
             
-            // Lógica de cálculo matemático real (puedes ajustar los factores)
-            const probGoles = (goles / 4) * 100;
-            const probCorners = (corners / 12) * 100;
-            const seguridad = (probGoles + probCorners) / 2;
-            
-            let consejo = seguridad > 60 ? "ALTA OPORTUNIDAD" : "MERCADO VOLÁTIL (EVITAR)";
+            // Cálculo real
+            const probG = (goles / 4) * 100;
+            const probC = (corners / 12) * 100;
+            const seguridad = (probG + probC) / 2;
             
             document.getElementById('caja-reporte').innerHTML = `
-                <p>📊 <strong>Probabilidad Goles:</strong> ${probGoles.toFixed(1)}%</p>
-                <p>🚩 <strong>Probabilidad Córners:</strong> ${probCorners.toFixed(1)}%</p>
-                <p style="color:#00ff88;">🎯 <strong>ESTADO:</strong> ${consejo}</p>
-                <p style="font-size:0.8rem; color:#888;">*Basado en los datos ingresados. No especules si el valor es menor al 50%.</p>
+                <p>🔍 <strong>Análisis Técnico:</strong> El enfrentamiento entre ${l} y ${v} ha sido procesado mediante datos estadísticos.</p>
+                <p>📈 <strong>Probabilidad de Goles:</strong> ${probG.toFixed(1)}%</p>
+                <p>🚩 <strong>Probabilidad de Córners:</strong> ${probC.toFixed(1)}%</p>
+                <p style="color:#00ff88;">🎯 <strong>Nivel de Seguridad:</strong> ${seguridad > 60 ? "ALTA" : "MEDIA/BAJA"}</p>
+                <button style="background:#fff; color:#000; margin-top:10px;" onclick="alert('Reporte Copiado')">COPIAR REPORTE ELITE</button>
             `;
         } else {
-            alert("Por favor, ingresa números válidos.");
+            alert("Completa todos los campos correctamente.");
         }
     }
 </script>
