@@ -1,32 +1,45 @@
-async function obtenerDatos() {
-    const input = document.getElementById('equipoA');
-    const resDiv = document.getElementById('resultado');
-    const nombreBusqueda = input ? input.value.toLowerCase() : "";
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>FOOTBALL IQ PRO</title>
+    <style>
+        body { background-color: #121212; color: #39FF14; font-family: sans-serif; text-align: center; padding: 20px; }
+        input { background: #222; color: #39FF14; border: 1px solid #39FF14; padding: 10px; margin: 10px auto; width: 300px; display: block;}
+        button { background-color: #39FF14; color: black; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; }
+        #resultado { margin-top: 20px; color: #fff; border: 1px solid #39FF14; padding: 15px; display: inline-block; min-width: 300px; }
+    </style>
+</head>
+<body>
+    <h1>FOOTBALL IQ PRO</h1>
+    <input type="text" id="equipoA" placeholder="Escribe el nombre del equipo">
+    <button onclick="obtenerDatos()">GENERAR ANÁLISIS</button>
+    <div id="resultado">Esperando consulta...</div>
 
-    if (!nombreBusqueda) {
-        resDiv.innerText = "Por favor, escribe el nombre del equipo.";
-        return;
-    }
+    <script>
+        async function obtenerDatos() {
+            const nombreBusqueda = document.getElementById('equipoA').value.toLowerCase();
+            const resDiv = document.getElementById('resultado');
+            if (!nombreBusqueda) { resDiv.innerText = "Por favor, escribe un nombre."; return; }
+            resDiv.innerText = "Consultando...";
+            
+            const apiKey = "TU_CLAVE_REAL_AQUI"; 
+            const targetUrl = `https://api.sportmonks.com/v3/football/teams?api_token=${apiKey}`;
+            const proxyUrl = "https://corsproxy.io/?";
 
-    resDiv.innerText = "Consultando...";
-    const apiKey = "TU_CLAVE_REAL_AQUI"; 
-    const targetUrl = `https://api.sportmonks.com/v3/football/teams?api_token=${apiKey}`;
-    const proxyUrl = "https://corsproxy.io/?";
-
-    try {
-        const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
-        const json = await respuesta.json();
-        
-        // REVISIÓN: ¿Qué recibimos realmente?
-        console.log(json); 
-
-        if (json && json.data) {
-            const equipo = json.data.find(e => e.name.toLowerCase().includes(nombreBusqueda));
-            resDiv.innerText = equipo ? `Equipo: ${equipo.name}` : "No encontrado";
-        } else {
-            resDiv.innerText = "Error: La API no envió equipos. Revisa tu API Key.";
+            try {
+                const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+                const json = await respuesta.json();
+                if (json && json.data) {
+                    const equipo = json.data.find(e => e.name.toLowerCase().includes(nombreBusqueda));
+                    resDiv.innerText = equipo ? `Equipo: ${equipo.name} (ID: ${equipo.id})` : "No encontrado";
+                } else {
+                    resDiv.innerText = "Error: Verifica tu API Key.";
+                }
+            } catch (e) {
+                resDiv.innerText = "Error: " + e.message;
+            }
         }
-    } catch (e) {
-        resDiv.innerText = "Error crítico: " + e.message;
-    }
-}
+    </script>
+</body>
+</html>
