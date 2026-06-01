@@ -1,37 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>FOOTBALL IQ PRO</title>
-    <style>
-        body { background-color: #121212; color: #39FF14; font-family: sans-serif; text-align: center; padding: 20px; }
-        input { background: #222; color: #39FF14; border: 1px solid #39FF14; padding: 10px; margin: 10px auto; display: block; width: 300px; }
-        button { background-color: #39FF14; color: black; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; }
-        #resultado { margin-top: 20px; color: #fff; border: 1px solid #39FF14; padding: 15px; display: inline-block; min-width: 300px; }
-    </style>
-</head>
-<body>
-    <h1>FOOTBALL IQ PRO</h1>
-    <input type="text" id="equipoA" placeholder="Equipo Local">
-    <input type="text" id="equipoB" placeholder="Equipo Visitante">
-    <button onclick="obtenerDatos()">GENERAR ANÁLISIS</button>
-    <div id="resultado">Esperando consulta...</div>
-
-    <script>
-        async function obtenerDatos() {
+async function obtenerDatos() {
             const A = document.getElementById('equipoA').value;
             const resDiv = document.getElementById('resultado');
             
             if (!A) {
-                resDiv.innerText = "Por favor, escribe el nombre de un equipo.";
+                resDiv.innerText = "Escribe el nombre del equipo.";
                 return;
             }
 
-            resDiv.innerText = "Consultando a Sportmonks...";
+            resDiv.innerText = "Analizando datos...";
 
-            // REEMPLAZA ESTO CON TU CLAVE REAL DE SPORTMONKS
-            const apiKey = "BnHtdEGz9qhFV7QRiqOCvO48GgCOxmiI4RMMF1mg9NxprbFE0b4o1sFbsYST"; 
-            const targetUrl = `https://api.sportmonks.com/v3/football/teams/search/${A}?api_token=${apiKey}`;
+            const apiKey = "TU_CLAVE_REAL_AQUI"; 
+            // Usamos un endpoint más completo de Sportmonks (asegúrate que tu plan lo permita)
+            const targetUrl = `https://api.sportmonks.com/v3/football/teams/search/${A}?api_token=${apiKey}&include=statistics`;
             const proxyUrl = "https://corsproxy.io/?";
 
             try {
@@ -39,14 +19,15 @@
                 const datos = await respuesta.json();
                 
                 if (datos.data && datos.data.length > 0) {
-                    resDiv.innerText = "Equipo encontrado: " + datos.data[0].name;
+                    const equipo = datos.data[0];
+                    // Aquí personalizamos qué queremos mostrar
+                    resDiv.innerHTML = `<strong>${equipo.name}</strong><br>
+                                        ID: ${equipo.id}<br>
+                                        País: ${equipo.country_id}`;
                 } else {
-                    resDiv.innerText = "No se encontró el equipo: " + A;
+                    resDiv.innerText = "No se encontraron datos para: " + A;
                 }
             } catch (error) {
-                resDiv.innerText = "Error de conexión: " + error.message;
+                resDiv.innerText = "Error: " + error.message;
             }
         }
-    </script>
-</body>
-</html>
