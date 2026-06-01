@@ -7,29 +7,37 @@
         body { background-color: #121212; color: #39FF14; font-family: sans-serif; text-align: center; padding: 20px; }
         input { background: #222; color: #39FF14; border: 1px solid #39FF14; padding: 10px; margin: 10px auto; display: block; width: 300px; }
         button { background-color: #39FF14; color: black; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; }
-        #resultado { margin-top: 20px; color: #39FF14; border: 1px solid #39FF14; padding: 15px; display: inline-block; min-width: 300px; }
+        #resultado { margin-top: 20px; color: #fff; text-align: left; display: inline-block; }
     </style>
 </head>
 <body>
     <h1>FOOTBALL IQ PRO</h1>
     <input type="text" id="equipoA" placeholder="Equipo Local">
     <input type="text" id="equipoB" placeholder="Equipo Visitante">
-    <button onclick="buscarDatos()">GENERAR ANÁLISIS</button>
-    <div id="resultado">Esperando datos...</div>
+    <button onclick="obtenerDatos()">GENERAR ANÁLISIS</button>
+    <div id="resultado"></div>
 
     <script>
-        async function buscarDatos() {
+        async function obtenerDatos() {
             const A = document.getElementById('equipoA').value;
             const B = document.getElementById('equipoB').value;
             const resDiv = document.getElementById('resultado');
             
-            resDiv.innerText = "Consultando métricas para " + A + " vs " + B + "...";
+            resDiv.innerText = "Consultando datos de " + A + " y " + B + "...";
 
-            // Aquí es donde haremos la conexión real a tu API en el siguiente paso.
-            // Por ahora, confirmamos que capturamos los nombres correctamente:
-            setTimeout(() => {
-                resDiv.innerText = "Datos recibidos: " + A + " (Local) vs " + B + " (Visitante). Sistema listo para procesar.";
-            }, 2000);
+            // NOTA: Para que esto funcione, recuerda tener tu API_KEY 
+            // configurada en Vercel -> Settings -> Environment Variables
+            const apiKey = "TU_API_KEY_AQUI"; 
+            
+            try {
+                // Hacemos la consulta directamente a la API de Sportmonks
+                const respuesta = await fetch(`https://api.sportmonks.com/v3/football/teams/search/${A}?api_token=${apiKey}`);
+                const datos = await respuesta.json();
+                
+                resDiv.innerText = "Análisis completado para " + A + ": " + JSON.stringify(datos.data[0].name);
+            } catch (error) {
+                resDiv.innerText = "Error al conectar con el servidor.";
+            }
         }
     </script>
 </body>
