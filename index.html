@@ -2,33 +2,26 @@ async function obtenerDatos() {
             const A = document.getElementById('equipoA').value;
             const resDiv = document.getElementById('resultado');
             
-            if (!A) {
-                resDiv.innerText = "Por favor, escribe el nombre del equipo.";
-                return;
-            }
-
             resDiv.innerText = "Consultando...";
 
-            // CAMBIA ESTO POR TU CLAVE REAL
-            const apiKey = "TU_CLAVE_REAL_AQUI"; 
-            const targetUrl = `https://api.sportmonks.com/v3/football/teams/search/${A}?api_token=${apiKey}`;
+            const apiKey = "BnHtdEGz9qhFV7QRiqOCvO48GgCOxmiI4RMMF1mg9NxprbFE0b4o1sFbsYST"; 
+            // CAMBIO: Vamos a buscar en una lista general para ver si responde
+            const targetUrl = `https://api.sportmonks.com/v3/football/teams?api_token=${apiKey}`;
             const proxyUrl = "https://corsproxy.io/?";
 
             try {
                 const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
-                
-                // Si la respuesta no es exitosa, esto nos dirá qué pasó exactamente
-                if (!respuesta.ok) {
-                    resDiv.innerText = "Error del servidor: " + respuesta.status;
-                    return;
-                }
-                
                 const datos = await respuesta.json();
                 
-                // Si la estructura del JSON es diferente, aquí lo veremos escrito
-                resDiv.innerText = "Respuesta recibida: " + JSON.stringify(datos);
+                // Filtramos manualmente en la lista para ver si aparece lo que buscas
+                const encontrado = datos.data.find(e => e.name.toLowerCase().includes(A.toLowerCase()));
                 
+                if (encontrado) {
+                    resDiv.innerText = "¡Equipo encontrado! Nombre: " + encontrado.name + " (ID: " + encontrado.id + ")";
+                } else {
+                    resDiv.innerText = "No se encontró el equipo. Prueba con otro nombre o revisa la API.";
+                }
             } catch (error) {
-                resDiv.innerText = "Error de conexión: " + error.message;
+                resDiv.innerText = "Error: " + error.message;
             }
         }
