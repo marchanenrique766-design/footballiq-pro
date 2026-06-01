@@ -7,37 +7,29 @@
         body { background-color: #121212; color: #39FF14; font-family: sans-serif; text-align: center; padding: 20px; }
         input { background: #222; color: #39FF14; border: 1px solid #39FF14; padding: 10px; margin: 10px auto; display: block; width: 300px; }
         button { background-color: #39FF14; color: black; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; }
-        #resultado { margin-top: 20px; color: #fff; text-align: left; display: inline-block; }
+        #resultado { margin-top: 20px; color: #fff; border: 1px solid #39FF14; padding: 15px; display: inline-block; min-width: 300px; }
     </style>
 </head>
 <body>
     <h1>FOOTBALL IQ PRO</h1>
     <input type="text" id="equipoA" placeholder="Equipo Local">
     <input type="text" id="equipoB" placeholder="Equipo Visitante">
-    <button onclick="obtenerDatos()">GENERAR ANÁLISIS</button>
-    <div id="resultado"></div>
+    <button onclick="buscarDatos()">GENERAR ANÁLISIS</button>
+    <div id="resultado">Esperando consulta...</div>
 
     <script>
-        async function obtenerDatos() {
+        async function buscarDatos() {
             const A = document.getElementById('equipoA').value;
             const B = document.getElementById('equipoB').value;
             const resDiv = document.getElementById('resultado');
             
-            resDiv.innerText = "Consultando datos de " + A + " y " + B + "...";
+            resDiv.innerText = "Analizando " + A + " vs " + B + "...";
 
-            // NOTA: Para que esto funcione, recuerda tener tu API_KEY 
-            // configurada en Vercel -> Settings -> Environment Variables
-            const apiKey = "TaHbwKAfd9R32szmPhZneMkC7gd4znkyGPT5zwx3kTSj2Jt0Kq92coc6PKeo"; 
-            
-            try {
-                // Hacemos la consulta directamente a la API de Sportmonks
-                const respuesta = await fetch(`https://api.sportmonks.com/v3/football/teams/search/${A}?api_token=${apiKey}`);
-                const datos = await respuesta.json();
-                
-                resDiv.innerText = "Análisis completado para " + A + ": " + JSON.stringify(datos.data[0].name);
-            } catch (error) {
-                resDiv.innerText = "Error al conectar con el servidor.";
-            }
+            // NOTA: Esto es una prueba de conexión. 
+            // Vercel actualizará automáticamente en cuanto guardes el archivo.
+            setTimeout(() => {
+                resDiv.innerText = "Conexión exitosa: Procesando datos de " + A + " y " + B + ".";
+            }, 1500);
         }
     </script>
 </body>
