@@ -37,14 +37,14 @@
                 const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
                 const json = await respuesta.json();
                 
-                if (json && json.data && Array.isArray(json.data)) {
-                    const equipo = json.data.find(e => e.name && e.name.toLowerCase().includes(nombreBusqueda));
+                if (json && json.data) {
+                    const equipo = json.data.find(e => e.name.toLowerCase().includes(nombreBusqueda));
                     resDiv.innerText = equipo ? `Equipo encontrado: ${equipo.name}` : "No se encontró el equipo.";
                 } else {
-                    resDiv.innerText = "Error: La API no devolvió datos. Revisa tu API Key.";
+                    resDiv.innerText = "Error: Verifica tu API Key.";
                 }
             } catch (error) {
-                resDiv.innerText = "Error de conexión: " + error.message;
+                resDiv.innerText = "Error: " + error.message;
             }
         }
     </script>
