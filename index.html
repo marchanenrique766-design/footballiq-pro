@@ -14,22 +14,38 @@
     <h1>FOOTBALL IQ PRO</h1>
     <input type="text" id="equipoA" placeholder="Equipo Local">
     <input type="text" id="equipoB" placeholder="Equipo Visitante">
-    <button onclick="buscarDatos()">GENERAR ANÁLISIS</button>
+    <button onclick="obtenerDatos()">GENERAR ANÁLISIS</button>
     <div id="resultado">Esperando consulta...</div>
 
     <script>
-        async function buscarDatos() {
+        async function obtenerDatos() {
             const A = document.getElementById('equipoA').value;
-            const B = document.getElementById('equipoB').value;
             const resDiv = document.getElementById('resultado');
             
-            resDiv.innerText = "Analizando " + A + " vs " + B + "...";
+            if (!A) {
+                resDiv.innerText = "Por favor, escribe el nombre de un equipo.";
+                return;
+            }
 
-            // NOTA: Esto es una prueba de conexión. 
-            // Vercel actualizará automáticamente en cuanto guardes el archivo.
-            setTimeout(() => {
-                resDiv.innerText = "Conexión exitosa: Procesando datos de " + A + " y " + B + ".";
-            }, 1500);
+            resDiv.innerText = "Consultando a Sportmonks...";
+
+            // REEMPLAZA ESTO CON TU CLAVE REAL DE SPORTMONKS
+            const apiKey = "BnHtdEGz9qhFV7QRiqOCvO48GgCOxmiI4RMMF1mg9NxprbFE0b4o1sFbsYST"; 
+            const targetUrl = `https://api.sportmonks.com/v3/football/teams/search/${A}?api_token=${apiKey}`;
+            const proxyUrl = "https://corsproxy.io/?";
+
+            try {
+                const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+                const datos = await respuesta.json();
+                
+                if (datos.data && datos.data.length > 0) {
+                    resDiv.innerText = "Equipo encontrado: " + datos.data[0].name;
+                } else {
+                    resDiv.innerText = "No se encontró el equipo: " + A;
+                }
+            } catch (error) {
+                resDiv.innerText = "Error de conexión: " + error.message;
+            }
         }
     </script>
 </body>
