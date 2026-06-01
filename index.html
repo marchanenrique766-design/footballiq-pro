@@ -7,21 +7,29 @@
         body { background-color: #121212; color: #39FF14; font-family: sans-serif; text-align: center; padding: 20px; }
         input { background: #222; color: #39FF14; border: 1px solid #39FF14; padding: 10px; margin: 10px auto; display: block; width: 300px; }
         button { background-color: #39FF14; color: black; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; }
-        #resultado { margin-top: 20px; color: #fff; }
+        #resultado { margin-top: 20px; color: #39FF14; border: 1px solid #39FF14; padding: 15px; display: inline-block; min-width: 300px; }
     </style>
 </head>
 <body>
     <h1>FOOTBALL IQ PRO</h1>
     <input type="text" id="equipoA" placeholder="Equipo Local">
     <input type="text" id="equipoB" placeholder="Equipo Visitante">
-    <button onclick="analizar()">GENERAR ANÁLISIS</button>
-    <div id="resultado"></div>
+    <button onclick="buscarDatos()">GENERAR ANÁLISIS</button>
+    <div id="resultado">Esperando datos...</div>
 
     <script>
-        function analizar() {
+        async function buscarDatos() {
             const A = document.getElementById('equipoA').value;
             const B = document.getElementById('equipoB').value;
-            document.getElementById('resultado').innerText = "Analizando partido entre " + A + " y " + B + "... (Conectando API)";
+            const resDiv = document.getElementById('resultado');
+            
+            resDiv.innerText = "Consultando métricas para " + A + " vs " + B + "...";
+
+            // Aquí es donde haremos la conexión real a tu API en el siguiente paso.
+            // Por ahora, confirmamos que capturamos los nombres correctamente:
+            setTimeout(() => {
+                resDiv.innerText = "Datos recibidos: " + A + " (Local) vs " + B + " (Visitante). Sistema listo para procesar.";
+            }, 2000);
         }
     </script>
 </body>
