@@ -2,40 +2,33 @@ async function obtenerDatos() {
             const A = document.getElementById('equipoA').value;
             const resDiv = document.getElementById('resultado');
             
-            // ... (dentro de la función obtenerDatos, después de obtener 'datos')
-        console.log(datos); // <-- ESTO ES CLAVE
-        
-        if (datos.data && datos.data.length > 0) {
-            resDiv.innerHTML = "Equipo encontrado: " + datos.data[0].name;
-        } else {
-            // Imprimimos el error completo que devuelve la API
-            resDiv.innerText = "Error API: " + JSON.stringify(datos); 
-        }
-                
-                
+            if (!A) {
+                resDiv.innerText = "Por favor, escribe el nombre del equipo.";
+                return;
             }
 
-            resDiv.innerText = "Analizando datos...";
+            resDiv.innerText = "Consultando...";
 
-            const apiKey = "BnHtdEGz9qhFV7QRiqOCvO48GgCOxmiI4RMMF1mg9NxprbFE0b4o1sFbsYST"; 
-            // Usamos un endpoint más completo de Sportmonks (asegúrate que tu plan lo permita)
-            const targetUrl = `https://api.sportmonks.com/v3/football/teams/search/${A}?api_token=${apiKey}&include=statistics`;
+            // CAMBIA ESTO POR TU CLAVE REAL
+            const apiKey = "TU_CLAVE_REAL_AQUI"; 
+            const targetUrl = `https://api.sportmonks.com/v3/football/teams/search/${A}?api_token=${apiKey}`;
             const proxyUrl = "https://corsproxy.io/?";
 
             try {
                 const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+                
+                // Si la respuesta no es exitosa, esto nos dirá qué pasó exactamente
+                if (!respuesta.ok) {
+                    resDiv.innerText = "Error del servidor: " + respuesta.status;
+                    return;
+                }
+                
                 const datos = await respuesta.json();
                 
-                if (datos.data && datos.data.length > 0) {
-                    const equipo = datos.data[0];
-                    // Aquí personalizamos qué queremos mostrar
-                    resDiv.innerHTML = `<strong>${equipo.name}</strong><br>
-                                        ID: ${equipo.id}<br>
-                                        País: ${equipo.country_id}`;
-                } else {
-                    resDiv.innerText = "No se encontraron datos para: " + A;
-                }
+                // Si la estructura del JSON es diferente, aquí lo veremos escrito
+                resDiv.innerText = "Respuesta recibida: " + JSON.stringify(datos);
+                
             } catch (error) {
-                resDiv.innerText = "Error: " + error.message;
+                resDiv.innerText = "Error de conexión: " + error.message;
             }
         }
