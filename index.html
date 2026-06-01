@@ -2,14 +2,9 @@ async function obtenerDatos() {
     const nombreBusqueda = document.getElementById('equipoA').value.toLowerCase();
     const resDiv = document.getElementById('resultado');
     
-    if (!nombreBusqueda) {
-        resDiv.innerText = "Por favor, escribe un nombre.";
-        return;
-    }
-
     resDiv.innerText = "Consultando...";
 
-    const apiKey = "uXjbP8iPvi8TuCU0wb2yTFbSKenrs9qqpG6jCFc7I2MwZlmyHCP9paSmT53V"; 
+    const apiKey = "TU_CLAVE_REAL_AQUI"; 
     const targetUrl = `https://api.sportmonks.com/v3/football/teams?api_token=${apiKey}`;
     const proxyUrl = "https://corsproxy.io/?";
 
@@ -17,22 +12,13 @@ async function obtenerDatos() {
         const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
         const json = await respuesta.json();
         
-        // Verificamos si existe 'data' y si es un array antes de usar 'find'
-        if (json && json.data && Array.isArray(json.data)) {
-            const equipoEncontrado = json.data.find(e => 
-                e.name && e.name.toLowerCase().includes(nombreBusqueda)
-            );
-            
-            if (equipoEncontrado) {
-                resDiv.innerHTML = `<strong>¡Equipo Encontrado!</strong><br>
-                                    Nombre: ${equipoEncontrado.name}<br>
-                                    ID: ${equipoEncontrado.id}`;
-            } else {
-                resDiv.innerText = "No se encontró el equipo: " + nombreBusqueda;
-            }
-        } else {
-            resDiv.innerText = "La API respondió pero no envió una lista de equipos. Respuesta: " + JSON.stringify(json);
-        }
+        // AQUÍ ESTÁ EL CAMBIO:
+        // En lugar de buscar, vamos a mostrar en pantalla la estructura completa que recibimos
+        // Esto nos revelará qué nombres tienen los campos (¿quizás es 'data' o 'teams' o algo más?)
+        resDiv.innerText = "Lo que recibí fue: " + JSON.stringify(json).substring(0, 200);
+        
+        console.log("Respuesta completa de la API:", json);
+        
     } catch (error) {
         resDiv.innerText = "Error de conexión: " + error.message;
     }
