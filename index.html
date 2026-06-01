@@ -2,9 +2,17 @@ async function obtenerDatos() {
             const A = document.getElementById('equipoA').value;
             const resDiv = document.getElementById('resultado');
             
-            if (!A) {
-                resDiv.innerText = "Escribe el nombre del equipo.";
-                return;
+            // ... (dentro de la función obtenerDatos, después de obtener 'datos')
+        console.log(datos); // <-- ESTO ES CLAVE
+        
+        if (datos.data && datos.data.length > 0) {
+            resDiv.innerHTML = "Equipo encontrado: " + datos.data[0].name;
+        } else {
+            // Imprimimos el error completo que devuelve la API
+            resDiv.innerText = "Error API: " + JSON.stringify(datos); 
+        }
+                
+                
             }
 
             resDiv.innerText = "Analizando datos...";
