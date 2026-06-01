@@ -1,27 +1,57 @@
-async function obtenerDatos() {
-            const A = document.getElementById('equipoA').value;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>FOOTBALL IQ PRO</title>
+    <style>
+        body { background-color: #121212; color: #39FF14; font-family: sans-serif; text-align: center; padding: 20px; }
+        input { background: #222; color: #39FF14; border: 1px solid #39FF14; padding: 10px; margin: 10px auto; display: block; width: 300px; }
+        button { background-color: #39FF14; color: black; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; }
+        #resultado { margin-top: 20px; color: #fff; border: 1px solid #39FF14; padding: 15px; display: inline-block; min-width: 300px; }
+    </style>
+</head>
+<body>
+    <h1>FOOTBALL IQ PRO</h1>
+    <input type="text" id="equipoA" placeholder="Escribe el nombre del equipo">
+    <button onclick="obtenerDatos()">GENERAR ANÁLISIS</button>
+    <div id="resultado">Esperando consulta...</div>
+
+    <script>
+        async function obtenerDatos() {
+            const nombreBusqueda = document.getElementById('equipoA').value.toLowerCase();
             const resDiv = document.getElementById('resultado');
             
-            resDiv.innerText = "Consultando...";
+            if (!nombreBusqueda) {
+                resDiv.innerText = "Por favor, escribe un nombre.";
+                return;
+            }
 
-            const apiKey = "uXjbP8iPvi8TuCU0wb2yTFbSKenrs9qqpG6jCFc7I2MwZlmyHCP9paSmT53V"; 
-            // CAMBIO: Vamos a buscar en una lista general para ver si responde
+            resDiv.innerText = "Consultando a la base de datos...";
+
+            // RECUERDA: Inserta aquí tu API Token real
+            const apiKey = "TU_CLAVE_REAL_AQUI"; 
             const targetUrl = `https://api.sportmonks.com/v3/football/teams?api_token=${apiKey}`;
             const proxyUrl = "https://corsproxy.io/?";
 
             try {
                 const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
-                const datos = await respuesta.json();
+                const json = await respuesta.json();
                 
-                // Filtramos manualmente en la lista para ver si aparece lo que buscas
-                const encontrado = datos.data.find(e => e.name.toLowerCase().includes(A.toLowerCase()));
+                // Buscamos el equipo en la lista recibida
+                const equipoEncontrado = json.data.find(e => e.name.toLowerCase().includes(nombreBusqueda));
                 
-                if (encontrado) {
-                    resDiv.innerText = "¡Equipo encontrado! Nombre: " + encontrado.name + " (ID: " + encontrado.id + ")";
+                if (equipoEncontrado) {
+                    resDiv.innerHTML = `<strong>¡Equipo Encontrado!</strong><br>
+                                        Nombre: ${equipoEncontrado.name}<br>
+                                        ID: ${equipoEncontrado.id}<br>
+                                        País ID: ${equipoEncontrado.country_id}`;
                 } else {
-                    resDiv.innerText = "No se encontró el equipo. Prueba con otro nombre o revisa la API.";
+                    resDiv.innerText = "No se encontró un equipo que coincida con: " + nombreBusqueda;
                 }
             } catch (error) {
-                resDiv.innerText = "Error: " + error.message;
+                resDiv.innerText = "Error de conexión: " + error.message;
             }
         }
+    </script>
+</body>
+</html>
