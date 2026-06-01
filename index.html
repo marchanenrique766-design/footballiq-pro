@@ -1,9 +1,13 @@
 async function obtenerDatos() {
-    const nombreBusqueda = document.getElementById('equipoA')?.value?.toLowerCase();
+    const input = document.getElementById('equipoA');
     const resDiv = document.getElementById('resultado');
-    
-    if (!nombreBusqueda) { resDiv.innerText = "Escribe un equipo"; return; }
-    
+    const nombreBusqueda = input ? input.value.toLowerCase() : "";
+
+    if (!nombreBusqueda) {
+        resDiv.innerText = "Por favor, escribe el nombre del equipo.";
+        return;
+    }
+
     resDiv.innerText = "Consultando...";
     const apiKey = "TU_CLAVE_REAL_AQUI"; 
     const targetUrl = `https://api.sportmonks.com/v3/football/teams?api_token=${apiKey}`;
@@ -13,14 +17,16 @@ async function obtenerDatos() {
         const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
         const json = await respuesta.json();
         
-        // Validación segura
-        if (json && json.data && Array.isArray(json.data)) {
+        // REVISIÓN: ¿Qué recibimos realmente?
+        console.log(json); 
+
+        if (json && json.data) {
             const equipo = json.data.find(e => e.name.toLowerCase().includes(nombreBusqueda));
-            resDiv.innerText = equipo ? `Equipo: ${equipo.name} (ID: ${equipo.id})` : "No encontrado";
+            resDiv.innerText = equipo ? `Equipo: ${equipo.name}` : "No encontrado";
         } else {
-            resDiv.innerText = "Error en la estructura de datos.";
+            resDiv.innerText = "Error: La API no envió equipos. Revisa tu API Key.";
         }
     } catch (e) {
-        resDiv.innerText = "Error: " + e.message;
+        resDiv.innerText = "Error crítico: " + e.message;
     }
 }
