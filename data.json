@@ -1,0 +1,69 @@
+{
+  "leagues": [
+    "La Liga",
+    "Premier League",
+    "Champions League"
+  ],
+  "matches": [
+    {
+      "league": "La Liga",
+      "home": "Real Madrid",
+      "away": "Barcelona",
+      "time": "Hoy - 20:00",
+      "indicators": {
+        "both_score": true,
+        "over_2_5": true
+      }
+    },
+    {
+      "league": "La Liga",
+      "home": "Atletico Madrid",
+      "away": "Sevilla",
+      "time": "Mañana - 18:00",
+      "indicators": {
+        "both_score": false,
+        "over_2_5": true
+      }
+    },
+    {
+      "league": "Premier League",
+      "home": "Liverpool",
+      "away": "Manchester United",
+      "time": "Hoy - 17:30",
+      "indicators": {
+        "both_score": true,
+        "over_2_5": true
+      }
+    },
+    {
+      "league": "Premier League",
+      "home": "Chelsea",
+      "away": "Arsenal",
+      "time": "Mañana - 20:45",
+      "indicators": {
+        "both_score": false,
+        "over_2_5": false
+      }
+    },
+    {
+      "league": "Champions League",
+      "home": "PSG",
+      "away": "Bayern Munich",
+      "time": "Miércoles - 15:00",
+      "indicators": {
+        "both_score": true,
+        "over_2_5": true
+      }
+    },
+    {
+      "league": "Champions League",
+      "home": "Juventus",
+      "away": "Inter",
+      "time": "Miércoles - 18:00",
+      "indicators": {
+        "both_score": false,
+        "over_2_5": true
+      }
+    }
+  ]
+}
