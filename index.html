@@ -1,52 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>FOOTBALL IQ PRO</title>
-    <style>
-        body { background-color: #121212; color: #39FF14; font-family: sans-serif; text-align: center; padding: 20px; }
-        input { background: #222; color: #39FF14; border: 1px solid #39FF14; padding: 10px; margin: 10px auto; width: 300px; display: block; }
-        button { background-color: #39FF14; color: black; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; }
-        #resultado { margin-top: 20px; color: #fff; border: 1px solid #39FF14; padding: 15px; display: inline-block; min-width: 300px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Football IQ Pro</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="app">
+    <header class="header">
+      <div>
+        <h1>⚽ Football IQ Pro</h1>
+        <p>Análisis profesional de tendencias estadísticas</p>
+      </div>
+      <span class="badge">Datos demo</span>
+    </header>
 
-    <h1>FOOTBALL IQ PRO</h1>
-    <input type="text" id="equipoA" placeholder="Escribe el nombre del equipo">
-    <button onclick="obtenerDatos()">GENERAR ANÁLISIS</button>
-    <div id="resultado">Esperando consulta...</div>
+    <section class="filters">
+      <input type="text" id="searchInput" placeholder="Buscar equipo..." />
+      <select id="leagueFilter">
+        <option value="all">Todas las ligas</option>
+        <option value="La Liga">La Liga</option>
+        <option value="Premier League">Premier League</option>
+        <option value="Champions League">Champions League</option>
+      </select>
+    </section>
 
-    <script>
-        async function obtenerDatos() {
-            const nombreBusqueda = document.getElementById('equipoA').value.toLowerCase();
-            const resDiv = document.getElementById('resultado');
-            
-            if (!nombreBusqueda) {
-                resDiv.innerText = "Por favor, escribe un nombre.";
-                return;
-            }
+    <main class="layout">
+      <section>
+        <h2>Partidos disponibles</h2>
+        <div id="matches" class="matches"></div>
+      </section>
 
-            resDiv.innerText = "Consultando...";
+      <section id="analysis" class="analysis"></section>
+    </main>
+  </div>
 
-            const apiKey = "TU_CLAVE_REAL_AQUI"; 
-            const targetUrl = `https://api.sportmonks.com/v3/football/teams?api_token=${apiKey}`;
-            const proxyUrl = "https://corsproxy.io/?";
-
-            try {
-                const respuesta = await fetch(proxyUrl + encodeURIComponent(targetUrl));
-                const json = await respuesta.json();
-                
-                if (json && json.data) {
-                    const equipo = json.data.find(e => e.name.toLowerCase().includes(nombreBusqueda));
-                    resDiv.innerText = equipo ? `Equipo encontrado: ${equipo.name}` : "No se encontró el equipo.";
-                } else {
-                    resDiv.innerText = "Error: Verifica tu API Key.";
-                }
-            } catch (error) {
-                resDiv.innerText = "Error: " + error.message;
-            }
-        }
-    </script>
+  <script src="app.js"></script>
 </body>
 </html>
