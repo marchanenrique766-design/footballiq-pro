@@ -1,52 +1,102 @@
-import os
-import logging
-from dotenv import load_dotenv
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler
-from analyzar import determinar_mercado
+import streamlit as st
+import sympy as sp
+import random
 
-# Cargar token
-load_dotenv()
-TOKEN = os.getenv("TOKEN")
+# ---------------- CONFIG ----------------
+st.set_page_config(page_title="EduMind IA", page_icon="🎓")
 
-# Configurar logs para ver errores si ocurren
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+x = sp.symbols("x")
 
-async def button_click(update, context):
-    query = update.callback_query
-    await query.answer()
-    if query.data == 'fav':
-        await query.edit_message_text(text="✅ *Análisis guardado en favoritos.*", parse_mode='Markdown')
+# ---------------- ESTADO ----------------
+if "usuario" not in st.session_state:
+    st.session_state.usuario = ""
 
-async def comando_analizar(update, context):
-    try:
-        # Recibir: Liga, Equipo, Posesión, Tiros
-        texto = " ".join(context.args)
-        partes = [p.strip() for p in texto.split(",")]
-        
-        datos = {
-            'liga': partes[0],
-            'equipo': partes[1],
-            'pos': int(partes[2]),
-            'tiros': int(partes[3])
-        }
-        
-        tipo, mercado = determinar_mercado(datos)
-        
-        keyboard = [[InlineKeyboardButton("💾 Guardar", callback_data='fav')]]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        
-        mensaje = f"📊 *ANÁLISIS {datos['liga'].upper()}*\n*Equipo:* {datos['equipo']}\n*Recomendación:* `{mercado}`"
-        await update.message.reply_text(mensaje, parse_mode='Markdown', reply_markup=reply_markup)
-        
-    except Exception as e:
-        await update.message.reply_text("⚠️ *Error:* Usa el formato: /analizar Liga, Equipo, Posesion, Tiros")
+if "puntos" not in st.session_state:
+    st.session_state.puntos = 0
 
-if __name__ == "__main__":
-    app = ApplicationBuilder().token(TOKEN).build()
-    
-    app.add_handler(CommandHandler("analizar", comando_analizar))
-    app.add_handler(CallbackQueryHandler(button_click))
-    
-    print("--- BOT ACTIVO Y LISTO ---")
-    app.run_polling()
+if "plan" not in st.session_state:
+    st.session_state.plan = "FREE"
+
+if "uso" not in st.session_state:
+    st.session_state.uso = 0
+
+# ---------------- LOGIN ----------------
+st.title("🤖 EduMind - Tutor Inteligente")
+
+usuario = st.text_input("👤 Escribe tu nombre")
+
+if st.button("Entrar"):
+    st.session_state.usuario = usuario
+    st.success(f"Bienvenido {usuario} 👋")
+
+# ---------------- APP PRINCIPAL ----------------
+if st.session_state.usuario != "":
+
+    # ---------------- SIDEBAR ----------------
+    st.sidebar.title("💰 Plan")
+
+    st.session_state.plan = st.sidebar.selectbox(
+        "Elige plan",
+        ["FREE", "PRO"]
+    )
+
+    if st.sidebar.button("💎 Activar PRO"):
+        st.session_state.plan = "PRO"
+        st.sidebar.success("Ahora eres PRO 🎉")
+
+    st.sidebar.write("Usuario:", st.session_state.usuario)
+    st.sidebar.write("Plan:", st.session_state.plan)
+    st.sidebar.write("Puntos:", st.session_state.puntos)
+
+    st.divider()
+
+    # ---------------- MODO ----------------
+    modo = st.selectbox("📚 Modo", ["Matemáticas", "Ejercicios"])
+
+    # ---------------- MATES ----------------
+    if modo == "Matemáticas":
+
+        ecuacion = st.text_input("Ejemplo: 2*x + 10 = 20", "2*x + 10 = 20")
+
+        if st.button("Resolver"):
+
+            try:
+                izq, der = ecuacion.split("=")
+
+                lhs = sp.sympify(izq)
+                rhs = sp.sympify(der)
+
+                st.latex(f"{sp.latex(lhs)} = {sp.latex(rhs)}")
+
+                sol = sp.solve(sp.Eq(lhs, rhs), x)
+
+                st.success(f"x = {sol[0]}")
+
+                st.session_state.puntos += 10
+                st.info("+10 puntos")
+
+            except:
+                st.error("Error en la ecuación")
+
+    # ---------------- EJERCICIOS ----------------
+    else:
+
+        a = random.randint(1, 10)
+        b = random.randint(1, 20)
+        sol = random.randint(1, 10)
+        c = a * sol + b
+
+        st.info(f"Resuelve: {a}x + {b} = {c}")
+
+        respuesta = st.number_input("Tu respuesta:", step=1)
+
+        if st.button("Comprobar"):
+
+            if respuesta == sol:
+                st.success("🎉 Correcto +10 puntos")
+                st.session_state.puntos += 10
+            else:
+                st.error(f"❌ Incorrecto, era {sol}")
+
+else:
+    st.info("⚠️ Escribe tu nombre para comenzar")
